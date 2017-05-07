@@ -28,28 +28,25 @@ namespace DFWin
                 dwarfFortress = Process.GetProcesses().SingleOrDefault(p => p.ProcessName.Contains("Dwarf Fortress"));
             }
 
-            Thread.Sleep(2000);
+            // Seems to help a bit?
+            Thread.Sleep(1000);
 
             var window = dwarfFortress.MainWindowHandle;
-            var myWindow = Process.GetCurrentProcess().MainWindowHandle;
 
             MinimiseWindow(window);
+
+            SendKeys(window, User32.VirtualKey.VK_UP);
+
+            Console.WriteLine("Sent keys");
+            Console.ReadLine();
 
             var image = CaptureImage(window);
 
             if (File.Exists("MyImage.bmp")) File.Delete("MyImage.bmp");
 
             image.Save("MyImage.bmp");
-            var pixel = image.GetPixel(image.Size.Width - 2, image.Size.Height - 1);
-
-            Console.WriteLine("Hello world: " + pixel);
-            Console.ReadLine();
-
-            //User32.SetForegroundWindow(window);
-            SendKeys(window, User32.VirtualKey.VK_UP);
-            //User32.SetForegroundWindow(myWindow);
-
-            Console.WriteLine("Sent keys");
+            
+            Console.WriteLine("Test done");
             Console.ReadLine();
         }
 
@@ -98,65 +95,6 @@ namespace DFWin
                 User32.SendMessage(window, User32.WindowMessage.WM_KEYUP, (IntPtr)key, IntPtr.Zero);
             }
         }
-//
-//        public static User32.INPUT[] CreateInputs(User32.VirtualKey key)
-//        {
-//            return new[]
-//            {
-//                new User32.INPUT
-//                {
-//                    type = User32.InputType.INPUT_KEYBOARD,
-//                    Inputs = new User32.INPUT.InputUnion
-//                    {
-//                        ki = new User32.KEYBDINPUT
-//                        {
-//                            wVk = key,
-//                            wScan = 0,
-//                            dwFlags = 0,
-//                            time = 0,
-//                            dwExtraInfo_IntPtr = IntPtr.Zero
-//                        }
-//                    }
-//                },
-//                new User32.INPUT
-//                {
-//                    type = User32.InputType.INPUT_KEYBOARD,
-//                    Inputs = new User32.INPUT.InputUnion
-//                    {
-//                        ki = new User32.KEYBDINPUT
-//                        {
-//                            wVk = key,
-//                            wScan = 0,
-//                            dwFlags = User32.KEYEVENTF.KEYEVENTF_KEYUP,
-//                            time = 0,
-//                            dwExtraInfo_IntPtr = IntPtr.Zero
-//                        }
-//                    }
-//                }
-//            };
-//        }
-
-        public static bool WaitForInputIdle(IntPtr window, int timeout = 0)
-        {
-            int pid;
-            int tid = User32.GetWindowThreadProcessId(window, out pid);
-            if (tid == 0) throw new ArgumentException("Window not found");
-            var tick = Environment.TickCount;
-            do
-            {
-                if (IsThreadIdle(pid, tid)) return true;
-                Thread.Sleep(15);
-            } while (timeout > 0 && Environment.TickCount - tick < timeout);
-            return false;
-        }
-
-        private static bool IsThreadIdle(int pid, int tid)
-        {
-            var prc = Process.GetProcessById(pid);
-            var thr = prc.Threads.Cast<ProcessThread>().First((t) => tid == t.Id);
-            return thr.ThreadState == ThreadState.Wait &&
-                   thr.WaitReason == ThreadWaitReason.UserRequest;
-        }
 
         public static Bitmap GetWindowImage(IntPtr window)
         {
@@ -200,12 +138,12 @@ namespace DFWin
 
         private static void RestoreWindow(IntPtr window)
         {
-            User32.ShowWindow(window, User32.WindowShowStyle.SW_RESTORE);
+            User32.ShowWindow(window, User32.WindowShowStyle.SW_SHOWNOACTIVATE);
         }
 
         private static void MinimiseWindow(IntPtr window)
         {
-            User32.ShowWindow(window, User32.WindowShowStyle.SW_MINIMIZE);
+            User32.ShowWindow(window, User32.WindowShowStyle.SW_SHOWMINNOACTIVE);
         }
 
         private static int SetWindowTransparency(IntPtr window, bool isTransparent)
