@@ -28,13 +28,10 @@ namespace DFWin
                 dwarfFortress = Process.GetProcesses().SingleOrDefault(p => p.ProcessName.Contains("Dwarf Fortress"));
             }
 
-            // Seems to help a bit?
-            Thread.Sleep(1000);
-
             var window = dwarfFortress.MainWindowHandle;
 
             MinimiseWindow(window);
-
+            
             SendKeys(window, User32.VirtualKey.VK_UP);
 
             Console.WriteLine("Sent keys");
