@@ -93,13 +93,16 @@ namespace DFWin
             }
         }
 
+        private const int expectedWidth = 1280;
+        private const int expectedHeight = 400;
+
         public static Bitmap GetWindowImage(IntPtr window)
         {
             try
             {
-                var rectangle = GetWindowRectangle(window);
+                EnsureWindowSizedCorrectly(window);
 
-                var bitmap = new Bitmap(rectangle.Width, rectangle.Height);
+                var bitmap = new Bitmap(expectedWidth, expectedHeight);
                 var graphics = Graphics.FromImage(bitmap);
                 var deviceContext = graphics.GetHdc();
 
@@ -107,7 +110,7 @@ namespace DFWin
 
                 graphics.ReleaseHdc();
                 graphics.Dispose();
-
+                
                 return bitmap;
             }
             catch (Exception e)
@@ -117,7 +120,51 @@ namespace DFWin
             }
         }
 
+        private static void EnsureWindowSizedCorrectly(IntPtr window)
+        {
+            var clientRect = GetClientRectangle(window);
+            var windowRect = GetWindowRectangle(window);
+            if (clientRect.Width == expectedWidth && clientRect.Height == expectedHeight) return;
+
+            User32.MoveWindow(window, windowRect.X, windowRect.Y, (windowRect.Width - clientRect.Width) + expectedWidth, (windowRect.Height - clientRect.Height) + expectedHeight, true);
+            WaitForInputIdle(window);
+            User32.SetForegroundWindow(Process.GetCurrentProcess().MainWindowHandle);
+        }
+
+        public static bool WaitForInputIdle(IntPtr window, int timeout = 0)
+        {
+            int pid;
+            int tid = User32.GetWindowThreadProcessId(window, out pid);
+            if (tid == 0) throw new ArgumentException("Window not found");
+            var tick = Environment.TickCount;
+            do
+            {
+                if (IsThreadIdle(pid, tid)) return true;
+                Thread.Sleep(15);
+            } while (timeout > 0 && Environment.TickCount - tick < timeout);
+            return false;
+        }
+
+        private static bool IsThreadIdle(int pid, int tid)
+        {
+            var prc = Process.GetProcessById(pid);
+            var thr = prc.Threads.Cast<ProcessThread>().First((t) => tid == t.Id);
+            return thr.ThreadState == ThreadState.Wait &&
+                   thr.WaitReason == ThreadWaitReason.UserRequest;
+        }
+
         private static Rectangle GetWindowRectangle(IntPtr window)
+        {
+            RECT rect;
+            User32.GetWindowRect(window, out rect);
+            return new Rectangle(
+                rect.left,
+                rect.top,
+                rect.right - rect.left,
+                rect.bottom - rect.top);
+        }
+
+        private static Rectangle GetClientRectangle(IntPtr window)
         {
             RECT rect;
             User32.GetClientRect(window, out rect);
