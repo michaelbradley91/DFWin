@@ -118,12 +118,11 @@ namespace DFWin.User32Extensions.Models
             var bitmap = new Bitmap(clientRectangle.Width, clientRectangle.Height);
             var graphics = Graphics.FromImage(bitmap);
             var deviceContext = graphics.GetHdc();
-
             try
             {
                 var succeeded = User32.PrintWindow(WindowPointer, deviceContext, User32.PrintWindowFlags.PW_CLIENTONLY);
                 if (!succeeded) throw new User32Exception("Unable to take a screenshot of the client area of the window.", Marshal.GetLastWin32Error());
-
+                
                 return bitmap;
             }
             finally
@@ -132,6 +131,14 @@ namespace DFWin.User32Extensions.Models
                 graphics.Dispose();
             }
         }
+
+        /// <summary>Deletes the specified device context (DC).</summary>
+        /// <param name="hdc">A handle to the device context.</param>
+        /// <returns><para>If the function succeeds, the return value is nonzero.</para><para>If the function fails, the return value is zero.</para></returns>
+        /// <remarks>An application must not delete a DC whose handle was obtained by calling the <c>GetDC</c> function. Instead, it must call the <c>ReleaseDC</c> function to free the DC.</remarks>
+        [DllImport("gdi32.dll", EntryPoint = "DeleteDC")]
+        public static extern bool DeleteDC([In] IntPtr hdc);
+
 
         /// <summary>
         /// Send the key/s to the window. This is really a key down message followed immediately by a key up message.

@@ -40,14 +40,20 @@ namespace DFWin
 
                 dwarfFortress = Process.GetProcesses().SingleOrDefault(p => p.ProcessName.Contains("Dwarf Fortress"));
             }
+            Console.WriteLine("Starting...");
 
             var dwarfFortressWindow = new Window(dwarfFortress.MainWindowHandle);
 
-            dwarfFortressWindow.SetState(WindowState.Minimised);
-            dwarfFortressWindow.SendKeys(User32.VirtualKey.VK_UP);
+            var windowService = new WindowService();
 
-            Console.WriteLine("Sent keys");
-            Console.ReadLine();
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            for (var i = 0; i < 1000; i++)
+            {
+                var bitmap = await windowService.TakeHiddenScreenshotOfClient(dwarfFortressWindow, expectedWidth, expectedHeight);
+                bitmap.Dispose();
+            }
+            stopWatch.Stop();
 
             var image = await new WindowService().TakeHiddenScreenshotOfClient(dwarfFortressWindow, expectedWidth, expectedHeight);
 
@@ -55,7 +61,7 @@ namespace DFWin
 
             image.Save("MyImage.bmp");
 
-            Console.WriteLine("Test done");
+            Console.WriteLine("Test done. Took: " + stopWatch.Elapsed.TotalMilliseconds);
             Console.ReadLine();
         }
     }
