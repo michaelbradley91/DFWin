@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using DFWin.User32Extensions.Structs;
 using PInvoke;
 
 namespace DFWin.User32Extensions
@@ -16,7 +17,13 @@ namespace DFWin.User32Extensions
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SystemParametersInfo(User32.SystemParametersInfoAction uiAction, uint uiParam, ref ANIMATIONINFO pvParam, User32.SystemParametersInfoFlags fWinIni);
 
-        [DllImport("user32")]
+        [DllImport(User32, SetLastError = true)]
         public static extern int SetLayeredWindowAttributes(IntPtr hWnd, byte crKey, byte alpha, int flags);
+
+        /// <summary>
+        /// Unlike the Nuget package's, this one does set the last error.
+        /// </summary>
+        [DllImport(User32, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int SetWindowLong(IntPtr hWnd, User32.WindowLongIndexFlags nIndex, User32.SetWindowLongFlags dwNewLong);
     }
 }
