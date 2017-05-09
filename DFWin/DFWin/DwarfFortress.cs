@@ -43,6 +43,7 @@ namespace DFWin
             if (File.Exists("MyImage.bmp")) File.Delete("MyImage.bmp");
 
             image.Save("MyImage.bmp");
+            image.Dispose();
 
             Console.WriteLine("Test done. Took: " + stopWatch.Elapsed.TotalMilliseconds);
             Console.ReadLine();
