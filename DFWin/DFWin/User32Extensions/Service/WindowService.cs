@@ -43,7 +43,9 @@ namespace DFWin.User32Extensions.Service
                 }
             
                 window.EnsureLayered();
+#if !DEBUG
                 window.SetTransparency(true);
+#endif
                 window.SetState(WindowState.Restored);
                 window.Redraw();
 

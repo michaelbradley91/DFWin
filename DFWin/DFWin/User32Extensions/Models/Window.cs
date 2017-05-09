@@ -11,12 +11,23 @@ namespace DFWin.User32Extensions.Models
     /// <summary>
     /// An abstract representation of a window. Use this to more conveniently call down to User32 methods.
     /// </summary>
-    public class Window
+    public class Window : IDisposable
     {
         public Window(IntPtr windowPointer)
         {
             WindowPointer = windowPointer;
             Details = new WindowDetails(this);
+        }
+
+        private User32.SafeDCHandle deviceContext;
+
+        private User32.SafeDCHandle GetDeviceContext()
+        {
+            if (deviceContext == null || deviceContext.IsClosed || deviceContext.IsInvalid)
+            {
+                deviceContext = User32.GetDC(WindowPointer);
+            }
+            return deviceContext;
         }
 
         /// <summary>
@@ -105,6 +116,7 @@ namespace DFWin.User32Extensions.Models
             return true;
         }
 
+
         /// <summary>
         /// Takes a picture of the client area in the window. You should ensure the window is not minimised for this to return an image.
         /// </summary>
@@ -113,23 +125,13 @@ namespace DFWin.User32Extensions.Models
             var clientRectangle = ClientRectangle;
 
             var bitmap = new Bitmap(clientRectangle.Width, clientRectangle.Height);
-            var graphics = Graphics.FromImage(bitmap);
-            var deviceContext = graphics.GetHdc();
-            try
-            {
-                var stopwatch = new Stopwatch();
-                stopwatch.Start();
-                var succeeded = User32.PrintWindow(WindowPointer, deviceContext, User32.PrintWindowFlags.PW_CLIENTONLY);
-                if (!succeeded) throw new User32Exception("Unable to take a screenshot of the client area of the window.", Marshal.GetLastWin32Error());
-                stopwatch.Stop();
-                Console.WriteLine("Screenshot took: " + stopwatch.Elapsed.TotalMilliseconds);
-                return bitmap;
-            }
-            finally
-            {
-                graphics.ReleaseHdc();
-                graphics.Dispose();
-            }
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var succeeded = User32.PrintWindow(WindowPointer, GetDeviceContext().HWnd, User32.PrintWindowFlags.PW_CLIENTONLY);
+            if (!succeeded) throw new User32Exception("Unable to take a screenshot of the client area of the window.", Marshal.GetLastWin32Error());
+            stopwatch.Stop();
+            Console.WriteLine("Screenshot took: " + stopwatch.Elapsed.TotalMilliseconds);
+            return bitmap;
         }
 
         /// <summary>Deletes the specified device context (DC).</summary>
@@ -159,6 +161,11 @@ namespace DFWin.User32Extensions.Models
         {
             var succeeded = User32.SetForegroundWindow(WindowPointer);
             if (!succeeded) throw new User32Exception("Unable to bring the window to the foreground", Marshal.GetLastWin32Error());
+        }
+
+        public void Dispose()
+        {
+            deviceContext?.Dispose();
         }
     }
 }
