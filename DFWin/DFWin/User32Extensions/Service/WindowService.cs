@@ -1,8 +1,9 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Diagnostics;
+using System.Drawing;
 using System.Threading.Tasks;
-using Autofac.Features.AttributeFilters;
+using Autofac.Features.Indexed;
 using DFWin.Constants;
-using DFWin.Helpers;
 using DFWin.User32Extensions.Enumerations;
 using DFWin.User32Extensions.Models;
 
@@ -10,71 +11,88 @@ namespace DFWin.User32Extensions.Service
 {
     public interface IWindowService
     {
+        Task PrepareForCapture(Window window, Size size);
+
         /// <summary>
-        /// Takes a screenshot of the window, regardless of whether or not it is minimised. This avoids the current window losing focus.
-        /// The window will automatically be resized to the size given.
+        /// Takes a screenshot of the client area of the window, regardless of whether or not it is minimised.
+        /// The size given should be the size of the client area. If it is not, the client area is automatically resized.
         /// </summary>
-        Task<Bitmap> TakeHiddenScreenshotOfClient(Window window, Size size);
+        Task<Bitmap> Capture(Window window, Size size);
     }
 
     public class WindowService : IWindowService
     {
         private readonly Window applicationWindow;
 
-        public WindowService([KeyFilter(DependencyKeys.Window.Application)] Window applicationWindow)
+        private static readonly TimeSpan DelayAfterResize = TimeSpan.FromMilliseconds(500);
+
+        public WindowService(IIndex<DependencyKeys.Window, Window> windows)
         {
-            this.applicationWindow = applicationWindow;
+            applicationWindow = windows[DependencyKeys.Window.Application];
         }
 
-        public async Task<Bitmap> TakeHiddenScreenshotOfClient(Window window, Size size)
+        public async Task PrepareForCapture(Window window, Size size)
         {
-            var requiresSpecialHandling = window.IsMinimised;
             var needToRestoreAnimation = false;
-            int? oldwindowDetailsAsInt = null;
-
             try
             {
-                if (!requiresSpecialHandling) return await ResizeAndTakeScreenshot(window, size);
-
                 if (SystemInformation.Current.AreWindowStateChangesAnimated())
                 {
                     SystemInformation.Current.SetWindowStateChangeAnimation(false);
                     needToRestoreAnimation = true;
                 }
-
-                oldwindowDetailsAsInt = window.Details.WindowDetailsAsInt;
+            
                 window.EnsureLayered();
                 window.SetTransparency(true);
                 window.SetState(WindowState.Restored);
                 window.Redraw();
 
-                return await ResizeAndTakeScreenshot(window, size);
+                var wasResized = window.ResizeClientRectangle(size.Width, size.Height);
+
+                if (wasResized)
+                {
+                    // Wait a bit to give the window time to redraw.
+                    await Task.Delay(DelayAfterResize);
+                    applicationWindow.GiveFocus();
+                }
             }
             finally
             {
-                if (requiresSpecialHandling)
+                if (needToRestoreAnimation)
                 {
-                    ExceptionHelpers.TryAll(
-                        () => window.SetState(WindowState.Minimised),
-                        () => window.SetTransparency(false),
-                        () => { if (oldwindowDetailsAsInt != null) window.Details.SetDetails(oldwindowDetailsAsInt.Value); },
-                        () => { if (needToRestoreAnimation) SystemInformation.Current.SetWindowStateChangeAnimation(true); }
-                        );
+                    SystemInformation.Current.SetWindowStateChangeAnimation(true);
                 }
             }
+        }
+
+        public async Task<Bitmap> Capture(Window window, Size size)
+        {
+            if (window.IsMinimised) await PrepareForCapture(window, size);
+
+            return await ResizeAndTakeScreenshot(window, size);
         }
 
         private async Task<Bitmap> ResizeAndTakeScreenshot(Window window, Size size)
         {
             var wasResized = window.ResizeClientRectangle(size.Width, size.Height);
+            if (wasResized)
+            {
 
-            if (!wasResized) return window.TakeScreenshotOfClient();
+                // Wait a bit to give the window time to redraw.
+                await Task.Delay(DelayAfterResize);
 
-            // Wait a bit to give the window time to redraw.
-            await Task.Delay(500);
+                applicationWindow.GiveFocus();
+            }
 
-            applicationWindow.GiveFocus();
-            return window.TakeScreenshotOfClient();
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            var screenshot = window.TakeScreenshotOfClient();
+            stopWatch.Stop();
+            if (stopWatch.ElapsedMilliseconds > 5)
+            {
+                Console.WriteLine("Screenshot slow: " + stopWatch.ElapsedMilliseconds);
+            }
+            return screenshot;
         }
     }
 }

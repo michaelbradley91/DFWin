@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using DFWin.User32Extensions.Enumerations;
@@ -87,12 +88,12 @@ namespace DFWin.User32Extensions.Models
         /// </summary>
         public bool ResizeClientRectangle(int width, int height, bool redrawIfResized = true)
         {
-            if (IsMinimised) throw new InvalidOperationException("Cannot resize the client window while the window is minimised.");
-
             var clientRectangle = ClientRectangle;
             var windowRectangle = WindowRectangle;
 
             if (clientRectangle.Width == width && clientRectangle.Height == height) return false;
+
+            if (IsMinimised) throw new InvalidOperationException("Cannot resize the client window while the window is minimised.");
 
             var succeeded = User32.MoveWindow(WindowPointer, 
                 windowRectangle.X, 
@@ -116,9 +117,12 @@ namespace DFWin.User32Extensions.Models
             var deviceContext = graphics.GetHdc();
             try
             {
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
                 var succeeded = User32.PrintWindow(WindowPointer, deviceContext, User32.PrintWindowFlags.PW_CLIENTONLY);
                 if (!succeeded) throw new User32Exception("Unable to take a screenshot of the client area of the window.", Marshal.GetLastWin32Error());
-                
+                stopwatch.Stop();
+                Console.WriteLine("Screenshot took: " + stopwatch.Elapsed.TotalMilliseconds);
                 return bitmap;
             }
             finally
