@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
 using DFWin.User32Extensions;
 using DFWin.User32Extensions.Enumerations;
 using DFWin.User32Extensions.Models;
@@ -23,24 +24,19 @@ namespace DFWin
 
         public static void Main(string[] args)
         {
+            var dwarfFortressProcess = TryGetDwarfFortressProcess();
+            if (dwarfFortressProcess == null) return;
+            var ioc = Setup.CreateIoC(dwarfFortressProcess);
+            
+            var dwarfFortress = ioc.Resolve<DwarfFortress>();
+
             MainAsync().GetAwaiter().GetResult();
         }
 
         public static async Task MainAsync()
         {
-            var dwarfFortress = Process.GetProcesses().SingleOrDefault(p => p.ProcessName.Contains("Dwarf Fortress"));
-
-            while (dwarfFortress == null)
-            {
-                Console.WriteLine("Please start Dwarf Fortress and press anything but q to continue. Press q to quit." + Environment.NewLine +
-                                  "Detail: Could not find a process with name \"Dwarf Fortress\"");
-
-                var key = Console.ReadKey();
-                if (new[] { 'q', 'Q' }.Contains(key.KeyChar)) return;
-
-                dwarfFortress = Process.GetProcesses().SingleOrDefault(p => p.ProcessName.Contains("Dwarf Fortress"));
-            }
-            Console.WriteLine("Starting...");
+            var dwarfFortress = TryGetDwarfFortressProcess();
+            if (dwarfFortress == null) return;
 
             var dwarfFortressWindow = new Window(dwarfFortress.MainWindowHandle);
 
@@ -63,6 +59,25 @@ namespace DFWin
 
             Console.WriteLine("Test done. Took: " + stopWatch.Elapsed.TotalMilliseconds);
             Console.ReadLine();
+        }
+
+        private static Process TryGetDwarfFortressProcess()
+        {
+            var dwarfFortress = Process.GetProcesses().SingleOrDefault(p => p.ProcessName.Contains("Dwarf Fortress"));
+
+            while (dwarfFortress == null)
+            {
+                Console.WriteLine("Please start Dwarf Fortress and press anything but q to continue. Press q to quit." + Environment.NewLine +
+                                  "Detail: Could not find a process with name \"Dwarf Fortress\"");
+
+                var key = Console.ReadKey();
+                if (new[] { 'q', 'Q' }.Contains(key.KeyChar)) return null;
+
+                dwarfFortress = Process.GetProcesses().SingleOrDefault(p => p.ProcessName.Contains("Dwarf Fortress"));
+            }
+            Console.WriteLine("Starting...");
+
+            return dwarfFortress;
         }
     }
 }

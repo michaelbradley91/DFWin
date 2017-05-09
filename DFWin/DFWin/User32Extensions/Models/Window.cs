@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
 using DFWin.User32Extensions.Enumerations;
 using DFWin.User32Extensions.Exceptions;
 using PInvoke;
-using ThreadState = System.Diagnostics.ThreadState;
 
 namespace DFWin.User32Extensions.Models
 {
+    /// <summary>
+    /// An abstract representation of a window. Use this to more conveniently call down to User32 methods.
+    /// </summary>
     public class Window
     {
-        public static Window ApplicationWindow = new Window(Process.GetCurrentProcess().MainWindowHandle);
-
         public Window(IntPtr windowPointer)
         {
             WindowPointer = windowPointer;
