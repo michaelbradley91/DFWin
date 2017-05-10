@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using DFWin.User32Extensions.Enumerations;
 using DFWin.User32Extensions.Exceptions;
@@ -13,6 +13,8 @@ namespace DFWin.User32Extensions.Models
     /// </summary>
     public class Window
     {
+        public const PixelFormat ScreenshotPixelFormat = PixelFormat.Format24bppRgb;
+
         public Window(IntPtr windowPointer)
         {
             WindowPointer = windowPointer;
@@ -107,12 +109,13 @@ namespace DFWin.User32Extensions.Models
 
         /// <summary>
         /// Takes a picture of the client area in the window. You should ensure the window is not minimised for this to return an image.
+        /// The pixel format is 24 bpp (8 bits for RGB - no alpha)
         /// </summary>
         public Bitmap TakeScreenshotOfClient()
         {
             var clientRectangle = ClientRectangle;
 
-            var bitmap = new Bitmap(clientRectangle.Width, clientRectangle.Height);
+            var bitmap = new Bitmap(clientRectangle.Width, clientRectangle.Height, ScreenshotPixelFormat);
             var graphics = Graphics.FromImage(bitmap);
             var deviceContext = graphics.GetHdc();
             try

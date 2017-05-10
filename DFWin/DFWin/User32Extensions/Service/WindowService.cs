@@ -14,7 +14,7 @@ namespace DFWin.User32Extensions.Service
         Task PrepareForCapture(Window window, Size size);
 
         /// <summary>
-        /// Takes a screenshot of the client area of the window, regardless of whether or not it is minimised.
+        /// Takes a screenshot of the client area of the window, regardless of whether or not it is minimised. The pixel format is 24 bpp (8 bits for RGB - no alpha)
         /// The size given should be the size of the client area. If it is not, the client area is automatically resized.
         /// </summary>
         Task<Bitmap> Capture(Window window, Size size);

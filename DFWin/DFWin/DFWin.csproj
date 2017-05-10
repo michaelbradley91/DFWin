@@ -84,9 +84,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\GameGridService.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="User32Extensions\Enumerations\WindowState.cs" />
     <Compile Include="User32Extensions\Exceptions\User32Exception.cs" />
+    <Compile Include="User32Extensions\Models\DirectBitmap.cs" />
     <Compile Include="User32Extensions\Models\SystemInformation.cs" />
     <Compile Include="User32Extensions\Models\Window.cs" />
     <Compile Include="User32Extensions\Models\WindowDetails.cs" />
@@ -100,7 +102,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ScreenScrape\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ComputerTileSetStandard.bmp" />

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using DFWin.Constants;
+using DFWin.Helpers;
 using DFWin.User32Extensions.Models;
 using DFWin.User32Extensions.Service;
 
@@ -15,6 +17,11 @@ namespace DFWin
     {
         private const int NumberOfWarmUpProcesses = 5;
 
+        /// <summary>
+        /// When passed, the application only "warms up" the Dwarf Fortress window so it can take screenshots more easily later.
+        /// </summary>
+        private const string WarmUpFlag = "--warm-up";
+
         public static void Main(string[] args)
         {
             var dwarfFortressProcess = TryGetDwarfFortressProcess();
@@ -22,13 +29,13 @@ namespace DFWin
 
             var ioc = Setup.CreateIoC(dwarfFortressProcess);
 
-            if (args.Length <= 0)
+            if (args.Contains(WarmUpFlag))
             {
-                MainAsync(ioc).GetAwaiter().GetResult();
+                WarmUpOnly(ioc).GetAwaiter().GetResult();
             }
             else
             {
-                WarmUpOnly(ioc).GetAwaiter().GetResult();
+                MainAsync(ioc).GetAwaiter().GetResult();
             }
         }
 
@@ -46,33 +53,44 @@ namespace DFWin
 
                 dwarfFortress = Process.GetProcesses().SingleOrDefault(p => p.ProcessName.Contains("Dwarf Fortress"));
             }
-            Console.WriteLine("Starting...");
+            Console.WriteLine("Found Dwarf Fortress");
 
             return dwarfFortress;
         }
 
         private static async Task MainAsync(IComponentContext ioc)
         {
+            var executableLocation = new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
+
             var processes = new List<Process>();
-            var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-            for (var i = 0; i < NumberOfWarmUpProcesses; i++)
+
+            Console.WriteLine("Warming up...");
+            try
             {
-                processes.Add(Process.Start(new ProcessStartInfo
+                for (var i = 0; i < NumberOfWarmUpProcesses; i++)
                 {
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    FileName = $"{assemblyName}.exe",
-                    Arguments = "--warmstart"
-                }));
+                    processes.Add(Process.Start(new ProcessStartInfo
+                    {
+                        CreateNoWindow = true,
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        FileName = executableLocation,
+                        Arguments = WarmUpFlag
+                    }));
 
-                if (i <= 0) continue;
+                    if (i <= 0) continue;
 
+                    await Task.Delay(500);
+                    processes[i - 1].Kill();
+                }
                 await Task.Delay(500);
-                processes[i - 1].Kill();
+                processes[NumberOfWarmUpProcesses - 1].Kill();
             }
-            await Task.Delay(500);
-            processes[NumberOfWarmUpProcesses - 1].Kill();
+            finally
+            {
+                ExceptionHelpers.TryAll(processes.Select<Process, Action>(p => (() => p.Dispose())).ToArray());
+            }
+            Console.WriteLine("Warm up complete! Starting...");
 
             var dwarfFortress = ioc.Resolve<IDwarfFortress>();
             await dwarfFortress.Run();

@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Autofac.Features.Indexed;
 using DFWin.Constants;
+using DFWin.Services;
 using DFWin.User32Extensions.Models;
 using DFWin.User32Extensions.Service;
 
@@ -18,11 +19,13 @@ namespace DFWin
     {
         private readonly Window dwarfFortressWindow;
         private readonly IWindowService windowService;
+        private readonly IGameGridService gameGridService;
 
-        public DwarfFortress(IIndex<DependencyKeys.Window, Window> windows, IWindowService windowService)
+        public DwarfFortress(IIndex<DependencyKeys.Window, Window> windows, IWindowService windowService, IGameGridService gameGridService)
         {
             dwarfFortressWindow = windows[DependencyKeys.Window.DwarfFortress];
             this.windowService = windowService;
+            this.gameGridService = gameGridService;
         }
 
         public async Task Run()
@@ -33,8 +36,10 @@ namespace DFWin
             stopWatch.Start();
             for (var i = 0; i < 1000; i++)
             {
-                var bitmap = await windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize);
-                bitmap.Dispose();
+                using (var bitmap = await windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize))
+                {
+                    var tiles = gameGridService.ParseScreenshot(bitmap);
+                }
             }
             stopWatch.Stop();
 
