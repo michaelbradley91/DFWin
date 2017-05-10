@@ -77,24 +77,15 @@ namespace DFWin.User32Extensions.Service
         private async Task<Bitmap> ResizeAndTakeScreenshot(Window window, Size size)
         {
             var wasResized = window.ResizeClientRectangle(size.Width, size.Height);
-            if (wasResized)
-            {
 
-                // Wait a bit to give the window time to redraw.
-                await Task.Delay(DelayAfterResize);
+            if (!wasResized) return window.TakeScreenshotOfClient();
 
-                applicationWindow.GiveFocus();
-            }
+            // Wait a bit to give the window time to redraw.
+            await Task.Delay(DelayAfterResize);
 
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-            var screenshot = window.TakeScreenshotOfClient();
-            stopWatch.Stop();
-            if (stopWatch.ElapsedMilliseconds > 5)
-            {
-                Console.WriteLine("Screenshot slow: " + stopWatch.ElapsedMilliseconds);
-            }
-            return screenshot;
+            applicationWindow.GiveFocus();
+
+            return window.TakeScreenshotOfClient();
         }
     }
 }
