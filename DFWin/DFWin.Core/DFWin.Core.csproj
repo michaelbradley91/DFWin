@@ -70,6 +70,11 @@
     <Compile Include="CoreModule.cs" />
     <Compile Include="Helpers\ExceptionHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\GameGridService.cs" />
     <Compile Include="User32Extensions\DllImports.cs" />
     <Compile Include="User32Extensions\Enumerations\WindowState.cs" />
@@ -83,6 +88,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ComputerTileSetMicro.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ComputerTileSetStandard.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
