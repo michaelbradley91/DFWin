@@ -67,6 +67,15 @@
     <Reference Include="Autofac, Version=4.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.5.0\lib\net45\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="MonoGame.Extended, Version=0.6.377.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.0.6.377\lib\MonoGame.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Graphics, Version=0.6.377.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.Graphics.0.6.377\lib\MonoGame.Extended.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Tiled, Version=0.6.377.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.Tiled.0.6.377\lib\MonoGame.Extended.Tiled.dll</HintPath>
+    </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
@@ -103,7 +112,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="app.manifest" />
-    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <MonoGameContentReference Include="Content\Content.mgcb">
+      <SubType>Designer</SubType>
+    </MonoGameContentReference>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
