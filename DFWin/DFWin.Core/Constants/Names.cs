@@ -2,7 +2,8 @@
 {
     public static class Names
     {
-        public const string DwarfFortress = "Dwarf Fortress";
+        public const string GameTitle = "Dwarf Fortress";
+        public const string DwarfFortressProcess = "Dwarf Fortress";
         public const string CaptureWarmUpFlag = "warm-up";
     }
 }

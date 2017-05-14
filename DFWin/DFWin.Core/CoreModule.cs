@@ -27,7 +27,7 @@ namespace DFWin.Core
         {
             // TODO figure out how to ensure Dwarf Fortress has been loaded!
             var currentProcess = Process.GetCurrentProcess();
-            var dwarfFortress = Process.GetProcessesByName(Names.DwarfFortress).First();
+            var dwarfFortress = Process.GetProcessesByName(Names.DwarfFortressProcess).First();
 
             containerBuilder.Register(c => dwarfFortress).Keyed<Process>(DependencyKeys.Process.DwarfFortress).SingleInstance();
             containerBuilder.Register(c => currentProcess).Keyed<Process>(DependencyKeys.Process.Application).SingleInstance();

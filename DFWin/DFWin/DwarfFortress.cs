@@ -58,6 +58,7 @@ namespace DFWin
 
             Content.RootDirectory = "Content";
 
+            Window.Title = Names.GameTitle;
             Window.AllowUserResizing = true;
             Window.AllowAltF4 = false;
             Window.OrientationChanged += Window_ClientSizeChanged;

@@ -10,6 +10,8 @@ namespace DFWin.WarmUp
 {
     public class Program
     {
+        private static readonly TimeSpan FastEnough = TimeSpan.FromMilliseconds(10);
+
         public static void Main(string[] args)
         {
             WarmUp().GetAwaiter().GetResult();
@@ -24,13 +26,18 @@ namespace DFWin.WarmUp
 
             await windowService.PrepareForCapture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize);
 
+            var totalStopWatch = new Stopwatch();
+            totalStopWatch.Start();
             var stopWatch = new Stopwatch();
-            while (true)
+            while (totalStopWatch.Elapsed < TimeSpan.FromSeconds(15))
             {
                 stopWatch.Start();
                 await windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize);
-                Console.WriteLine($"Capture took: {stopWatch.Elapsed.TotalMilliseconds}");
                 stopWatch.Stop();
+
+                Console.WriteLine($@"Capture took: {stopWatch.Elapsed.TotalMilliseconds}");
+
+                if (stopWatch.Elapsed < FastEnough) return;
                 stopWatch.Reset();
             }
         }
