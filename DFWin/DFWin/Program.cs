@@ -16,7 +16,7 @@ namespace DFWin
     /// </summary>
     public static class Program
     {
-        private const int NumberOfWarmUpProcesses = 10;
+        private const int NumberOfWarmUpProcesses = 20;
 
         /// <summary>
         /// The main entry point for the application.
@@ -55,7 +55,14 @@ namespace DFWin
 
                     try
                     {
-                        if (!processes[i - 1].WaitForExit(500)) processes[i - 1].Kill();
+                        if (!processes[i - 1].WaitForExit(500))
+                        {
+                            processes[i - 1].Kill();
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                     catch (Exception e)
                     {
@@ -64,7 +71,7 @@ namespace DFWin
                 }
                 try
                 {
-                    if (!(fastEnough = processes[NumberOfWarmUpProcesses - 1].WaitForExit(500))) processes[NumberOfWarmUpProcesses - 1].Kill();
+                    if (!(fastEnough = processes.Last().WaitForExit(500))) processes.Last().Kill();
                 }
                 catch (Exception e)
                 {
