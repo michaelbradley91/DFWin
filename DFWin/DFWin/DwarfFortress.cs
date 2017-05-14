@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac.Features.Indexed;
@@ -13,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Newtonsoft.Json;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace DFWin
 {
@@ -38,6 +40,7 @@ namespace DFWin
         private Song song;
 
         private Vector2 dwarfPosition = new Vector2(100, 300);
+
         private Vector2 axePosition;
         private bool hasShot;
 
@@ -47,8 +50,18 @@ namespace DFWin
             this.windowService = windowService;
             this.gameGridService = gameGridService;
 
-            graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = Sizes.DwarfFortressDefaultScreenSize.Width,
+                PreferredBackBufferHeight = Sizes.DwarfFortressDefaultScreenSize.Height
+            };
+
             Content.RootDirectory = "Content";
+
+            Window.AllowUserResizing = true;
+            Window.AllowAltF4 = false;
+            Window.OrientationChanged += Window_ClientSizeChanged;
+            Window.ClientSizeChanged += Window_ClientSizeChanged;
         }
 
         /// <summary>
@@ -62,6 +75,13 @@ namespace DFWin
             // TODO: Add your initialization logic here
 
             base.Initialize();
+
+            CentreWindow();
+        }
+
+        private void CentreWindow()
+        {
+            Window.Position = new Microsoft.Xna.Framework.Point((GraphicsDevice.DisplayMode.Width - GraphicsDevice.Viewport.Width) / 2, (GraphicsDevice.DisplayMode.Height - GraphicsDevice.Viewport.Height) / 2);
         }
 
         /// <summary>
@@ -70,6 +90,8 @@ namespace DFWin
         /// </summary>
         protected override void LoadContent()
         {
+            
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -89,6 +111,25 @@ namespace DFWin
             MediaPlayer.Play(song);
         }
 
+        private int previousWidth = 0;
+        private int previousHeight = 0;
+
+        private void Window_ClientSizeChanged(object sender, EventArgs e)
+        {
+            Resize();
+        }
+
+        private void Resize()
+        {
+            if (Window.ClientBounds.Width == previousWidth && Window.ClientBounds.Height == previousHeight) return;
+
+            previousWidth = Window.ClientBounds.Width;
+            previousHeight = Window.ClientBounds.Height;
+            graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
+            graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
+            graphics.ApplyChanges();
+        }
+
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.
@@ -105,6 +146,7 @@ namespace DFWin
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            Resize();
             var screenshot = windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize, true).GetAwaiter().GetResult();
             var tiles = gameGridService.ParseScreenshot(screenshot);
 
