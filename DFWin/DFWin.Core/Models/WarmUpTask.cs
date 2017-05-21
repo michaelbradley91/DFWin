@@ -116,6 +116,7 @@ namespace DFWin.Core.Models
                 Succeeded = true,
                 NumberOfProcessesCompleted = numberOfProcessesCompleted
             });
+            DfWin.Trace("Warm up succeeded!");
         }
 
         private void UpdateProgressWithFailure(int numberOfProcessesCompleted)
@@ -125,6 +126,7 @@ namespace DFWin.Core.Models
                 HasFinished = true,
                 NumberOfProcessesCompleted = numberOfProcessesCompleted
             });
+            DfWin.Trace("Warm up failed.");
         }
 
         private void UpdateProgress(int numberOfProcessesCompleted)
@@ -139,6 +141,7 @@ namespace DFWin.Core.Models
         {
             lock (progressLock)
             {
+                DfWin.Trace($"Progress: {warmUpProgress.NumberOfProcessesCompleted} / {warmUpProgress.TotalNumberOfProcesses}");
                 progress = warmUpProgress;
             }
         }

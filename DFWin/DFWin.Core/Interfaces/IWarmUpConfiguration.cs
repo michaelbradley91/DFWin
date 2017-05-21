@@ -2,7 +2,7 @@
 
 namespace DFWin.Core.Interfaces
 {
-    public interface IWarmUpProcessDetails
+    public interface IWarmUpConfiguration
     {
         string ExecutablePath { get; }
         int TimeToWaitPerProcessForGoodPerformanceInMilliseconds { get; }

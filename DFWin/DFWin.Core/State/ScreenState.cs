@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DFWin.Core.State
 {
-    class PageState
+    public class ScreenState
     {
     }
 }

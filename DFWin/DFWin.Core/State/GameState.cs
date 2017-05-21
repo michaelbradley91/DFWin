@@ -1,4 +1,6 @@
-﻿namespace DFWin.Core.State
+﻿using DFWin.Core.Constants;
+
+namespace DFWin.Core.State
 {
     /// <summary>
     /// The root of all application state.

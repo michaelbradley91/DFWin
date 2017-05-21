@@ -8,7 +8,7 @@ namespace DFWin
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<DwarfFortress>().AsSelf().SingleInstance();
-            builder.RegisterType<WarmUpConfiguration>().AsSelf().SingleInstance();
+            builder.RegisterType<WarmUpConfiguration>().AsImplementedInterfaces().SingleInstance();
         }
     }
 }
