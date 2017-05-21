@@ -2,6 +2,7 @@
 using System.Linq;
 using Autofac;
 using DFWin.Core.Constants;
+using DFWin.Core.Services;
 using DFWin.Core.User32Extensions.Models;
 
 namespace DFWin.Core
@@ -21,6 +22,11 @@ namespace DFWin.Core
                 .Where(t => t.Name.EndsWith("Service"))
                 .AsImplementedInterfaces()
                 .SingleInstance();
+
+            builder.RegisterBuildCallback(c =>
+            {
+                DfWin.Logger = c.Resolve<ILoggingService>();
+            });
         }
 
         private static void RegisterProcesses(ContainerBuilder containerBuilder)

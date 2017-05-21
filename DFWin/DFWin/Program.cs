@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Autofac;
 using DFWin.Core.Constants;
 using DFWin.Core.Helpers;
+using DFWin.Core.Services;
 
 namespace DFWin
 {
@@ -16,73 +17,20 @@ namespace DFWin
     /// </summary>
     public static class Program
     {
-        private const int NumberOfWarmUpProcesses = 20;
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         public static void Main()
         {
-            WarmUp();
-
             var ioc = Setup.CreateIoC();
 
-            using (var game = ioc.Resolve<DwarfFortress>()) game.Run();
-        }
-
-        private static void WarmUp()
-        {
-            var executableLocation = new Uri(Assembly.GetAssembly(typeof(WarmUp.Program)).CodeBase).LocalPath;
-
-            var processes = new List<Process>();
-
-            Debug.WriteLine("Warming up...");
-            var fastEnough = false;
-            try
+            using (var game = ioc.Resolve<DwarfFortress>())
             {
-                for (var i = 0; i < NumberOfWarmUpProcesses; i++)
-                {
-                    processes.Add(Process.Start(new ProcessStartInfo
-                    {
-                        CreateNoWindow = true,
-                        RedirectStandardOutput = true,
-                        UseShellExecute = false,
-                        FileName = executableLocation,
-                    }));
-
-                    if (i <= 0) continue;
-
-                    try
-                    {
-                        if (!processes[i - 1].WaitForExit(500))
-                        {
-                            processes[i - 1].Kill();
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e);
-                    }
-                }
-                try
-                {
-                    if (!(fastEnough = processes.Last().WaitForExit(500))) processes.Last().Kill();
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e);
-                }
+                var warmUpService = ioc.Resolve<IWarmUpService>();
+                warmUpService.BeginWarmUp();
+                game.Run();
             }
-            finally
-            {
-                ExceptionHelpers.TryAll(processes.Select<Process, Action>(p => (() => p.Dispose())).ToArray());
-            }
-            Debug.WriteLine(fastEnough ? "Warmed up successfully!" : "Unsuccessful warmup. Performance may be choppy.");
         }
     }
 #endif

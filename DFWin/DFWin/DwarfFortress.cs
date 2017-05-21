@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.Reflection;
-using System.Threading.Tasks;
 using Autofac.Features.Indexed;
 using DFWin.Core.Constants;
 using DFWin.Core.Services;
@@ -13,7 +9,6 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Newtonsoft.Json;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace DFWin
@@ -27,7 +22,7 @@ namespace DFWin
         private readonly IWindowService windowService;
         private readonly IGameGridService gameGridService;
 
-        private GraphicsDeviceManager graphics;
+        private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
         private Texture2D background;
@@ -49,6 +44,7 @@ namespace DFWin
             dwarfFortressWindow = windows[DependencyKeys.Window.DwarfFortress];
             this.windowService = windowService;
             this.gameGridService = gameGridService;
+            previousWidth = 0;
 
             graphics = new GraphicsDeviceManager(this)
             {
@@ -82,7 +78,7 @@ namespace DFWin
 
         private void CentreWindow()
         {
-            Window.Position = new Microsoft.Xna.Framework.Point((GraphicsDevice.DisplayMode.Width - GraphicsDevice.Viewport.Width) / 2, (GraphicsDevice.DisplayMode.Height - GraphicsDevice.Viewport.Height) / 2);
+            Window.Position = new Point((GraphicsDevice.DisplayMode.Width - GraphicsDevice.Viewport.Width) / 2, (GraphicsDevice.DisplayMode.Height - GraphicsDevice.Viewport.Height) / 2);
         }
 
         /// <summary>
@@ -112,8 +108,8 @@ namespace DFWin
             MediaPlayer.Play(song);
         }
 
-        private int previousWidth = 0;
-        private int previousHeight = 0;
+        private int previousWidth;
+        private int previousHeight;
 
         private void Window_ClientSizeChanged(object sender, EventArgs e)
         {
