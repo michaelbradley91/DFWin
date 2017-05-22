@@ -9,5 +9,11 @@ namespace DFWin.Core.State
     {
         public Screens CurrentScreen;
         public ScreenState ScreenState;
+
+        public static GameState InitialState => new GameState
+        {
+            CurrentScreen = Screens.Loading,
+            ScreenState = new LoadingState { LoadingPercent = 0, Message = "Loading..." }
+        };
     }
 }

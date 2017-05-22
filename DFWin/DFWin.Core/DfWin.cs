@@ -1,24 +1,31 @@
-﻿using DFWin.Core.Services;
+﻿using Autofac;
+using Autofac.Core;
+using DFWin.Core.Services;
 
 namespace DFWin.Core
 {
     public static class DfWin
     {
-        public static ILoggingService Logger { get; internal set; }
-        
+        public static IContainer DependencyResolver { get; internal set; }
+
         public static void Error(string message)
         {
-            Logger.Error(message);
+            Resolve<ILoggingService>().Error(message);
         }
 
         public static void Warn(string message)
         {
-            Logger.Warn(message);
+            Resolve<ILoggingService>().Warn(message);
         }
 
         public static void Trace(string message)
         {
-            Logger.Trace(message);
+            Resolve<ILoggingService>().Trace(message);
+        }
+
+        public static T Resolve<T>(params Parameter[] parameters)
+        {
+            return DependencyResolver.Resolve<T>(parameters);
         }
     }
 }

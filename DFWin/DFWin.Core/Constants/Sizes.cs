@@ -8,6 +8,6 @@ namespace DFWin.Core.Constants
         public static readonly Size DwarfFortressPreferredGridSize = new Size(80, 25);
         public static readonly Size DwarfFortressPreferredClientSize = new Size(DwarfFortressPreferredGridSize.Width * DwarfFortressTileSize.Width, DwarfFortressPreferredGridSize.Height * DwarfFortressTileSize.Height);
         public static readonly Size DwarfFortressPreferredRawTileSize = new Size(24, 24);
-        public static readonly Size DwarfFortressDefaultScreenSize = new Size(DwarfFortressPreferredRawTileSize.Width * DwarfFortressPreferredGridSize.Width, DwarfFortressPreferredRawTileSize.Height * DwarfFortressPreferredGridSize.Height);
+        public static readonly Size DwarfFortressDefaultScreenSize = new Size(1920, 1080);
     }
 }

@@ -2,7 +2,7 @@
 using System.Linq;
 using Autofac;
 using DFWin.Core.Constants;
-using DFWin.Core.Services;
+using DFWin.Core.State;
 using DFWin.Core.User32Extensions.Models;
 
 namespace DFWin.Core
@@ -14,6 +14,8 @@ namespace DFWin.Core
             RegisterServices(builder);
             RegisterProcesses(builder);
             RegisterWindows(builder);
+
+            builder.Register(c => GameState.InitialState).AsSelf().SingleInstance();
         }
 
         private void RegisterServices(ContainerBuilder builder)
@@ -25,7 +27,7 @@ namespace DFWin.Core
 
             builder.RegisterBuildCallback(c =>
             {
-                DfWin.Logger = c.Resolve<ILoggingService>();
+                DfWin.DependencyResolver = c;
             });
         }
 

@@ -1,55 +1,34 @@
 ﻿using System;
-using System.Drawing;
 using Autofac.Features.Indexed;
 using DFWin.Core.Constants;
 using DFWin.Core.Services;
 using DFWin.Core.User32Extensions.Models;
 using DFWin.Core.User32Extensions.Services;
-using DFWin.Styles;
+using DFWin.Models;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using MonoGame.Extended;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
-using RectangleF = MonoGame.Extended.RectangleF;
 
 namespace DFWin
 {
-    /// <summary>
-    /// This is the main type for your game.
-    /// </summary>
     public class DwarfFortress : Game
     {
         private readonly Window dwarfFortressWindow;
+        private readonly ContentManager contentManager;
+        private readonly ScreenManager screenManager;
         private readonly IWindowService windowService;
         private readonly IGameGridService gameGridService;
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        private Texture2D loadingBackground;
-        private Texture2D background;
-        private Texture2D dwarf;
-        private Texture2D axe;
-        private Texture2D whiteRectangle;
-
-        private SpriteFont defaultFont;
-
-        private SoundEffect axeSwing;
-        private Song song;
-
-        private Vector2 dwarfPosition = new Vector2(100, 300);
-
-        private Vector2 axePosition;
-        private bool hasShot;
-
-        public DwarfFortress(IIndex<DependencyKeys.Window, Window> windows, IWindowService windowService, IGameGridService gameGridService)
+        public DwarfFortress(IIndex<DependencyKeys.Window, Window> windows, ContentManager contentManager, ScreenManager screenManager, IWindowService windowService, IGameGridService gameGridService)
         {
             dwarfFortressWindow = windows[DependencyKeys.Window.DwarfFortress];
+            this.contentManager = contentManager;
+            this.screenManager = screenManager;
             this.windowService = windowService;
             this.gameGridService = gameGridService;
             previousWidth = 0;
@@ -69,16 +48,8 @@ namespace DFWin
             Window.ClientSizeChanged += Window_ClientSizeChanged;
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
 
             CentreWindow();
@@ -88,36 +59,15 @@ namespace DFWin
         {
             Window.Position = new Point((GraphicsDevice.DisplayMode.Width - GraphicsDevice.Viewport.Width) / 2, (GraphicsDevice.DisplayMode.Height - GraphicsDevice.Viewport.Height) / 2);
         }
-
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
+        
         protected override void LoadContent()
         {
-            
+            contentManager.Load(GraphicsDevice, Content);
 
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
-
-            loadingBackground = Content.Load<Texture2D>("LoadingBackground");
-            background = Content.Load<Texture2D>("ForestBackground");
-            dwarf = Content.Load<Texture2D>("RunningDwarf");
-            axe = Content.Load<Texture2D>("Pickaxe");
-
-            defaultFont = Content.Load<SpriteFont>("Px437_IBM_BIOS_Font");
-
-            axeSwing = Content.Load<SoundEffect>("AxeSwing");
-
-            song = Content.Load<Song>("Vindsvept - Heart of Ice");
-
-            whiteRectangle = new Texture2D(GraphicsDevice, 1, 1);
-            whiteRectangle.SetData(new[] { Color.White });
-
+            
             MediaPlayer.Volume = 0.4f;
-            MediaPlayer.Play(song);
+            MediaPlayer.Play(contentManager.Song);
         }
 
         private int previousWidth;
@@ -139,113 +89,28 @@ namespace DFWin
             graphics.ApplyChanges();
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
-        protected override void UnloadContent()
-        {
-            // TODO: Unload any non ContentManager content here
-        }
-
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             Resize();
+
             var screenshot = windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize, true).GetAwaiter().GetResult();
             var tiles = gameGridService.ParseScreenshot(screenshot);
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                Exit();
-            }
-
-            // TODO: Add your update logic here
-            var movement = Vector2.Zero;
-
-            var keyState = Keyboard.GetState();
-
-            if (keyState.IsKeyDown(Keys.Right))
-            {
-                movement.X += 2;
-            }
-
-            if (keyState.IsKeyDown(Keys.Left))
-            {
-                movement.X -= 2;
-            }
-
-            if (keyState.IsKeyDown(Keys.Down))
-            {
-                movement.Y += 2;
-            }
-
-            if (keyState.IsKeyDown(Keys.Up))
-            {
-                movement.Y -= 2;
-            }
-
-            if (hasShot) axePosition += new Vector2(5, 0);
-
-            if (axePosition.X > GraphicsDevice.Viewport.Width)
-            {
-                hasShot = false;
-            }
-
-            if (keyState.IsKeyDown(Keys.Space) && !hasShot)
-            {
-                var instance = axeSwing.CreateInstance();
-                instance.Volume = 0.4f;
-                instance.Play();
-                
-                axePosition = dwarfPosition + new Vector2(dwarf.Width, (dwarf.Height - axe.Height) / 2f);
-                hasShot = true;
-            }
-
-            dwarfPosition += movement;
-
+            
             base.Update(gameTime);
         }
-
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
 
-            // TODO: Add your drawing code here
-
             spriteBatch.Begin();
 
-            var size = GraphicsDevice.PresentationParameters.Bounds;
-            var widthMultiplier = size.Width / ((float)loadingBackground.Width);
-            var heightMultiplier = size.Height / ((float) loadingBackground.Height);
-            var multiplier = Math.Min(widthMultiplier, heightMultiplier);
-            var targetWidth = multiplier * loadingBackground.Width;
-            var targetHeight = multiplier * loadingBackground.Height;
+            var screenTools = new ScreenTools(GraphicsDevice, spriteBatch);
+            screenManager.Draw(screenTools);
 
-            spriteBatch.Draw(loadingBackground, new RectangleF((size.Width - targetWidth) / 2, (size.Height - targetHeight) / 2, targetWidth, targetHeight).ToRectangle(), Color.White);
-            spriteBatch.Draw(whiteRectangle, new RectangleF(size.Width * 0.1f, size.Height * 0.85f, size.Width * 0.8f, size.Height * 0.1f).ToRectangle(), Colours.LoadingBarBackground);
-            var progress = 0.3f;
-            spriteBatch.Draw(whiteRectangle, new RectangleF(size.Width * 0.1f, size.Height * 0.85f, size.Width * 0.8f * progress, size.Height * 0.1f).ToRectangle(), Colours.LoadingBar);
-            spriteBatch.Draw(dwarf, dwarfPosition, Color.White);
-            if (hasShot) spriteBatch.Draw(axe, axePosition, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
-        }
-
-        private void CentreString(SpriteFont font, string text, Vector2 position, Color colour)
-        {
-            var size = font.MeasureString(text);
-
-            spriteBatch.DrawString(font, text, new Vector2(position.X - (size.X / 2f), position.Y - (size.Y / 2f)), colour);
         }
     }
 }
