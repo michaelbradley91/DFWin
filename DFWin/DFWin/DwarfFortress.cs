@@ -1,15 +1,21 @@
 ﻿using System;
+using System.Drawing;
 using Autofac.Features.Indexed;
 using DFWin.Core.Constants;
 using DFWin.Core.Services;
 using DFWin.Core.User32Extensions.Models;
 using DFWin.Core.User32Extensions.Services;
+using DFWin.Styles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using MonoGame.Extended;
 using Color = Microsoft.Xna.Framework.Color;
+using Point = Microsoft.Xna.Framework.Point;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using RectangleF = MonoGame.Extended.RectangleF;
 
 namespace DFWin
 {
@@ -25,9 +31,11 @@ namespace DFWin
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
+        private Texture2D loadingBackground;
         private Texture2D background;
         private Texture2D dwarf;
         private Texture2D axe;
+        private Texture2D whiteRectangle;
 
         private SpriteFont defaultFont;
 
@@ -94,15 +102,19 @@ namespace DFWin
 
             // TODO: use this.Content to load your game content here
 
+            loadingBackground = Content.Load<Texture2D>("LoadingBackground");
             background = Content.Load<Texture2D>("ForestBackground");
             dwarf = Content.Load<Texture2D>("RunningDwarf");
             axe = Content.Load<Texture2D>("Pickaxe");
 
-            defaultFont = Content.Load<SpriteFont>("DefaultFont");
+            defaultFont = Content.Load<SpriteFont>("Px437_IBM_BIOS_Font");
 
             axeSwing = Content.Load<SoundEffect>("AxeSwing");
 
             song = Content.Load<Song>("Vindsvept - Heart of Ice");
+
+            whiteRectangle = new Texture2D(GraphicsDevice, 1, 1);
+            whiteRectangle.SetData(new[] { Color.White });
 
             MediaPlayer.Volume = 0.4f;
             MediaPlayer.Play(song);
@@ -205,15 +217,25 @@ namespace DFWin
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-            
+
             spriteBatch.Begin();
-            spriteBatch.Draw(background, GraphicsDevice.PresentationParameters.Bounds, Color.White);
+
+            var size = GraphicsDevice.PresentationParameters.Bounds;
+            var widthMultiplier = size.Width / ((float)loadingBackground.Width);
+            var heightMultiplier = size.Height / ((float) loadingBackground.Height);
+            var multiplier = Math.Min(widthMultiplier, heightMultiplier);
+            var targetWidth = multiplier * loadingBackground.Width;
+            var targetHeight = multiplier * loadingBackground.Height;
+
+            spriteBatch.Draw(loadingBackground, new RectangleF((size.Width - targetWidth) / 2, (size.Height - targetHeight) / 2, targetWidth, targetHeight).ToRectangle(), Color.White);
+            spriteBatch.Draw(whiteRectangle, new RectangleF(size.Width * 0.1f, size.Height * 0.85f, size.Width * 0.8f, size.Height * 0.1f).ToRectangle(), Colours.LoadingBarBackground);
+            var progress = 0.3f;
+            spriteBatch.Draw(whiteRectangle, new RectangleF(size.Width * 0.1f, size.Height * 0.85f, size.Width * 0.8f * progress, size.Height * 0.1f).ToRectangle(), Colours.LoadingBar);
             spriteBatch.Draw(dwarf, dwarfPosition, Color.White);
             if (hasShot) spriteBatch.Draw(axe, axePosition, Color.White);
-            CentreString(defaultFont, "Welcome to Dwarf Fortress", new Vector2(GraphicsDevice.Viewport.Width / 2f, 20), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -223,7 +245,7 @@ namespace DFWin
         {
             var size = font.MeasureString(text);
 
-            spriteBatch.DrawString(font, text, new Vector2(position.X - (size.X / 2f), position.Y), colour);
+            spriteBatch.DrawString(font, text, new Vector2(position.X - (size.X / 2f), position.Y - (size.Y / 2f)), colour);
         }
     }
 }
