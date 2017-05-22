@@ -81,6 +81,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ScreenModels\LoadingScreenModel.cs" />
+    <Compile Include="ScreenModels\ScreenModel.cs" />
     <Compile Include="Services\GameGridService.cs" />
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\WarmUpService.cs" />
