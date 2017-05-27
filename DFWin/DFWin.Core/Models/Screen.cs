@@ -1,7 +1,6 @@
 ﻿using DFWin.Core.States;
-using DFWin.Models;
 
-namespace DFWin.Screens
+namespace DFWin.Core.Models
 {
     /// <summary>
     /// By convention, every IScreenState  should correspond to a screen with the same name but state removed, suffixed by screen.

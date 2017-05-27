@@ -15,7 +15,8 @@ namespace DFWin.Core
             RegisterProcesses(builder);
             RegisterWindows(builder);
 
-            builder.Register(c => GameState.InitialState).AsSelf().SingleInstance();
+            builder.RegisterType<ScreenManager>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<UpdateManager>().AsImplementedInterfaces().SingleInstance();
         }
 
         private void RegisterServices(ContainerBuilder builder)

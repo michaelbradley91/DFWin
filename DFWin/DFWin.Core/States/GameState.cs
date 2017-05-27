@@ -1,6 +1,4 @@
-﻿using DFWin.Core.Constants;
-
-namespace DFWin.Core.States
+﻿namespace DFWin.Core.States
 {
     /// <summary>
     /// The root of the state used to determine what should be shown on screen.

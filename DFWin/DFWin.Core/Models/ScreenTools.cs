@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DFWin.Models
+namespace DFWin.Core.Models
 {
     public class ScreenTools
     {

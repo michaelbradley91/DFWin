@@ -1,12 +1,13 @@
 ﻿using System;
-using Autofac.Features.Indexed;
+using DFWin.Core;
 using DFWin.Core.Constants;
+using DFWin.Core.Inputs;
+using DFWin.Core.Models;
 using DFWin.Core.Services;
-using DFWin.Core.User32Extensions.Models;
-using DFWin.Core.User32Extensions.Services;
-using DFWin.Models;
+using DFWin.Core.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
@@ -15,22 +16,20 @@ namespace DFWin
 {
     public class DwarfFortress : Game
     {
-        private readonly Window dwarfFortressWindow;
         private readonly ContentManager contentManager;
-        private readonly ScreenManager screenManager;
-        private readonly IWindowService windowService;
-        private readonly IGameGridService gameGridService;
+        private readonly IScreenManager screenManager;
+        private readonly IUpdateManager updateManager;
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        public DwarfFortress(IIndex<DependencyKeys.Window, Window> windows, ContentManager contentManager, ScreenManager screenManager, IWindowService windowService, IGameGridService gameGridService)
+        private GameState gameState;
+
+        public DwarfFortress(ContentManager contentManager, IScreenManager screenManager, IUpdateManager updateManager)
         {
-            dwarfFortressWindow = windows[DependencyKeys.Window.DwarfFortress];
             this.contentManager = contentManager;
             this.screenManager = screenManager;
-            this.windowService = windowService;
-            this.gameGridService = gameGridService;
+            this.updateManager = updateManager;
             previousWidth = 0;
 
             graphics = new GraphicsDeviceManager(this)
@@ -46,6 +45,8 @@ namespace DFWin
             Window.AllowAltF4 = false;
             Window.OrientationChanged += Window_ClientSizeChanged;
             Window.ClientSizeChanged += Window_ClientSizeChanged;
+
+            gameState = GameState.InitialState;
         }
 
         protected override void Initialize()
@@ -93,8 +94,10 @@ namespace DFWin
         {
             Resize();
 
-            var screenshot = windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize, true).GetAwaiter().GetResult();
-            var tiles = gameGridService.ParseScreenshot(screenshot);
+            var userInput = new UserInput(Keyboard.GetState());
+            var dwarfFortressInput = new DwarfFortressInput(new Tile[1, 1]);
+
+            gameState = updateManager.Update(gameState, new GameInput(dwarfFortressInput, userInput));
             
             base.Update(gameTime);
         }
@@ -106,7 +109,7 @@ namespace DFWin
             spriteBatch.Begin();
 
             var screenTools = new ScreenTools(GraphicsDevice, spriteBatch);
-            screenManager.Draw(screenTools);
+            screenManager.Draw(gameState, screenTools);
 
             spriteBatch.End();
 
