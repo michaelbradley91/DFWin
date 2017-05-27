@@ -11,8 +11,6 @@ namespace DFWin.Core
         protected override void Load(ContainerBuilder builder)
         {
             RegisterServices(builder);
-            RegisterProcesses(builder);
-            RegisterWindows(builder);
             RegisterUpdaters(builder);
 
             builder.RegisterType<ScreenManager>().AsImplementedInterfaces().SingleInstance();
@@ -30,26 +28,6 @@ namespace DFWin.Core
             {
                 DfWin.DependencyResolver = c;
             });
-        }
-
-        private static void RegisterProcesses(ContainerBuilder containerBuilder)
-        {
-            // TODO figure out how to ensure Dwarf Fortress has been loaded!
-            var currentProcess = Process.GetCurrentProcess();
-            var dwarfFortress = Process.GetProcessesByName(Names.DwarfFortressProcess).First();
-
-            containerBuilder.Register(c => dwarfFortress).Keyed<Process>(DependencyKeys.Process.DwarfFortress).SingleInstance();
-            containerBuilder.Register(c => currentProcess).Keyed<Process>(DependencyKeys.Process.Application).SingleInstance();
-        }
-
-        private static void RegisterWindows(ContainerBuilder containerBuilder)
-        {
-            containerBuilder.Register(
-                    c => new Window(c.ResolveKeyed<Process>(DependencyKeys.Process.DwarfFortress).MainWindowHandle))
-                .Keyed<Window>(DependencyKeys.Window.DwarfFortress).SingleInstance();
-            containerBuilder.Register(
-                    c => new Window(c.ResolveKeyed<Process>(DependencyKeys.Process.Application).MainWindowHandle))
-                .Keyed<Window>(DependencyKeys.Window.Application).SingleInstance();
         }
 
         private void RegisterUpdaters(ContainerBuilder builder)

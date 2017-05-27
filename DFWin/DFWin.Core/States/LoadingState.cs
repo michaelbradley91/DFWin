@@ -10,7 +10,7 @@
             LoadingPercent = loadingPercent;
             Message = message;
         }
-        
+
         public static LoadingState InitialState => new LoadingState(0, "Warming up...");
     }
 }

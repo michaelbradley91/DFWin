@@ -80,7 +80,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\DependencyKeys.cs" />
     <Compile Include="Constants\Names.cs" />
     <Compile Include="Constants\Sizes.cs" />
     <Compile Include="CoreModule.cs" />
@@ -104,6 +103,7 @@
     </Compile>
     <Compile Include="Models\ScreenTools.cs" />
     <Compile Include="Services\InputService.cs" />
+    <Compile Include="Services\ProcessService.cs" />
     <Compile Include="UpdateManager.cs" />
     <Compile Include="ScreenManager.cs" />
     <Compile Include="Services\GameGridService.cs" />

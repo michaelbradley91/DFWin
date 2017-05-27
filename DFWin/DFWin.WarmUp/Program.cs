@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Autofac;
 using DFWin.Core.Constants;
+using DFWin.Core.Services;
 using DFWin.Core.User32Extensions.Models;
 using DFWin.Core.User32Extensions.Services;
 
@@ -22,23 +23,35 @@ namespace DFWin.WarmUp
             var container = Setup.CreateIoC();
 
             var windowService = container.Resolve<IWindowService>();
-            var dwarfFortressWindow = container.ResolveKeyed<Window>(DependencyKeys.Window.DwarfFortress);
+            var processService = container.Resolve<IProcessService>();
+
+            var found = processService.TryGetDwarfFortressProcess(out Process dwarfFortressProcess);
+            if (!found) return;
+
+            var dwarfFortressWindow = new Window(dwarfFortressProcess.MainWindowHandle);
 
             await windowService.PrepareForCapture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize);
 
-            var totalStopWatch = new Stopwatch();
-            totalStopWatch.Start();
-            var stopWatch = new Stopwatch();
-            while (totalStopWatch.Elapsed < TimeSpan.FromSeconds(15))
+            try
             {
-                stopWatch.Start();
-                await windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize);
-                stopWatch.Stop();
+                var totalStopWatch = new Stopwatch();
+                totalStopWatch.Start();
+                var stopWatch = new Stopwatch();
+                while (totalStopWatch.Elapsed < TimeSpan.FromSeconds(15))
+                {
+                    stopWatch.Start();
+                    await windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize);
+                    stopWatch.Stop();
 
-                Console.WriteLine($@"Capture took: {stopWatch.Elapsed.TotalMilliseconds}");
+                    Console.WriteLine($@"Capture took: {stopWatch.Elapsed.TotalMilliseconds}");
 
-                if (stopWatch.Elapsed < FastEnough) return;
-                stopWatch.Reset();
+                    if (stopWatch.Elapsed < FastEnough) return;
+                    stopWatch.Reset();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($@"Did not finish: {e}");
             }
         }
     }

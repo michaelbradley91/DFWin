@@ -58,20 +58,29 @@ namespace DFWin.Core.Resources.Models
                 var numberOfProcessesCompleted = 0;
                 for (var i = 0; i < configuration.NumberOfWarmUpProcessesToSpawn; i++)
                 {
-                    var process = StartNewWarmUpProcess();
-                    var fastEnough = await WaitForProcessOrKill(process, cancellationToken);
-
-                    numberOfProcessesCompleted++;
-
-                    if (fastEnough)
+                    try
                     {
-                        UpdateProgressWithSuccess(numberOfProcessesCompleted);
+                        var process = StartNewWarmUpProcess();
+                        var fastEnough = await WaitForProcessOrKill(process, cancellationToken);
+
+                        numberOfProcessesCompleted++;
+
+                        if (fastEnough)
+                        {
+                            UpdateProgressWithSuccess(numberOfProcessesCompleted);
+                            return;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        DfWin.Error("Warm up task failed: " + e);
+                        if (!hasAborted) UpdateProgressWithFailure(numberOfProcessesCompleted);
                         return;
                     }
-
+                        
                     UpdateProgress(numberOfProcessesCompleted);
                 }
-                UpdateProgressWithFailure(numberOfProcessesCompleted);
+                UpdateProgressWithFailure(numberOfProcessesCompleted);                
             }, cancellationToken);
         }
 
@@ -148,6 +157,7 @@ namespace DFWin.Core.Resources.Models
             {
                 DfWin.Trace($"Progress: {warmUpProgress.NumberOfProcessesCompleted} / {warmUpProgress.TotalNumberOfProcesses}");
                 progress = warmUpProgress;
+                if (hasAborted) throw new InvalidOperationException("Cannot update the warm up progress when the task has been aborted.");
                 inputService.SetWarmUpInput(new WarmUpInput(warmUpProgress));
             }
         }

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Threading.Tasks;
-using Autofac.Features.Indexed;
-using DFWin.Core.Constants;
+using DFWin.Core.Services;
 using DFWin.Core.User32Extensions.Enumerations;
 using DFWin.Core.User32Extensions.Models;
 
@@ -21,13 +20,14 @@ namespace DFWin.Core.User32Extensions.Services
 
     public class WindowService : IWindowService
     {
-        private readonly Window applicationWindow;
+        private readonly IProcessService processService;
+        private Window ApplicationWindow => new Window(processService.GetCurrentProcess().MainWindowHandle);
 
         private static readonly TimeSpan DelayAfterResize = TimeSpan.FromMilliseconds(500);
 
-        public WindowService(IIndex<DependencyKeys.Window, Window> windows)
+        public WindowService(IProcessService processService)
         {
-            applicationWindow = windows[DependencyKeys.Window.Application];
+            this.processService = processService;
         }
 
         public async Task PrepareForCapture(Window window, Size size, bool skipResize = false)
@@ -56,6 +56,9 @@ namespace DFWin.Core.User32Extensions.Services
                 {
                     // Wait a bit to give the window time to redraw.
                     await Task.Delay(DelayAfterResize);
+
+                    var currentProcess = processService.GetCurrentProcess();
+                    var applicationWindow = new Window(currentProcess.MainWindowHandle);
                     applicationWindow.GiveFocus();
                 }
             }
@@ -85,7 +88,7 @@ namespace DFWin.Core.User32Extensions.Services
             // Wait a bit to give the window time to redraw.
             await Task.Delay(DelayAfterResize);
 
-            applicationWindow.GiveFocus();
+            ApplicationWindow.GiveFocus();
 
             return window.TakeScreenshotOfClient(size);
         }

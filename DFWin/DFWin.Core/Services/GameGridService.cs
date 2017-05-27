@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using DFWin.Core.Constants;
-using Microsoft.Xna.Framework.Input;
 
 namespace DFWin.Core.Services
 {
