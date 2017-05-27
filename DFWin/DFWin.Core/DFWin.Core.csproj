@@ -92,7 +92,12 @@
     <Compile Include="Inputs\GameInput.cs" />
     <Compile Include="Inputs\UserInput.cs" />
     <Compile Include="Inputs\WarmUpInput.cs" />
+    <Compile Include="Middleware\DwarfFortressProcessMiddleWare.cs" />
+    <Compile Include="Middleware\ExitMiddleware.cs" />
+    <Compile Include="Middleware\FrameRateMiddleware.cs" />
+    <Compile Include="Middleware\IScreenMiddleware.cs" />
     <Compile Include="Interfaces\IWarmUpConfiguration.cs" />
+    <Compile Include="Middleware\IUpdaterMiddleware.cs" />
     <Compile Include="Models\Screen.cs" />
     <Compile Include="Resources\Models\WarmUpProgress.cs" />
     <Compile Include="Resources\Models\WarmUpTask.cs" />

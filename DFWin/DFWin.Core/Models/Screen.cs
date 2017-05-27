@@ -8,17 +8,17 @@ namespace DFWin.Core.Models
     /// </summary>
     public interface IScreen
     {
-        void Draw(ScreenTools screenTools, GameState gameState);
+        void Draw(GameState gameState, ScreenTools screenTools);
     }
 
     public abstract class Screen<TScreenState> : IScreen
         where TScreenState : IScreenState
     {
-        public void Draw(ScreenTools screenTools, GameState gameState)
+        public void Draw(GameState gameState, ScreenTools screenTools)
         {
-            Draw(screenTools, (TScreenState)gameState.ScreenState);
+            Draw((TScreenState)gameState.ScreenState, screenTools);
         }
 
-        public abstract void Draw(ScreenTools screenTools, TScreenState gameState);
+        public abstract void Draw(TScreenState gameState, ScreenTools screenTools);
     }
 }

@@ -12,6 +12,7 @@ namespace DFWin.Core
         {
             RegisterServices(builder);
             RegisterUpdaters(builder);
+            RegisterMiddleware(builder);
 
             builder.RegisterType<ScreenManager>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<UpdateManager>().AsImplementedInterfaces().SingleInstance();
@@ -34,6 +35,15 @@ namespace DFWin.Core
         {
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .Where(t => t.Name.EndsWith("Updater"))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .SingleInstance();
+        }
+
+        private void RegisterMiddleware(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(t => t.Name.EndsWith("Middleware"))
                 .AsSelf()
                 .AsImplementedInterfaces()
                 .SingleInstance();

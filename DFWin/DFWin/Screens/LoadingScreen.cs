@@ -1,4 +1,5 @@
 ﻿using System;
+using DFWin.Core.Constants;
 using DFWin.Core.Models;
 using DFWin.Core.States;
 using DFWin.Styles;
@@ -20,7 +21,7 @@ namespace DFWin.Screens
             this.contentManager = contentManager;
         }
 
-        public override void Draw(ScreenTools screenTools, LoadingState loadingState)
+        public override void Draw(LoadingState loadingState, ScreenTools screenTools)
         {
             var widthMultiplier = screenTools.Width / ((float)Background.Width);
             var heightMultiplier = screenTools.Height / ((float)Background.Height);
@@ -35,7 +36,24 @@ namespace DFWin.Screens
             screenTools.SpriteBatch.Draw(WhiteRectangle, new RectangleF(screenTools.Width * 0.1f, screenTools.Height * 0.9f, screenTools.Width * 0.8f, screenTools.Height * 0.06f).ToRectangle(), Colours.LoadingBarBackground);
             screenTools.SpriteBatch.Draw(WhiteRectangle, new RectangleF(screenTools.Width * 0.1f, screenTools.Height * 0.9f, screenTools.Width * 0.8f * (loadingState.LoadingPercent / 100f), screenTools.Height * 0.06f).ToRectangle(), Colours.LoadingBar);
 
-            CentreString(screenTools, loadingState.Message, new Vector2(screenTools.Width / 2f, screenTools.Height * 0.4f), Color.Red);
+            CentreString(screenTools, GetMessage(loadingState), new Vector2(screenTools.Width / 2f, screenTools.Height * 0.4f), Color.Red);
+        }
+
+        private string GetMessage(LoadingState loadingState)
+        {
+            switch (loadingState.Phase)
+            {
+                case LoadingPhase.WaitingForDwarfFortressToStart:
+                    return "Please start Dwarf Fortress";
+                case LoadingPhase.WaitingForWarmUpToFinish:
+                    return "Warming up...";
+                case LoadingPhase.WarmUpSuccessful:
+                    return "Warm up successful! Starting...";
+                case LoadingPhase.WarmUpUnsuccessful:
+                    return "Warm up unsuccessful. Starting...";
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void CentreString(ScreenTools tools, string text, Vector2 position, Color colour)

@@ -6,15 +6,13 @@ namespace DFWin.Core.States
     {
         public LoadingPhase Phase { get; }
         public int LoadingPercent { get; }
-        public string Message { get; }
 
-        public LoadingState(int loadingPercent, string message, LoadingPhase phase)
+        public LoadingState(int loadingPercent, LoadingPhase phase)
         {
             LoadingPercent = loadingPercent;
-            Message = message;
             Phase = phase;
         }
 
-        public static LoadingState InitialState => new LoadingState(0, "Warming up...", LoadingPhase.WaitingForDwarfFortressToStart);
+        public static LoadingState InitialState => new LoadingState(0, LoadingPhase.WaitingForDwarfFortressToStart);
     }
 }

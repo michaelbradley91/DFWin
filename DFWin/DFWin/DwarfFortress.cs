@@ -86,13 +86,15 @@ namespace DFWin
             graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
             graphics.ApplyChanges();
         }
-
+        
         protected override void Update(GameTime gameTime)
         {
             EnsureWindowDrawnCorrectly();
             
             gameState = updateManager.Update(gameState);
             
+            if (gameState.ShouldExit) Exit();
+
             base.Update(gameTime);
         }
         

@@ -60,6 +60,7 @@
     <Compile Include="ContentManager.cs" />
     <Compile Include="DwarfFortress.cs" />
     <Compile Include="GameModule.cs" />
+    <Compile Include="Middleware\FrameRateMiddleware.cs" />
     <Compile Include="Models\WarmUpConfiguration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

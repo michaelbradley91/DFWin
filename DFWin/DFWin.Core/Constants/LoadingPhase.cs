@@ -4,6 +4,7 @@
     {
         WaitingForDwarfFortressToStart,
         WaitingForWarmUpToFinish,
-        Finished,
+        WarmUpSuccessful,
+        WarmUpUnsuccessful
     }
 }

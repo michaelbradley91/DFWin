@@ -37,22 +37,23 @@ namespace DFWin.Core.Updaters
                 case LoadingPhase.WaitingForDwarfFortressToStart:
                     if (!processService.IsDwarfFortressAvailable())
                     {
-                        return new LoadingState(0, "Please start Dwarf Fortress.", LoadingPhase.WaitingForDwarfFortressToStart);
+                        return LoadingState.InitialState;
                     }
                     warmUpService.BeginWarmUp();
-                    return new LoadingState(0, "Warming up...", LoadingPhase.WaitingForWarmUpToFinish);
+                    return new LoadingState(0, LoadingPhase.WaitingForWarmUpToFinish);
                 case LoadingPhase.WaitingForWarmUpToFinish:
                     var progress = input.WarmUpInput.GetProgress();
                     if (progress.HasFinished)
                     {
-                        return new LoadingState(100, progress.Succeeded ? "Warm up successful! Starting..." : "Warm up unsuccessful. Starting...", LoadingPhase.Finished);
+                        return new LoadingState(100, progress.Succeeded ? LoadingPhase.WarmUpSuccessful : LoadingPhase.WarmUpUnsuccessful);
                     }
                     else
                     {
                         var progressPercentage = (100 * progress.NumberOfProcessesCompleted) / progress.TotalNumberOfProcesses;
-                        return new LoadingState(progressPercentage, "Warming up...", LoadingPhase.WaitingForWarmUpToFinish);
+                        return new LoadingState(progressPercentage, LoadingPhase.WaitingForWarmUpToFinish);
                     }
-                case LoadingPhase.Finished:
+                case LoadingPhase.WarmUpSuccessful:
+                case LoadingPhase.WarmUpUnsuccessful:
                     return !processService.IsDwarfFortressAvailable() ? LoadingState.InitialState : previousState;
                 default:
                     throw new ArgumentOutOfRangeException();
