@@ -20,6 +20,7 @@ namespace DFWin
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .Where(t => t.Name.EndsWith("Screen"))
                 .AsSelf()
+                .AsImplementedInterfaces()
                 .SingleInstance();
         }
     }

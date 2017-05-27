@@ -1,6 +1,6 @@
 ﻿using DFWin.Core.Interfaces;
 
-namespace DFWin.Core.Models
+namespace DFWin.Core.Resources.Models
 {
     public class WarmUpProgress
     {

@@ -1,5 +1,5 @@
 ﻿using DFWin.Core.Interfaces;
-using DFWin.Core.Models;
+using DFWin.Core.Resources.Models;
 
 namespace DFWin.Core.Services
 {

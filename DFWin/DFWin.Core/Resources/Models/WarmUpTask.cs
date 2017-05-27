@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using DFWin.Core.Helpers;
 using DFWin.Core.Interfaces;
 
-namespace DFWin.Core.Models
+namespace DFWin.Core.Resources.Models
 {
     public class WarmUpTask : IDisposable
     {

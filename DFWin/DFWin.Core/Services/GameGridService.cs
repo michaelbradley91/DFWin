@@ -47,6 +47,10 @@ namespace DFWin.Core.Services
 
         private static Tile[,] GetTiles(Color[,] pixelMatrix)
         {
+            var keyboard = Keyboard.GetState();
+            var isDown = keyboard.IsKeyDown(Keys.Down);
+            if (isDown) DfWin.Trace("Saw down key pressed!");
+
             var tiles = new Tile[pixelMatrix.GetLength(0) / 3, pixelMatrix.GetLength(1) / 3];
 
             // TODO this assumes the micro tile set. Do something about that...

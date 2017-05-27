@@ -1,5 +1,5 @@
 ﻿using System;
-using DFWin.Core.State;
+using DFWin.Core.States;
 using DFWin.Models;
 using DFWin.Styles;
 using Microsoft.Xna.Framework;
