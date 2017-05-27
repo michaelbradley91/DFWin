@@ -8,11 +8,13 @@
     {
         public DwarfFortressInput DwarfFortressInput { get; }
         public UserInput UserInput { get; }
+        public WarmUpInput WarmUpInput { get; }
 
-        public GameInput(DwarfFortressInput dwarfFortressInput, UserInput userInput)
+        public GameInput(DwarfFortressInput dwarfFortressInput, UserInput userInput, WarmUpInput warmUpInput)
         {
             DwarfFortressInput = dwarfFortressInput;
             UserInput = userInput;
+            WarmUpInput = warmUpInput;
         }
     }
 }

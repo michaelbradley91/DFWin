@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using DFWin.Core.Constants;
 using Microsoft.Xna.Framework.Input;
 
 namespace DFWin.Core.Services
@@ -45,12 +46,32 @@ namespace DFWin.Core.Services
             return tiles;
         }
 
+        /// <summary>
+        /// Initialises a dummy array of tiles. Note that this assumes the preferred grid size.
+        /// </summary>
+        public static Tile[,] InitialTiles
+        {
+            get
+            {
+                var tiles = new Tile[
+                    Sizes.DwarfFortressPreferredGridSize.Width,
+                    Sizes.DwarfFortressPreferredGridSize.Height];
+
+                for (var x = 0; x < Sizes.DwarfFortressPreferredGridSize.Width; x++)
+                {
+                    for (var y = 0; y < Sizes.DwarfFortressPreferredGridSize.Height; y++)
+                    {
+                        tiles[x, y] = new Tile(0, Color.Black, Color.Black);
+                    }
+                }
+
+                return tiles;
+            }
+
+        }
+
         private static Tile[,] GetTiles(Color[,] pixelMatrix)
         {
-            var keyboard = Keyboard.GetState();
-            var isDown = keyboard.IsKeyDown(Keys.Down);
-            if (isDown) DfWin.Trace("Saw down key pressed!");
-
             var tiles = new Tile[pixelMatrix.GetLength(0) / 3, pixelMatrix.GetLength(1) / 3];
 
             // TODO this assumes the micro tile set. Do something about that...

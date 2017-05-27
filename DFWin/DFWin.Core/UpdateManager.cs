@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DFWin.Core.Inputs;
+using DFWin.Core.Services;
 using DFWin.Core.States;
 using DFWin.Core.Updaters;
 
@@ -9,22 +9,25 @@ namespace DFWin.Core
 {
     public interface IUpdateManager
     {
-        GameState Update(GameState previousState, GameInput gameInput);
+        GameState Update(GameState previousState);
     }
 
     public class UpdateManager : IUpdateManager
     {
+        private readonly IInputService inputService;
         private readonly ICollection<IUpdater> updaters;
 
         private readonly Dictionary<Type, IUpdater> updaterByState = new Dictionary<Type, IUpdater>();
 
-        public UpdateManager(IEnumerable<IUpdater> updaters)
+        public UpdateManager(IInputService inputService, IEnumerable<IUpdater> updaters)
         {
+            this.inputService = inputService;
             this.updaters = updaters.ToList();
         }
 
-        public GameState Update(GameState previousState, GameInput gameInput)
+        public GameState Update(GameState previousState)
         {
+            var gameInput = inputService.GetCurrentInput();
             return GetCurrentUpdater(previousState).Update(previousState, gameInput);
         }
 

@@ -1,13 +1,10 @@
 ﻿using System;
 using DFWin.Core;
 using DFWin.Core.Constants;
-using DFWin.Core.Inputs;
 using DFWin.Core.Models;
-using DFWin.Core.Services;
 using DFWin.Core.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
@@ -76,10 +73,10 @@ namespace DFWin
 
         private void Window_ClientSizeChanged(object sender, EventArgs e)
         {
-            Resize();
+            EnsureWindowDrawnCorrectly();
         }
 
-        private void Resize()
+        private void EnsureWindowDrawnCorrectly()
         {
             if (Window.ClientBounds.Width == previousWidth && Window.ClientBounds.Height == previousHeight) return;
 
@@ -92,12 +89,9 @@ namespace DFWin
 
         protected override void Update(GameTime gameTime)
         {
-            Resize();
-
-            var userInput = new UserInput(Keyboard.GetState());
-            var dwarfFortressInput = new DwarfFortressInput(new Tile[1, 1]);
-
-            gameState = updateManager.Update(gameState, new GameInput(dwarfFortressInput, userInput));
+            EnsureWindowDrawnCorrectly();
+            
+            gameState = updateManager.Update(gameState);
             
             base.Update(gameTime);
         }
