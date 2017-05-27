@@ -1,7 +1,6 @@
 ﻿using System;
 using DFWin.Core.Models;
 using DFWin.Core.States;
-using DFWin.Models;
 using DFWin.Styles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -33,8 +32,17 @@ namespace DFWin.Screens
 
             screenTools.SpriteBatch.Draw(Background, new RectangleF((screenTools.Width - targetWidth) / 2f, (screenTools.Height - targetHeight) / 2f, targetWidth, targetHeight).ToRectangle(), Color.White);
 
-            screenTools.SpriteBatch.Draw(WhiteRectangle, new RectangleF(screenTools.Width * 0.1f, screenTools.Height * 0.89f, screenTools.Width * 0.8f, screenTools.Height * 0.08f).ToRectangle(), Colours.LoadingBarBackground);
-            screenTools.SpriteBatch.Draw(WhiteRectangle, new RectangleF(screenTools.Width * 0.1f, screenTools.Height * 0.89f, screenTools.Width * 0.8f * (loadingState.LoadingPercent / 100f), screenTools.Height * 0.08f).ToRectangle(), Colours.LoadingBar);
+            screenTools.SpriteBatch.Draw(WhiteRectangle, new RectangleF(screenTools.Width * 0.1f, screenTools.Height * 0.9f, screenTools.Width * 0.8f, screenTools.Height * 0.06f).ToRectangle(), Colours.LoadingBarBackground);
+            screenTools.SpriteBatch.Draw(WhiteRectangle, new RectangleF(screenTools.Width * 0.1f, screenTools.Height * 0.9f, screenTools.Width * 0.8f * (loadingState.LoadingPercent / 100f), screenTools.Height * 0.06f).ToRectangle(), Colours.LoadingBar);
+
+            CentreString(screenTools, loadingState.Message, new Vector2(screenTools.Width / 2f, screenTools.Height * 0.4f), Color.Red);
+        }
+
+        private void CentreString(ScreenTools tools, string text, Vector2 position, Color colour)
+        {
+            var size = contentManager.MediumFont.MeasureString(text);
+
+            tools.SpriteBatch.DrawString(contentManager.MediumFont, text, new Vector2(position.X - (size.X / 2f), position.Y - (size.Y / 2f)), colour);
         }
     }
 }

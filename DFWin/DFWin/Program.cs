@@ -1,6 +1,5 @@
 ﻿using System;
 using Autofac;
-using DFWin.Core.Services;
 
 namespace DFWin
 {
@@ -20,8 +19,6 @@ namespace DFWin
 
             using (var game = ioc.Resolve<DwarfFortress>())
             {
-                var warmUpService = ioc.Resolve<IWarmUpService>();
-                warmUpService.BeginWarmUp();
                 game.Run();
             }
         }

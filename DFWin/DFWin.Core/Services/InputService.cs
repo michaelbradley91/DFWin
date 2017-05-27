@@ -1,5 +1,4 @@
 ﻿using DFWin.Core.Inputs;
-using DFWin.Core.Resources.Models;
 using Microsoft.Xna.Framework.Input;
 
 namespace DFWin.Core.Services
@@ -28,19 +27,19 @@ namespace DFWin.Core.Services
             }
         }
 
-        public void SetWarmUpInput(WarmUpInput warmUpInput)
+        public void SetWarmUpInput(WarmUpInput updatedInput)
         {
             lock (inputLock)
             {
-                this.warmUpInput = warmUpInput;
+                warmUpInput = updatedInput;
             }
         }
 
-        public void SetDwarfFortressInput(DwarfFortressInput dwarfFortressInput)
+        public void SetDwarfFortressInput(DwarfFortressInput updatedInput)
         {
             lock (inputLock)
             {
-                this.dwarfFortressInput = dwarfFortressInput;
+                dwarfFortressInput = updatedInput;
             }
         }
     }

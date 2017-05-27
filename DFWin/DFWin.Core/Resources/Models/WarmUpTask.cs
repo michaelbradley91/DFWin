@@ -3,21 +3,24 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using DFWin.Core.Helpers;
+using DFWin.Core.Inputs;
 using DFWin.Core.Interfaces;
+using DFWin.Core.Services;
 
 namespace DFWin.Core.Resources.Models
 {
     public class WarmUpTask : IDisposable
     {
-        public WarmUpTask(IWarmUpConfiguration configuration)
+        public WarmUpTask(IInputService inputService, IWarmUpConfiguration configuration)
         {
+            this.inputService = inputService;
             this.configuration = configuration;
 
             cancellationTokenSource = new CancellationTokenSource();
             progress = new WarmUpProgress(configuration);
         }
 
-        public WarmUpProgress Progress
+        public IWarmUpProgress Progress
         {
             get
             {
@@ -31,18 +34,20 @@ namespace DFWin.Core.Resources.Models
         private bool hasStarted;
         private bool hasAborted;
         private Task task;
-        private WarmUpProgress progress;
+        private IWarmUpProgress progress;
         private readonly object progressLock = new object();
         private readonly CancellationTokenSource cancellationTokenSource;
+        private readonly IInputService inputService;
         private readonly IWarmUpConfiguration configuration;
 
         /// <summary>
         /// Starts the warm up process in a background thread. This should only be called once.
         /// </summary>
-        public void Start()
+        public void StartAndInitialiseWarmUpInput()
         {
             if (hasStarted) throw new InvalidOperationException("You cannot start the same warm up task multiple times");
             task = StartAsync(cancellationTokenSource.Token);
+            inputService.SetWarmUpInput(new WarmUpInput(Progress));
             hasStarted = true;
         }
 
@@ -137,12 +142,13 @@ namespace DFWin.Core.Resources.Models
             });
         }
 
-        private void UpdateProgress(WarmUpProgress warmUpProgress)
+        private void UpdateProgress(IWarmUpProgress warmUpProgress)
         {
             lock (progressLock)
             {
                 DfWin.Trace($"Progress: {warmUpProgress.NumberOfProcessesCompleted} / {warmUpProgress.TotalNumberOfProcesses}");
                 progress = warmUpProgress;
+                inputService.SetWarmUpInput(new WarmUpInput(warmUpProgress));
             }
         }
 

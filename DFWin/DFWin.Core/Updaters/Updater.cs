@@ -11,4 +11,16 @@ namespace DFWin.Core.Updaters
     {
         GameState Update(GameState previousState, GameInput input);
     }
+
+    public abstract class Updater<TScreenState> : IUpdater
+        where TScreenState : IScreenState
+    {
+        public GameState Update(GameState previousState, GameInput input)
+        {
+            var nextScreenState = Update((TScreenState) previousState.ScreenState, input);
+            return new GameState(nextScreenState);
+        }
+
+        protected abstract TScreenState Update(TScreenState previousState, GameInput input);
+    }
 }

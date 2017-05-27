@@ -24,7 +24,7 @@ namespace DFWin.Core
 
         public void Draw(GameState gameState, ScreenTools screenTools)
         {
-            GetCurrentScreen(gameState).Draw(screenTools, gameState.ScreenState);
+            GetCurrentScreen(gameState).Draw(screenTools, gameState);
         }
 
         private IScreen GetCurrentScreen(GameState gameState)

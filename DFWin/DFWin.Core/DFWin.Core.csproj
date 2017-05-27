@@ -113,7 +113,7 @@
     <Compile Include="States\GameState.cs" />
     <Compile Include="States\LoadingState.cs" />
     <Compile Include="States\IScreenState.cs" />
-    <Compile Include="Updaters\IUpdater.cs" />
+    <Compile Include="Updaters\Updater.cs" />
     <Compile Include="Updaters\LoadingUpdater.cs" />
     <Compile Include="User32Extensions\DllImports.cs" />
     <Compile Include="User32Extensions\Enumerations\WindowState.cs" />

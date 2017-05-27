@@ -2,7 +2,15 @@
 
 namespace DFWin.Core.Resources.Models
 {
-    public class WarmUpProgress
+    public interface IWarmUpProgress
+    {
+        int TotalNumberOfProcesses { get; }
+        int NumberOfProcessesCompleted { get; }
+        bool HasFinished { get; }
+        bool Succeeded { get; }
+    }
+
+    public class WarmUpProgress : IWarmUpProgress
     {
         public WarmUpProgress(IWarmUpConfiguration configuration)
         {
