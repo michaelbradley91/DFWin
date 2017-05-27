@@ -14,7 +14,7 @@ namespace DFWin.Core.Services
     public class InputService : IInputService
     {
         private WarmUpInput warmUpInput = WarmUpInput.None;
-        private DwarfFortressInput dwarfFortressInput;
+        private DwarfFortressInput dwarfFortressInput = DwarfFortressInput.None;
 
         private readonly object inputLock = new object();
 

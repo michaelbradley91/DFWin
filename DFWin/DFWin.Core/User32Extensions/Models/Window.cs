@@ -153,6 +153,14 @@ namespace DFWin.Core.User32Extensions.Models
         }
 
         /// <summary>
+        /// Send the key to this window.
+        /// </summary>
+        public void SendKey(User32.VirtualKey key, bool down)
+        {
+            User32.SendMessage(WindowPointer, down ? User32.WindowMessage.WM_KEYDOWN : User32.WindowMessage.WM_KEYUP, (IntPtr)key, IntPtr.Zero);
+        }
+
+        /// <summary>
         /// Gives the window focus, moving it to the foreground and preparing it to receive user input.
         /// </summary>
         public void GiveFocus()

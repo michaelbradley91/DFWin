@@ -32,8 +32,13 @@ namespace DFWin.Core
         public GameState Update(GameState previousState)
         {
             var gameInput = inputService.GetCurrentInput();
-            var updater = GetCurrentUpdater(previousState);
-            return UpdateWithMiddleware(previousState, gameInput, middleware.GetEnumerator(), updater);
+            return UpdateWithMiddleware(previousState, gameInput, middleware.GetEnumerator());
+        }
+
+        private GameState UpdateWithMiddleware(GameState previousState, GameInput input, IEnumerator<IUpdaterMiddleware> remainingMiddleware)
+        {
+            return !remainingMiddleware.MoveNext() ? GetCurrentUpdater(previousState).Update(previousState, input) :
+                remainingMiddleware.Current.Update(previousState, input, (g, i) => UpdateWithMiddleware(g, i, remainingMiddleware));
         }
 
         private IUpdater GetCurrentUpdater(GameState gameState)
@@ -43,18 +48,12 @@ namespace DFWin.Core
 
             var updaterName = GetUpdaterName(gameState.ScreenState);
             updater = updaters.Single(s => s.GetType().Name == updaterName);
-            
+
             updaterByState[gameState.ScreenState.GetType()] = updater;
 
             return updater;
         }
 
-        private static GameState UpdateWithMiddleware(GameState previousState, GameInput input, IEnumerator<IUpdaterMiddleware> middleware, IUpdater updater)
-        {
-            return !middleware.MoveNext() ? updater.Update(previousState, input) :
-                middleware.Current.Update(previousState, input, (g, i) => UpdateWithMiddleware(g, i, middleware, updater));
-        }
-        
         private static string GetUpdaterName(IScreenState screenState)
         {
             var stateName = screenState.GetType().Name;

@@ -28,8 +28,19 @@ namespace DFWin.Core
 
         public void Draw(GameState gameState, ScreenTools screenTools)
         {
-            var screen = GetCurrentScreen(gameState);
-            DrawWithMiddleware(gameState, screenTools, middleware.GetEnumerator(), screen);
+            DrawWithMiddleware(gameState, screenTools, middleware.GetEnumerator());
+        }
+
+        private void DrawWithMiddleware(GameState gameState, ScreenTools screenTools, IEnumerator<IScreenMiddleware> middlewareRemaining)
+        {
+            if (middlewareRemaining.MoveNext())
+            {
+                middlewareRemaining.Current.Draw(gameState, screenTools, (g, t) => DrawWithMiddleware(g, t, middlewareRemaining));
+            }
+            else
+            {
+                GetCurrentScreen(gameState).Draw(gameState, screenTools);
+            }
         }
 
         private IScreen GetCurrentScreen(GameState gameState)
@@ -43,18 +54,6 @@ namespace DFWin.Core
             screenByState[gameState.ScreenState.GetType()] = screen;
 
             return screen;
-        }
-
-        private static void DrawWithMiddleware(GameState gameState, ScreenTools screenTools, IEnumerator<IScreenMiddleware> middleware, IScreen screen)
-        {
-            if (middleware.MoveNext())
-            {
-                middleware.Current.Draw(gameState, screenTools, (g, t) => DrawWithMiddleware(g, t, middleware, screen));
-            }
-            else
-            {
-                screen.Draw(gameState, screenTools);
-            }
         }
 
         private static string GetScreenName(IScreenState screenState)

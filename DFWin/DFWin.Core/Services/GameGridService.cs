@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using DFWin.Core.Constants;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace DFWin.Core.Services
 {
@@ -115,7 +116,7 @@ namespace DFWin.Core.Services
             var pixels = new Color[bytes.Count / 3];
             for (var i = 0; i < bytes.Count; i += 3)
             {
-                pixels[i / 3] = Color.FromArgb(bytes[i], bytes[i + 1], bytes[i + 2]);
+                pixels[i / 3] = new Color(bytes[i + 2], bytes[i + 1], bytes[i]);
             }
             return pixels;
         }

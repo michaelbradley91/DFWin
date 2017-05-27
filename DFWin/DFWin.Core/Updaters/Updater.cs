@@ -21,6 +21,6 @@ namespace DFWin.Core.Updaters
             return new GameState(nextScreenState, previousState.FrameRate, previousState.ShouldExit);
         }
 
-        protected abstract TScreenState Update(TScreenState previousState, GameInput input);
+        protected abstract IScreenState Update(TScreenState previousState, GameInput input);
     }
 }

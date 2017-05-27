@@ -19,6 +19,6 @@ namespace DFWin.Core.Models
             Draw((TScreenState)gameState.ScreenState, screenTools);
         }
 
-        public abstract void Draw(TScreenState gameState, ScreenTools screenTools);
+        public abstract void Draw(TScreenState state, ScreenTools screenTools);
     }
 }

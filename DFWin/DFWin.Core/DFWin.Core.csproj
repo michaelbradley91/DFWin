@@ -108,17 +108,19 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Models\ScreenTools.cs" />
+    <Compile Include="Services\DwarfFortressInputService.cs" />
     <Compile Include="Services\InputService.cs" />
     <Compile Include="Services\ProcessService.cs" />
+    <Compile Include="States\BackupState.cs" />
     <Compile Include="UpdateManager.cs" />
     <Compile Include="ScreenManager.cs" />
     <Compile Include="Services\GameGridService.cs" />
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\WarmUpService.cs" />
-    <Compile Include="States\FailedToStartState.cs" />
     <Compile Include="States\GameState.cs" />
     <Compile Include="States\LoadingState.cs" />
     <Compile Include="States\IScreenState.cs" />
+    <Compile Include="Updaters\BackupUpdater.cs" />
     <Compile Include="Updaters\Updater.cs" />
     <Compile Include="Updaters\LoadingUpdater.cs" />
     <Compile Include="User32Extensions\DllImports.cs" />

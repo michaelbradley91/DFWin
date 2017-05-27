@@ -1,6 +1,7 @@
 ﻿using System;
 using DFWin.Core.Constants;
 using DFWin.Core.Models;
+using DFWin.Core.Services;
 using DFWin.Core.States;
 using DFWin.Styles;
 using Microsoft.Xna.Framework;
@@ -21,7 +22,7 @@ namespace DFWin.Screens
             this.contentManager = contentManager;
         }
 
-        public override void Draw(LoadingState loadingState, ScreenTools screenTools)
+        public override void Draw(LoadingState state, ScreenTools screenTools)
         {
             var widthMultiplier = screenTools.Width / ((float)Background.Width);
             var heightMultiplier = screenTools.Height / ((float)Background.Height);
@@ -34,9 +35,9 @@ namespace DFWin.Screens
             screenTools.SpriteBatch.Draw(Background, new RectangleF((screenTools.Width - targetWidth) / 2f, (screenTools.Height - targetHeight) / 2f, targetWidth, targetHeight).ToRectangle(), Color.White);
 
             screenTools.SpriteBatch.Draw(WhiteRectangle, new RectangleF(screenTools.Width * 0.1f, screenTools.Height * 0.9f, screenTools.Width * 0.8f, screenTools.Height * 0.06f).ToRectangle(), Colours.LoadingBarBackground);
-            screenTools.SpriteBatch.Draw(WhiteRectangle, new RectangleF(screenTools.Width * 0.1f, screenTools.Height * 0.9f, screenTools.Width * 0.8f * (loadingState.LoadingPercent / 100f), screenTools.Height * 0.06f).ToRectangle(), Colours.LoadingBar);
+            screenTools.SpriteBatch.Draw(WhiteRectangle, new RectangleF(screenTools.Width * 0.1f, screenTools.Height * 0.9f, screenTools.Width * 0.8f * (state.LoadingPercent / 100f), screenTools.Height * 0.06f).ToRectangle(), Colours.LoadingBar);
 
-            CentreString(screenTools, GetMessage(loadingState), new Vector2(screenTools.Width / 2f, screenTools.Height * 0.4f), Color.Red);
+            CentreString(screenTools, GetMessage(state), new Vector2(screenTools.Width / 2f, screenTools.Height * 0.4f), Color.Red);
         }
 
         private string GetMessage(LoadingState loadingState)

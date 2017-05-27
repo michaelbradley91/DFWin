@@ -32,9 +32,7 @@ namespace DFWin.Core.Resources.Models
         }
 
         private bool hasStarted;
-        private bool hasAborted;
         private bool hasDisposed;
-        private Task task;
         private IWarmUpProgress progress;
         private readonly object progressLock = new object();
         private readonly CancellationTokenSource cancellationTokenSource;
@@ -47,14 +45,14 @@ namespace DFWin.Core.Resources.Models
         public void StartAndInitialiseWarmUpInput()
         {
             if (hasStarted) throw new InvalidOperationException("You cannot start the same warm up task multiple times");
-            task = StartAsync(cancellationTokenSource.Token);
+            StartAsync(cancellationTokenSource.Token);
             inputService.SetWarmUpInput(new WarmUpInput(Progress));
             hasStarted = true;
         }
 
-        private Task StartAsync(CancellationToken cancellationToken)
+        private void StartAsync(CancellationToken cancellationToken)
         {
-            return Task.Run(async () =>
+            Task.Run(async () =>
             {
                 var numberOfProcessesCompleted = 0;
                 for (var i = 0; i < configuration.NumberOfWarmUpProcessesToSpawn; i++)
@@ -76,7 +74,7 @@ namespace DFWin.Core.Resources.Models
                     catch (Exception e)
                     {
                         DfWin.Error("Warm up task failed: " + e);
-                        if (!hasAborted) UpdateProgressWithFailure(numberOfProcessesCompleted);
+                        if (!hasDisposed) UpdateProgressWithFailure(numberOfProcessesCompleted);
                         Dispose();
                         return;
                     }
@@ -161,7 +159,7 @@ namespace DFWin.Core.Resources.Models
             {
                 DfWin.Trace($"Progress: {warmUpProgress.NumberOfProcessesCompleted} / {warmUpProgress.TotalNumberOfProcesses}");
                 progress = warmUpProgress;
-                if (hasAborted) throw new InvalidOperationException("Cannot update the warm up progress when the task has been aborted.");
+                if (hasDisposed) throw new InvalidOperationException("Cannot update the warm up progress when the task has been aborted.");
                 inputService.SetWarmUpInput(new WarmUpInput(warmUpProgress));
             }
         }
@@ -176,16 +174,10 @@ namespace DFWin.Core.Resources.Models
             cancellationTokenSource.Dispose();
             hasDisposed = true;
         }
-
-        /// <summary>
-        /// Disposes of this task and attempts to terminate all processes it spawned that are still running.
-        /// </summary>
+        
         public void Abort()
         {
-            if (hasAborted) return;
             Dispose();
-            task.Dispose();
-            hasAborted = true;
         }
     }
 }

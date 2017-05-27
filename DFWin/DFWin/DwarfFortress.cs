@@ -2,6 +2,7 @@
 using DFWin.Core;
 using DFWin.Core.Constants;
 using DFWin.Core.Models;
+using DFWin.Core.Services;
 using DFWin.Core.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,17 +17,21 @@ namespace DFWin
         private readonly ContentManager contentManager;
         private readonly IScreenManager screenManager;
         private readonly IUpdateManager updateManager;
+        private readonly IDwarfFortressInputService dwarfFortressInputService;
 
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
         private GameState gameState;
 
-        public DwarfFortress(ContentManager contentManager, IScreenManager screenManager, IUpdateManager updateManager)
+        public DwarfFortress(ContentManager contentManager, IScreenManager screenManager,
+            IUpdateManager updateManager, IDwarfFortressInputService dwarfFortressInputService)
         {
             this.contentManager = contentManager;
             this.screenManager = screenManager;
             this.updateManager = updateManager;
+            this.dwarfFortressInputService = dwarfFortressInputService;
+
             previousWidth = 0;
 
             graphics = new GraphicsDeviceManager(this)
@@ -51,6 +56,7 @@ namespace DFWin
             base.Initialize();
 
             CentreWindow();
+            dwarfFortressInputService.StartScreenScraping();
         }
 
         private void CentreWindow()
@@ -110,6 +116,13 @@ namespace DFWin
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            dwarfFortressInputService.Dispose();
+
+            base.OnExiting(sender, args);
         }
     }
 }

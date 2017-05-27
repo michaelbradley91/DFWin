@@ -10,5 +10,9 @@ namespace DFWin.Core.Inputs
         {
             Tiles = tiles;
         }
+
+        private DwarfFortressInput() { }
+
+        public static readonly DwarfFortressInput None = new DwarfFortressInput();
     }
 }
