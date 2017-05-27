@@ -14,6 +14,7 @@ namespace DFWin.Core
             RegisterServices(builder);
             RegisterProcesses(builder);
             RegisterWindows(builder);
+            RegisterUpdaters(builder);
 
             builder.RegisterType<ScreenManager>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<UpdateManager>().AsImplementedInterfaces().SingleInstance();
@@ -50,6 +51,15 @@ namespace DFWin.Core
             containerBuilder.Register(
                     c => new Window(c.ResolveKeyed<Process>(DependencyKeys.Process.Application).MainWindowHandle))
                 .Keyed<Window>(DependencyKeys.Window.Application).SingleInstance();
+        }
+
+        private void RegisterUpdaters(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(t => t.Name.EndsWith("Updater"))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .SingleInstance();
         }
     }
 }

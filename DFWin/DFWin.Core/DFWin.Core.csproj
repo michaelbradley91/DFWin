@@ -102,6 +102,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Models\ScreenTools.cs" />
+    <Compile Include="UpdateManager.cs" />
     <Compile Include="ScreenManager.cs" />
     <Compile Include="Services\GameGridService.cs" />
     <Compile Include="Services\LoggingService.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="States\LoadingState.cs" />
     <Compile Include="States\IScreenState.cs" />
     <Compile Include="Updaters\IUpdater.cs" />
+    <Compile Include="Updaters\LoadingUpdater.cs" />
     <Compile Include="User32Extensions\DllImports.cs" />
     <Compile Include="User32Extensions\Enumerations\WindowState.cs" />
     <Compile Include="User32Extensions\Exceptions\User32Exception.cs" />
