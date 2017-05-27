@@ -33,6 +33,7 @@ namespace DFWin.Core.Resources.Models
 
         private bool hasStarted;
         private bool hasAborted;
+        private bool hasDisposed;
         private Task task;
         private IWarmUpProgress progress;
         private readonly object progressLock = new object();
@@ -68,6 +69,7 @@ namespace DFWin.Core.Resources.Models
                         if (fastEnough)
                         {
                             UpdateProgressWithSuccess(numberOfProcessesCompleted);
+                            Dispose();
                             return;
                         }
                     }
@@ -75,12 +77,14 @@ namespace DFWin.Core.Resources.Models
                     {
                         DfWin.Error("Warm up task failed: " + e);
                         if (!hasAborted) UpdateProgressWithFailure(numberOfProcessesCompleted);
+                        Dispose();
                         return;
                     }
                         
                     UpdateProgress(numberOfProcessesCompleted);
                 }
-                UpdateProgressWithFailure(numberOfProcessesCompleted);                
+                UpdateProgressWithFailure(numberOfProcessesCompleted);
+                Dispose();
             }, cancellationToken);
         }
 
@@ -162,10 +166,15 @@ namespace DFWin.Core.Resources.Models
             }
         }
 
+        /// <summary>
+        /// Unlike abort, this does not dispose the task itself but still does attempt to cancel any running task.
+        /// </summary>
         public void Dispose()
         {
-            if (hasAborted) return;
-            Abort();
+            if (hasDisposed) return;
+            cancellationTokenSource.Cancel();
+            cancellationTokenSource.Dispose();
+            hasDisposed = true;
         }
 
         /// <summary>
@@ -174,8 +183,7 @@ namespace DFWin.Core.Resources.Models
         public void Abort()
         {
             if (hasAborted) return;
-            cancellationTokenSource.Cancel();
-            cancellationTokenSource.Dispose();
+            Dispose();
             task.Dispose();
             hasAborted = true;
         }

@@ -5,7 +5,7 @@ namespace DFWin.Core.Inputs
 {
     public class WarmUpInput
     {
-        public bool IsRunningTask => warmUpProgress != null;
+        public bool HasWarmUpStarted => warmUpProgress != null;
         
         private readonly IWarmUpProgress warmUpProgress;
 
@@ -20,7 +20,7 @@ namespace DFWin.Core.Inputs
 
         public IWarmUpProgress GetProgress()
         {
-            if (!IsRunningTask) throw new InvalidOperationException("Cannot get the progress of a warm up task when no task has been run.");
+            if (!HasWarmUpStarted) throw new InvalidOperationException("Cannot get the progress of a warm up task when no task has been run.");
 
             return warmUpProgress;
         }

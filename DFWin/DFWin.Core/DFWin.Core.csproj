@@ -80,6 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\LoadingPhase.cs" />
     <Compile Include="Constants\Names.cs" />
     <Compile Include="Constants\Sizes.cs" />
     <Compile Include="CoreModule.cs" />
