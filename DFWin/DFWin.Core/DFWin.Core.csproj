@@ -94,6 +94,7 @@
     <Compile Include="Helpers\TaskHelpers.cs" />
     <Compile Include="Inputs\DwarfFortressInput.cs" />
     <Compile Include="Inputs\GameInput.cs" />
+    <Compile Include="Inputs\KeyboardInput.cs" />
     <Compile Include="Inputs\UserInput.cs" />
     <Compile Include="Inputs\WarmUpInput.cs" />
     <Compile Include="Middleware\DwarfFortressProcessMiddleWare.cs" />
@@ -102,7 +103,6 @@
     <Compile Include="Middleware\IScreenMiddleware.cs" />
     <Compile Include="Interfaces\IWarmUpConfiguration.cs" />
     <Compile Include="Middleware\IUpdaterMiddleware.cs" />
-    <Compile Include="Middleware\KeyboardMiddleware.cs" />
     <Compile Include="Models\KeyRecording.cs" />
     <Compile Include="Models\Screen.cs" />
     <Compile Include="Resources\Models\WarmUpProgress.cs" />
@@ -118,8 +118,6 @@
     <Compile Include="Services\InputService.cs" />
     <Compile Include="Services\ProcessService.cs" />
     <Compile Include="States\BackupState.cs" />
-    <Compile Include="States\InputState.cs" />
-    <Compile Include="States\KeyboardState.cs" />
     <Compile Include="UpdateManager.cs" />
     <Compile Include="ScreenManager.cs" />
     <Compile Include="Services\GameGridService.cs" />

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using DFWin.Core.Inputs;
 using DFWin.Core.Models;
 using DFWin.Core.States;
 using Microsoft.Xna.Framework.Input;
-using KeyboardState = DFWin.Core.States.KeyboardState;
 
 namespace DFWin.Core.Services
 {
@@ -27,26 +27,28 @@ namespace DFWin.Core.Services
         {
             lock (inputLock)
             {
-                var userInput = new UserInput(Keyboard.GetState());
+                var keyboardInput = GetCurrentKeyboardInput(previousState);
+                var userInput = new UserInput(keyboardInput);
                 var newInput = new GameInput(dwarfFortressInput, userInput, warmUpInput);
                 return new GameState(previousState.ScreenState, newInput, previousState.FrameRate, previousState.ShouldExit);
             }
         }
 
-        private KeyboardInput GetCurrentKeyboardInput()
+        private static KeyboardInput GetCurrentKeyboardInput(GameState previousState)
         {
-            var newKeyRecordings = previousState.InputState.KeyboardState.KeyRecordings;
+            var newKeyboardState = Keyboard.GetState();
+            var keyRecordings = previousState.GameInput.UserInput.KeyboardInput.KeyRecordings;
 
-            var currentlyPressedKeys = gameInput.UserInput.Keyboard.GetPressedKeys();
-            var previouslyPressedKeys = previousState.InputState.KeyboardState.PressedKeys;
+            var currentlyPressedKeys = newKeyboardState.GetPressedKeys();
+            var previouslyPressedKeys = previousState.GameInput.UserInput.KeyboardInput.PressedKeys;
 
             var keysJustPressed = currentlyPressedKeys.Except(previouslyPressedKeys);
             var keysJustReleased = previouslyPressedKeys.Except(currentlyPressedKeys);
 
-            newKeyRecordings = newKeyRecordings.SetItems(keysJustPressed.Select(k => new KeyValuePair<Keys, KeyRecording>(k, new KeyRecording(k, true))));
-            newKeyRecordings = newKeyRecordings.SetItems(keysJustReleased.Select(k => new KeyValuePair<Keys, KeyRecording>(k, new KeyRecording(k, false))));
+            keyRecordings = keyRecordings.SetItems(keysJustPressed.Select(k => new KeyValuePair<Keys, KeyRecording>(k, new KeyRecording(k, true))));
+            keyRecordings = keyRecordings.SetItems(keysJustReleased.Select(k => new KeyValuePair<Keys, KeyRecording>(k, new KeyRecording(k, false))));
 
-            var newKeyboardHistory = new KeyboardState(newKeyRecordings, ImmutableHashSet.Create(currentlyPressedKeys));
+            return new KeyboardInput(newKeyboardState, keyRecordings, ImmutableHashSet.Create(currentlyPressedKeys));
         }
 
         public void SetWarmUpInput(WarmUpInput updatedInput)

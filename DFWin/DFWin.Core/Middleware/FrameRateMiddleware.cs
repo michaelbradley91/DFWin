@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using DFWin.Core.Inputs;
 using DFWin.Core.States;
 
 namespace DFWin.Core.Middleware
@@ -16,9 +15,9 @@ namespace DFWin.Core.Middleware
             stopwatch.Start();
         }
 
-        public GameState Update(GameState previousState, GameInput gameInput, Func<GameState, GameInput, GameState> next)
+        public GameState Update(GameState previousState, Func<GameState, GameState> next)
         {
-            return next(UpdateWithFrameRate(previousState), gameInput);
+            return next(UpdateWithFrameRate(previousState));
         }
 
         private GameState UpdateWithFrameRate(GameState previousState)

@@ -14,11 +14,11 @@ namespace DFWin.Core.Middleware
             this.processService = processService;
         }
 
-        public GameState Update(GameState previousState, GameInput gameInput, Func<GameState, GameInput, GameState> next)
+        public GameState Update(GameState previousState, Func<GameState, GameState> next)
         {
             return !processService.IsDwarfFortressAvailable() ? 
-                next(new GameState(LoadingState.InitialState, previousState.GameInput, previousState.FrameRate, previousState.ShouldExit), gameInput) 
-                : next(previousState, gameInput);
+                next(new GameState(LoadingState.InitialState, previousState.GameInput, previousState.FrameRate, previousState.ShouldExit)) 
+                : next(previousState);
         }
     }
 }

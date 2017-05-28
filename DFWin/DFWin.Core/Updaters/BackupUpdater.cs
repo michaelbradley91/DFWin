@@ -18,9 +18,9 @@ namespace DFWin.Core.Updaters
 
         private DateTimeOffset? lastSentDown;
 
-        protected override IScreenState Update(BackupState previousState, InputState inputState, GameInput input)
+        protected override IScreenState Update(BackupState previousState, GameInput input)
         {
-            if (!inputState.KeyboardState.PressedKeys.Contains(Keys.Down))
+            if (!input.UserInput.KeyboardInput.PressedKeys.Contains(Keys.Down))
             {
                 lastSentDown = null;
             }
@@ -37,7 +37,7 @@ namespace DFWin.Core.Updaters
                 }
                 else
                 {
-                    var timeDownPressedFor = DateTimeOffset.UtcNow - inputState.KeyboardState.KeyRecordings[Keys.Down].Time;
+                    var timeDownPressedFor = DateTimeOffset.UtcNow - input.UserInput.KeyboardInput.KeyRecordings[Keys.Down].Time;
                     var timeToWait = TimeSpan.FromSeconds(1 / (Math.Max(timeDownPressedFor.TotalSeconds, 0.5) * 8f));
                     var timeSinceLastSent = DateTimeOffset.UtcNow - lastSentDown;
                     if (timeToWait < timeSinceLastSent)

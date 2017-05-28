@@ -1,16 +1,14 @@
-﻿using Microsoft.Xna.Framework.Input;
-
-namespace DFWin.Core.Inputs
+﻿namespace DFWin.Core.Inputs
 {
     public class UserInput
     {
-        public KeyboardState Keyboard { get; }
+        public KeyboardInput KeyboardInput { get; }
 
-        public UserInput(KeyboardState keyboard)
+        public UserInput(KeyboardInput keyboardInput)
         {
-            Keyboard = keyboard;
+            KeyboardInput = keyboardInput;
         }
 
-        public static UserInput InitialInput => new UserInput(Microsoft.Xna.Framework.Input.Keyboard.GetState());
+        public static UserInput InitialInput => new UserInput(KeyboardInput.InitialInput);
     }
 }
