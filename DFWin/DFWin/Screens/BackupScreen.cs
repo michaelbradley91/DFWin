@@ -1,4 +1,6 @@
-﻿using DFWin.Core.Models;
+﻿using System;
+using DFWin.Core.Constants;
+using DFWin.Core.Models;
 using DFWin.Core.Services;
 using DFWin.Core.States;
 using Microsoft.Xna.Framework;
@@ -12,6 +14,7 @@ namespace DFWin.Screens
 
         private Texture2D WhiteRectangle => contentManager.WhiteRectangle;
         private const int TileDiameter = ContentManager.BackupTileDiameter;
+        private const int WindowBorder = 20;
 
         public BackupScreen(ContentManager contentManager)
         {
@@ -34,7 +37,16 @@ namespace DFWin.Screens
         private void DrawBackupTile(ScreenTools screenTools, int x, int y, Tile tile)
         {
             var sourceRectangle = new Rectangle(TileDiameter * tile.TileSetX, TileDiameter * tile.TileSetY, TileDiameter, TileDiameter);
-            var destinationRectangle = new Rectangle(20 + (x * TileDiameter), 20 + (y * TileDiameter), TileDiameter, TileDiameter);
+
+            var tileWidth = (screenTools.Width - (WindowBorder * 2)) / Sizes.DwarfFortressPreferredGridSize.Width;
+            var tileHeight = (screenTools.Height - (WindowBorder * 2)) / Sizes.DwarfFortressPreferredGridSize.Height;
+
+            var destinationTileSize = Math.Min(tileWidth, tileHeight);
+
+            var destinationXOffset = (screenTools.Width - ((destinationTileSize * Sizes.DwarfFortressPreferredGridSize.Width) + (WindowBorder * 2))) / 2;
+            var destinationYOffset = (screenTools.Height - ((destinationTileSize * Sizes.DwarfFortressPreferredGridSize.Height) + (WindowBorder * 2))) / 2;
+
+            var destinationRectangle = new Rectangle(destinationXOffset + (x * destinationTileSize), destinationYOffset + (y * destinationTileSize), destinationTileSize, destinationTileSize);
 
             screenTools.SpriteBatch.Draw(WhiteRectangle, destinationRectangle, tile.Background);
             screenTools.SpriteBatch.Draw(contentManager.BackupTileset, destinationRectangle, sourceRectangle, tile.Foreground);
