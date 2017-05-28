@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DFWin.Core.Constants;
@@ -15,7 +16,7 @@ namespace DFWin.Core.Services
     public interface IDwarfFortressInputService : IDisposable
     {
         void StartScreenScraping();
-        void TrySendKey(Keys key, bool down);
+        void TrySendKeys(params Keys[] keys);
     }
 
     public class DwarfFortressInputService : IDwarfFortressInputService
@@ -50,17 +51,17 @@ namespace DFWin.Core.Services
             RunUpdateLoop(cancellationTokenSource.Token);
         }
 
-        public void TrySendKey(Keys key, bool down)
+        public void TrySendKeys(params Keys[] keys)
         {
             try
             {
                 if (!processService.TryGetDwarfFortressProcess(out Process process)) return;
                 var window = new Window(process.MainWindowHandle);
-                window.SendKey(key.ToVirtualKey(), down);
+                window.SendKeys(keys.Select(k => k.ToVirtualKey()).ToArray());
             }
             catch (Exception e)
             {
-                DfWin.Error("Encountered error sending key: " + e);
+                DfWin.Error("Encountered error sending keys: " + e);
             }
         }
 
