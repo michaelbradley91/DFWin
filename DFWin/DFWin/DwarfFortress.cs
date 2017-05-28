@@ -72,6 +72,7 @@ namespace DFWin
             
             MediaPlayer.Volume = 0.4f;
             MediaPlayer.Play(contentManager.Song);
+            MediaPlayer.IsRepeating = true;
         }
 
         private int previousWidth;
