@@ -1,6 +1,8 @@
 # Dwarf Fortress for Windows (DFWin)
 Firstly, please understand this game **is not Dwarf Fortress**. All credit for the underlying mechanics should go to Bay12Games:
+
 http://www.bay12games.com/dwarves/
+
 Please lend them your support!
 
 Dwarf Fortress is an **amazing game**, but I feel its user interface could be improved to make the game more accessible, so more people can have fun with it.
