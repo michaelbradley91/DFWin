@@ -1,8 +1,5 @@
 # Dwarf Fortress for Windows (DFWin)
-Firstly, please understand this game **is not Dwarf Fortress**. All credit for the underlying mechanics should go to Bay12Games:
-
-http://www.bay12games.com/dwarves/
-
+Firstly, please understand this game **is not Dwarf Fortress**. All credit for the underlying mechanics should go to [Bay12Games](http://www.bay12games.com/dwarves/).<br>
 Please lend them your support!
 
 Dwarf Fortress is an **amazing game**, but I feel its user interface could be improved to make the game more accessible, so more people can have fun with it.
@@ -23,9 +20,13 @@ More importantly, DF Win can provide its own UI, and translate your interaction 
 
 ## How to use
 
-1. Install Dwarf Fortress
+1. [Install Dwarf Fortress](http://www.bay12games.com/dwarves/)
+2. Replace data/init/init.txt with [this one](init.txt).
+3. Add [this tileset](DFWin/DFWin.Core/Resources/ComputerTileSetMicro.bmp) to data/art.
+4. Clone this repository, build the solution (I use VS 2017) and run the application. You can download [this older example](DFWinTest.zip) of the game to see if it will work.
 
-To use DFWin, please change the tile set DF uses to the one in the repository.
-This tile set is designed for DFWin to read the screen more easily.
+The init.txt needs to point to the correct tileset for the application to work. I've skipped the opening movie for development, but it will probably work with that enabled too!
 
-Otherwise, have fun!
+## Other bits
+
+If you like the project and would like me to spend more time on it, please let me know!
