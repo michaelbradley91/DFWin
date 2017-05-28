@@ -1,5 +1,9 @@
 # Dwarf Fortress for Windows (DFWin)
-Dwarf Fortress is an **_amazing game_**, but I feel its user interface could be improved to make the game more accessible, so more people can have fun with it.
+Firstly, please understand this game **is not Dwarf Fortress**. All credit for the underlying mechanics should go to Bay12Games:
+http://www.bay12games.com/dwarves/
+Please lend them your support!
+
+Dwarf Fortress is an **amazing game**, but I feel its user interface could be improved to make the game more accessible, so more people can have fun with it.
 
 There are many existing tools out there for Dwarf Fortress, many of which are detailed in its [Wiki](http://dwarffortresswiki.org/index.php/DF2014:Utilities). 
 
@@ -17,7 +21,7 @@ More importantly, DF Win can provide its own UI, and translate your interaction 
 
 ## How to use
 
-1. D
+1. Install Dwarf Fortress
 
 To use DFWin, please change the tile set DF uses to the one in the repository.
 This tile set is designed for DFWin to read the screen more easily.
