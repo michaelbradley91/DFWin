@@ -14,7 +14,9 @@ There are many existing tools out there for Dwarf Fortress, many of which are de
 
 DFWin will constantly screenscrape Dwarf Fortress while it runs in the background. By using a special tileset, DFWin can understand exactly what you would normally see on Dwarf Fortress's screen! It really sends key presses to Dwarf Fortress as you play the game.
 
-DFWin maintains a tile grid representation of what is visible in Dwarf Fortress. It then interprets these tiles, and provides its own UI based on them. Your interactions with the game are then translated into key presses for Dwarf Fortress.
+DFWin maintains a tile grid representation of what is visible in Dwarf Fortress. It then interprets these tiles and provides its own UI based on them. Your interactions with the game are then translated into key presses for Dwarf Fortress.
+
+For example, if you mouse click a square on the map, DFWin can send keys to Dwarf Fortress to position you over the square and then read what is **shown on Dwarf Fortress's screen** and relay that back to you!
 
 If at some point DFWin becomes confused, it will revert back to showing Dwarf Fortress as is, so even if new pages appear in the game or you find pages that are not supported, you can still use DFWin if you really want to.
 
@@ -28,5 +30,7 @@ If at some point DFWin becomes confused, it will revert back to showing Dwarf Fo
 The init.txt needs to point to the correct tileset for the application to work. I've skipped the opening movie for development, but it will probably work with that enabled too!
 
 ## Other bits
+
+This project only supports Windows at the moment, and has only been tested on two reasonably modern computers. I believe you need a decent CPU and graphics card for this to run smoothly - it is a much more intensive application than Dwarf Fortress itself due to the nature of what it is trying to do! Do let me know if you experience issues though and I can try to improve them.
 
 If you like the project and would like me to spend more time on it, please let me know!
