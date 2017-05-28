@@ -12,11 +12,11 @@ namespace DFWin.Core.Middleware
             return next(UpdateWithExit(previousState, gameInput), gameInput);
         }
 
-        private static GameState UpdateWithExit(GameState gameState, GameInput gameInput)
+        private static GameState UpdateWithExit(GameState previousState, GameInput gameInput)
         {
             return gameInput.UserInput.Keyboard.IsKeyDown(Keys.Escape) ?
-                new GameState(gameState.ScreenState, gameState.InputState, gameState.FrameRate, true) :
-                gameState;
+                new GameState(previousState.ScreenState, previousState.GameInput, previousState.FrameRate, true) :
+                previousState;
         }
     }
 }

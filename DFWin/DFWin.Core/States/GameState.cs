@@ -1,4 +1,6 @@
-﻿namespace DFWin.Core.States
+﻿using DFWin.Core.Inputs;
+
+namespace DFWin.Core.States
 {
     /// <summary>
     /// The root of the state used to determine what should be shown on screen.
@@ -7,18 +9,18 @@
     public class GameState
     {
         public IScreenState ScreenState { get; }
-        public InputState InputState { get; }
+        public GameInput GameInput { get; }
         public int FrameRate { get; }
         public bool ShouldExit { get; }
 
-        public GameState(IScreenState screenState, InputState inputState, int frameRate, bool shouldExit)
+        public GameState(IScreenState screenState, GameInput gameInput, int frameRate, bool shouldExit)
         {
             ScreenState = screenState;
-            InputState = inputState;
+            GameInput = gameInput;
             FrameRate = frameRate;
             ShouldExit = shouldExit;
         }
 
-        public static GameState InitialState => new GameState(LoadingState.InitialState, InputState.InitialState, 0, false);
+        public static GameState InitialState => new GameState(LoadingState.InitialState, GameInput.InitialInput, 0, false);
     }
 }

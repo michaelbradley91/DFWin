@@ -10,5 +10,7 @@ namespace DFWin.Core.Inputs
         {
             Keyboard = keyboard;
         }
+
+        public static UserInput InitialInput => new UserInput(Microsoft.Xna.Framework.Input.Keyboard.GetState());
     }
 }

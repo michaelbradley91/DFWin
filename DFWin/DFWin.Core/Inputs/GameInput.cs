@@ -16,5 +16,7 @@
             UserInput = userInput;
             WarmUpInput = warmUpInput;
         }
+
+        public static GameInput InitialInput => new GameInput(DwarfFortressInput.None, UserInput.InitialInput, WarmUpInput.None);
     }
 }

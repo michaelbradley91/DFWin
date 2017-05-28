@@ -17,7 +17,7 @@ namespace DFWin.Core.Updaters
             this.warmUpService = warmUpService;
         }
 
-        protected override IScreenState Update(LoadingState previousState, GameInput input)
+        protected override IScreenState Update(LoadingState previousState, InputState inputState, GameInput input)
         {
             switch (previousState.Phase)
             {

@@ -31,14 +31,13 @@ namespace DFWin.Core
 
         public GameState Update(GameState previousState)
         {
-            var gameInput = inputService.GetCurrentInput();
-            return UpdateWithMiddleware(previousState, gameInput, middleware.GetEnumerator());
+            return UpdateWithMiddleware(inputService.UpdateInput(previousState), middleware.GetEnumerator());
         }
 
-        private GameState UpdateWithMiddleware(GameState previousState, GameInput input, IEnumerator<IUpdaterMiddleware> remainingMiddleware)
+        private GameState UpdateWithMiddleware(GameState previousState, IEnumerator<IUpdaterMiddleware> remainingMiddleware)
         {
-            return !remainingMiddleware.MoveNext() ? GetCurrentUpdater(previousState).Update(previousState, input) :
-                remainingMiddleware.Current.Update(previousState, input, (g, i) => UpdateWithMiddleware(g, i, remainingMiddleware));
+            return !remainingMiddleware.MoveNext() ? GetCurrentUpdater(previousState).Update(previousState) :
+                remainingMiddleware.Current.Update(previousState, g => UpdateWithMiddleware(g, remainingMiddleware));
         }
 
         private IUpdater GetCurrentUpdater(GameState gameState)
