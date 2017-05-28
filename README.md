@@ -12,11 +12,13 @@ There are many existing tools out there for Dwarf Fortress, many of which are de
 
 ## How it works
 
-DFWin will constantly screenscrape Dwarf Fortress while it runs in the background. By using a special tileset, DFWin can understand exactly what you would normally see on Dwarf Fortress's screen. As you play the game, it really sends key presses to Dwarf Fortress.
+DFWin will constantly screenscrape Dwarf Fortress while it runs in the background. By using a special tileset, DFWin can understand exactly what you would normally see on Dwarf Fortress's screen! It really sends key presses to Dwarf Fortress as you play the game.
 
-By understanding the tiles that make up Dwarf Fortress's UI, the game can choose to copy the UI exactly or, more importantly, it can provide its own UI and translate your interaction into key presses for the game. This allows it to rewire keys in the game with mouse clicks and so on to make it easier to play.
+DFWin maintains a tile grid representation of what is visible in Dwarf Fortress. It then interprets these tiles, and provides its own UI based on them. Your interactions with the game are then translated into key presses for Dwarf Fortress.
 
-## How to use
+If at some point DFWin becomes confused, it will revert back to showing Dwarf Fortress as is, so even if new pages appear in the game or you find pages that are not supported, you can still use DFWin if you really want to.
+
+## How to run
 
 1. [Install Dwarf Fortress](http://www.bay12games.com/dwarves/)
 2. Replace data/init/init.txt with [this one](init.txt).
