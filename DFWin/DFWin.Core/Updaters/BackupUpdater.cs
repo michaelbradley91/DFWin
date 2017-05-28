@@ -19,17 +19,11 @@ namespace DFWin.Core.Updaters
         {
             Task.Run(() =>
             {
-                var down = input.UserInput.Keyboard.IsKeyDown(Keys.Down);
-                var up = input.UserInput.Keyboard.IsKeyDown(Keys.Up);
-                var left = input.UserInput.Keyboard.IsKeyDown(Keys.Left);
-                var right = input.UserInput.Keyboard.IsKeyDown(Keys.Right);
-                var enter = input.UserInput.Keyboard.IsKeyDown(Keys.Enter);
-
-                dwarfFortressInputService.TrySendKey(Keys.Down, down);
-                dwarfFortressInputService.TrySendKey(Keys.Up, up);
-                dwarfFortressInputService.TrySendKey(Keys.Right, right);
-                dwarfFortressInputService.TrySendKey(Keys.Left, left);
-                dwarfFortressInputService.TrySendKey(Keys.Enter, enter);
+                if (input.UserInput.Keyboard.IsKeyDown(Keys.Down))
+                {
+                    dwarfFortressInputService.TrySendKey(Keys.Down, true);
+                    dwarfFortressInputService.TrySendKey(Keys.Down, false);
+                }
             });
 
             return new BackupState(input.DwarfFortressInput.Tiles);

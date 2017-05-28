@@ -64,6 +64,10 @@
       <HintPath>..\packages\PInvoke.Windows.ShellScalingApi.0.5.64\lib\net40\PInvoke.Windows.ShellScalingApi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -98,6 +102,8 @@
     <Compile Include="Middleware\IScreenMiddleware.cs" />
     <Compile Include="Interfaces\IWarmUpConfiguration.cs" />
     <Compile Include="Middleware\IUpdaterMiddleware.cs" />
+    <Compile Include="Middleware\KeyboardMiddleware.cs" />
+    <Compile Include="Models\KeyRecording.cs" />
     <Compile Include="Models\Screen.cs" />
     <Compile Include="Resources\Models\WarmUpProgress.cs" />
     <Compile Include="Resources\Models\WarmUpTask.cs" />
@@ -112,6 +118,8 @@
     <Compile Include="Services\InputService.cs" />
     <Compile Include="Services\ProcessService.cs" />
     <Compile Include="States\BackupState.cs" />
+    <Compile Include="States\InputState.cs" />
+    <Compile Include="States\KeyboardState.cs" />
     <Compile Include="UpdateManager.cs" />
     <Compile Include="ScreenManager.cs" />
     <Compile Include="Services\GameGridService.cs" />
@@ -132,6 +140,7 @@
     <Compile Include="User32Extensions\Services\WindowService.cs" />
     <Compile Include="User32Extensions\Structs\ANIMATIONINFO.cs" />
     <Compile Include="User32Extensions\User32Extensions.cs" />
+    <Compile Include="User32Extensions\VirtualKeyExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

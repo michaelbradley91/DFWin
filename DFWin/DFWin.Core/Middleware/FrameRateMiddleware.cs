@@ -26,7 +26,7 @@ namespace DFWin.Core.Middleware
             if (stopwatch.ElapsedMilliseconds > 1000)
             {
                 stopwatch.Restart();
-                var nextState = new GameState(previousState.ScreenState, numberOfFrames, previousState.ShouldExit);
+                var nextState = new GameState(previousState.ScreenState, previousState.InputState, numberOfFrames, previousState.ShouldExit);
                 numberOfFrames = 0;
                 return nextState;
             }

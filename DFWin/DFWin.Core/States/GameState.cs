@@ -7,16 +7,18 @@
     public class GameState
     {
         public IScreenState ScreenState { get; }
+        public InputState InputState { get; }
         public int FrameRate { get; }
         public bool ShouldExit { get; }
 
-        public GameState(IScreenState screenState, int frameRate, bool shouldExit)
+        public GameState(IScreenState screenState, InputState inputState, int frameRate, bool shouldExit)
         {
             ScreenState = screenState;
+            InputState = inputState;
             FrameRate = frameRate;
             ShouldExit = shouldExit;
         }
 
-        public static GameState InitialState => new GameState(LoadingState.InitialState, 0, false);
+        public static GameState InitialState => new GameState(LoadingState.InitialState, InputState.InitialState, 0, false);
     }
 }

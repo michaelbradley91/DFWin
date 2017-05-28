@@ -18,7 +18,7 @@ namespace DFWin.Core.Updaters
         public GameState Update(GameState previousState, GameInput input)
         {
             var nextScreenState = Update((TScreenState) previousState.ScreenState, input);
-            return new GameState(nextScreenState, previousState.FrameRate, previousState.ShouldExit);
+            return new GameState(nextScreenState, previousState.InputState, previousState.FrameRate, previousState.ShouldExit);
         }
 
         protected abstract IScreenState Update(TScreenState previousState, GameInput input);
