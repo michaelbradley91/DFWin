@@ -38,13 +38,20 @@ namespace DFWin.Core
 
                 ThreadPool.QueueUserWorkItem(t =>
                 {
-                    var dwarfFortressInput = Translate(tiles);
-                    lock (translatorLock)
+                    try
                     {
-                        if (lastSubmittedTranslationNumber >= myTranslationNumber) return;
+                        var dwarfFortressInput = Translate(tiles);
+                        lock (translatorLock)
+                        {
+                            if (lastSubmittedTranslationNumber >= myTranslationNumber) return;
 
-                        lastSubmittedTranslationNumber = myTranslationNumber;
-                        inputService.SetDwarfFortressInput(dwarfFortressInput);
+                            lastSubmittedTranslationNumber = myTranslationNumber;
+                            inputService.SetDwarfFortressInput(dwarfFortressInput);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        DfWin.Error("Encountered error while translating: " + e);
                     }
                 });
             }
