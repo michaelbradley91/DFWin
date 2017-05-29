@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using DFWin.Core.Interfaces;
+using DFWin.Core.Models;
 
 namespace DFWin.Models
 {

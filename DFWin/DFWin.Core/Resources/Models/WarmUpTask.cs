@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DFWin.Core.Helpers;
 using DFWin.Core.Inputs;
-using DFWin.Core.Interfaces;
+using DFWin.Core.Models;
 using DFWin.Core.Services;
 
 namespace DFWin.Core.Resources.Models

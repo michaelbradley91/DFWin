@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DFWin.Core.Interfaces
+﻿namespace DFWin.Core.Models
 {
     public interface IWarmUpConfiguration
     {

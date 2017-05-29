@@ -48,12 +48,12 @@ namespace DFWin.Core.Updaters
 
     public class BackupUpdater : Updater<BackupState>
     {
-        private readonly IDwarfFortressInputService dwarfFortressInputService;
+        private readonly IDwarfFortressService dwarfFortressService;
         private readonly KeyThrottler keyThrottler;
 
-        public BackupUpdater(IDwarfFortressInputService dwarfFortressInputService)
+        public BackupUpdater(IDwarfFortressService dwarfFortressService)
         {
-            this.dwarfFortressInputService = dwarfFortressInputService;
+            this.dwarfFortressService = dwarfFortressService;
 
             keyThrottler = new KeyThrottler();
         }
@@ -67,7 +67,7 @@ namespace DFWin.Core.Updaters
 
             Task.Run(() =>
             {
-                dwarfFortressInputService.TrySendKeys(keysToSend);
+                dwarfFortressService.TrySendKeys(keysToSend);
             });
 
             return new BackupState(input.DwarfFortressInput.Tiles);

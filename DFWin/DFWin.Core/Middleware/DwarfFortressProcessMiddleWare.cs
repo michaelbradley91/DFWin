@@ -16,7 +16,7 @@ namespace DFWin.Core.Middleware
 
         public GameState Update(GameState previousState, Func<GameState, GameState> next)
         {
-            return !processService.IsDwarfFortressAvailable() ? 
+            return !processService.IsDwarfFortressAvailable() ?
                 next(new GameState(LoadingState.InitialState, previousState.GameInput, previousState.FrameRate, previousState.ShouldExit)) 
                 : next(previousState);
         }

@@ -1,4 +1,4 @@
-﻿using DFWin.Core.Interfaces;
+﻿using DFWin.Core.Models;
 
 namespace DFWin.Core.Resources.Models
 {

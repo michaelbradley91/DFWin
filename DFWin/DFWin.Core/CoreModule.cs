@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using Autofac;
-using DFWin.Core.Constants;
-using DFWin.Core.User32Extensions.Models;
+﻿using Autofac;
 
 namespace DFWin.Core
 {
@@ -13,9 +9,11 @@ namespace DFWin.Core
             RegisterServices(builder);
             RegisterUpdaters(builder);
             RegisterMiddleware(builder);
+            RegisterTranslators(builder);
 
             builder.RegisterType<ScreenManager>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<UpdateManager>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<TranslatorManager>().AsImplementedInterfaces().SingleInstance();
         }
 
         private void RegisterServices(ContainerBuilder builder)
@@ -44,6 +42,15 @@ namespace DFWin.Core
         {
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .Where(t => t.Name.EndsWith("Middleware"))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .SingleInstance();
+        }
+
+        private void RegisterTranslators(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(t => t.Name.EndsWith("Translator"))
                 .AsSelf()
                 .AsImplementedInterfaces()
                 .SingleInstance();

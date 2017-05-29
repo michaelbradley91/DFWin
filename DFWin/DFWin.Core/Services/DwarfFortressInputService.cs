@@ -4,41 +4,39 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DFWin.Core.Constants;
-using DFWin.Core.Inputs;
 using DFWin.Core.User32Extensions;
 using DFWin.Core.User32Extensions.Models;
 using DFWin.Core.User32Extensions.Services;
 using Microsoft.Xna.Framework.Input;
-using PInvoke;
 
 namespace DFWin.Core.Services
 {
-    public interface IDwarfFortressInputService : IDisposable
+    public interface IDwarfFortressService : IDisposable
     {
         void StartScreenScraping();
         void TrySendKeys(params Keys[] keys);
     }
 
-    public class DwarfFortressInputService : IDwarfFortressInputService
+    public class DwarfFortressService : IDwarfFortressService
     {
         private readonly IProcessService processService;
         private readonly IWindowService windowService;
         private readonly IGameGridService gridGameGridService;
-        private readonly IInputService inputService;
+        private readonly ITranslatorManager translatorManager;
 
         private bool hasStarted;
         private bool hasDisposed;
         private readonly CancellationTokenSource cancellationTokenSource;
 
         private const int MinimumDelay = 10;
-
-        public DwarfFortressInputService(IProcessService processService, IWindowService windowService,
-            IGameGridService gridGameGridService, IInputService inputService)
+        
+        public DwarfFortressService(IProcessService processService, IWindowService windowService,
+            IGameGridService gridGameGridService, ITranslatorManager translatorManager)
         {
             this.processService = processService;
             this.windowService = windowService;
             this.gridGameGridService = gridGameGridService;
-            this.inputService = inputService;
+            this.translatorManager = translatorManager;
 
             cancellationTokenSource = new CancellationTokenSource();
         }
@@ -49,20 +47,6 @@ namespace DFWin.Core.Services
 
             hasStarted = true;
             RunUpdateLoop(cancellationTokenSource.Token);
-        }
-
-        public void TrySendKeys(params Keys[] keys)
-        {
-            try
-            {
-                if (!processService.TryGetDwarfFortressProcess(out Process process)) return;
-                var window = new Window(process.MainWindowHandle);
-                window.SendKeys(keys.Select(k => k.ToVirtualKey()).ToArray());
-            }
-            catch (Exception e)
-            {
-                DfWin.Error("Encountered error sending keys: " + e);
-            }
         }
 
         private void RunUpdateLoop(CancellationToken cancellationToken)
@@ -99,8 +83,21 @@ namespace DFWin.Core.Services
             var bitmap = await windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize, true);
             var tiles = gridGameGridService.ParseScreenshot(bitmap);
 
-            var dwarfFortressInput = new DwarfFortressInput(tiles);
-            inputService.SetDwarfFortressInput(dwarfFortressInput);
+            translatorManager.TranslateInBackgroundAndUpdateGameInput(tiles);
+        }
+
+        public void TrySendKeys(params Keys[] keys)
+        {
+            try
+            {
+                if (!processService.TryGetDwarfFortressProcess(out Process process)) return;
+                var window = new Window(process.MainWindowHandle);
+                window.SendKeys(keys.Select(k => k.ToVirtualKey()).ToArray());
+            }
+            catch (Exception e)
+            {
+                DfWin.Error("Encountered error sending keys: " + e);
+            }
         }
 
         public void Dispose()

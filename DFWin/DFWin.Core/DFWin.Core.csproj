@@ -101,7 +101,7 @@
     <Compile Include="Middleware\ExitMiddleware.cs" />
     <Compile Include="Middleware\FrameRateMiddleware.cs" />
     <Compile Include="Middleware\IScreenMiddleware.cs" />
-    <Compile Include="Interfaces\IWarmUpConfiguration.cs" />
+    <Compile Include="Models\IWarmUpConfiguration.cs" />
     <Compile Include="Middleware\IUpdaterMiddleware.cs" />
     <Compile Include="Models\KeyRecording.cs" />
     <Compile Include="Models\Screen.cs" />
@@ -118,6 +118,9 @@
     <Compile Include="Services\InputService.cs" />
     <Compile Include="Services\ProcessService.cs" />
     <Compile Include="States\BackupState.cs" />
+    <Compile Include="TranslatorManager.cs" />
+    <Compile Include="Translators\BackupTranslator.cs" />
+    <Compile Include="Translators\ITranslator.cs" />
     <Compile Include="UpdateManager.cs" />
     <Compile Include="ScreenManager.cs" />
     <Compile Include="Services\GameGridService.cs" />
