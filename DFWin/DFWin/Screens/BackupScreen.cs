@@ -1,7 +1,7 @@
 ﻿using System;
 using DFWin.Core.Constants;
+using DFWin.Core.Helpers;
 using DFWin.Core.Models;
-using DFWin.Core.Services;
 using DFWin.Core.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -48,8 +48,8 @@ namespace DFWin.Screens
 
             var destinationRectangle = new Rectangle(destinationXOffset + (x * destinationTileSize), destinationYOffset + (y * destinationTileSize), destinationTileSize, destinationTileSize);
 
-            screenTools.SpriteBatch.Draw(WhiteRectangle, destinationRectangle, tile.Background);
-            screenTools.SpriteBatch.Draw(contentManager.BackupTileset, destinationRectangle, sourceRectangle, tile.Foreground);
+            screenTools.SpriteBatch.Draw(WhiteRectangle, destinationRectangle, tile.Background.ToColour());
+            screenTools.SpriteBatch.Draw(contentManager.BackupTileset, destinationRectangle, sourceRectangle, tile.Foreground.ToColour());
         }
     }
 }

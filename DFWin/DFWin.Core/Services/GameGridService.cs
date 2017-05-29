@@ -5,7 +5,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using DFWin.Core.Constants;
-using Color = Microsoft.Xna.Framework.Color;
+using DFWin.Core.Helpers;
+using DFWin.Core.Models;
 
 namespace DFWin.Core.Services
 {
@@ -16,23 +17,6 @@ namespace DFWin.Core.Services
         /// Assumes the bitmap is RGB (24 bits per pixel RGB - no alpha)
         /// </summary>
         Tile[,] ParseScreenshot(Bitmap screenshotOfTheGame);
-    }
-
-    public class Tile
-    {
-        public byte Value { get; set; }
-        public Color Foreground { get; set; }
-        public Color Background { get; set; }
-
-        public byte TileSetX => (byte)(Value % 16);
-        public byte TileSetY => (byte)(Value / 16);
-
-        public Tile(byte value, Color foreground, Color background)
-        {
-            Value = value;
-            Foreground = foreground;
-            Background = background;
-        }
     }
 
     public class GameGridService : IGameGridService
@@ -61,7 +45,7 @@ namespace DFWin.Core.Services
                 {
                     for (var y = 0; y < Sizes.DwarfFortressPreferredGridSize.Height; y++)
                     {
-                        tiles[x, y] = new Tile(0, Color.Black, Color.Black);
+                        tiles[x, y] = new Tile(0, DwarfFortressColours.Black, DwarfFortressColours.Black);
                     }
                 }
 
@@ -70,11 +54,11 @@ namespace DFWin.Core.Services
 
         }
 
-        private static Tile[,] GetTiles(Color[,] pixelMatrix)
+        private static Tile[,] GetTiles(DwarfFortressColours[,] pixelMatrix)
         {
             var tiles = new Tile[pixelMatrix.GetLength(0) / 3, pixelMatrix.GetLength(1) / 3];
 
-            // TODO this assumes the micro tile set. Do something about that...
+            // This assumes the micro tile set. Do something about that...
             for (var x = 0; x < pixelMatrix.GetLength(0); x += 3)
             {
                 for (var y = 0; y < pixelMatrix.GetLength(1); y += 3)
@@ -92,7 +76,7 @@ namespace DFWin.Core.Services
                     for (var pos = 0; pos < bits.Length; pos++)
                     {
                         var pixel = pixelMatrix[x + (pos % 3), y + (pos / 3)];
-                        bits[pos] = !AreRgbEqual(zeroColour, pixel);
+                        bits[pos] = zeroColour != pixel;
 
                         if (bits[pos]) foregroundColor = pixel;
                     }
@@ -106,26 +90,21 @@ namespace DFWin.Core.Services
             return tiles;
         }
 
-        private static bool AreRgbEqual(Color left, Color right)
+        private static DwarfFortressColours[] GetPixels(IReadOnlyList<byte> bytes)
         {
-            return left.R == right.R && left.G == right.G && left.B == right.B;
-        }
-
-        private static Color[] GetPixels(IReadOnlyList<byte> bytes)
-        {
-            var pixels = new Color[bytes.Count / 3];
+            var pixels = new DwarfFortressColours[bytes.Count / 3];
             for (var i = 0; i < bytes.Count; i += 3)
             {
-                pixels[i / 3] = new Color(bytes[i + 2], bytes[i + 1], bytes[i]);
+                pixels[i / 3] = ColourHelpers.GetDwarfFortressColour(bytes[i + 2], bytes[i + 1], bytes[i]);
             }
             return pixels;
         }
 
-        private static Color[,] ToPixelMatrix(IReadOnlyList<Color> pixels, int numberOfPixelsPerRow)
+        private static DwarfFortressColours[,] ToPixelMatrix(IReadOnlyList<DwarfFortressColours> pixels, int numberOfPixelsPerRow)
         {
             var numberOfColumns = numberOfPixelsPerRow;
             var numberOfRows = pixels.Count / numberOfPixelsPerRow;
-            var pixelMatrix = new Color[numberOfColumns, numberOfRows];
+            var pixelMatrix = new DwarfFortressColours[numberOfColumns, numberOfRows];
 
             for (var row = 0; row < numberOfRows; row++)
             {

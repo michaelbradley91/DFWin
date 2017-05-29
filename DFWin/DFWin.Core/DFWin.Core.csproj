@@ -84,11 +84,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\DwarfFortressColours.cs" />
     <Compile Include="Constants\LoadingPhase.cs" />
     <Compile Include="Constants\Names.cs" />
     <Compile Include="Constants\Sizes.cs" />
     <Compile Include="CoreModule.cs" />
     <Compile Include="DfWin.cs" />
+    <Compile Include="Helpers\ColourHelpers.cs" />
     <Compile Include="Helpers\ExceptionHelpers.cs" />
     <Compile Include="Helpers\ProcessHelpers.cs" />
     <Compile Include="Helpers\TaskHelpers.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Services\DwarfFortressInputService.cs" />
     <Compile Include="Services\InputService.cs" />
     <Compile Include="Services\ProcessService.cs" />
+    <Compile Include="Models\Tile.cs" />
     <Compile Include="States\BackupState.cs" />
     <Compile Include="TranslatorManager.cs" />
     <Compile Include="Translators\BackupTranslator.cs" />

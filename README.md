@@ -27,7 +27,8 @@ If at some point DFWin becomes confused, it will revert back to showing Dwarf Fo
 3. Add [this tileset](DFWin/DFWin.Core/Resources/ComputerTileSetMicro.bmp) to data/art.
 4. Clone this repository, build the solution (I use VS 2017) and run the application. You can download [this older example](DFWinTest.zip) of the game to see if it will work.
 
-The init.txt needs to point to the correct tileset for the application to work. I've skipped the opening movie for development, but it will probably work with that enabled too!
+The init.txt needs to point to the correct tileset for the application to work. You should also leave the colours unchanged.<br>
+I've skipped the opening movie for development, but it will probably work with that enabled too!
 
 ## Other bits
 

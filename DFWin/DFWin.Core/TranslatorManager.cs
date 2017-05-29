@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using DFWin.Core.Inputs;
+using DFWin.Core.Models;
 using DFWin.Core.Services;
 using DFWin.Core.Translators;
 

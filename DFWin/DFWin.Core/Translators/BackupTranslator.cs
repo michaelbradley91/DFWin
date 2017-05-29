@@ -1,4 +1,5 @@
 ﻿using DFWin.Core.Inputs;
+using DFWin.Core.Models;
 using DFWin.Core.Services;
 
 namespace DFWin.Core.Translators
