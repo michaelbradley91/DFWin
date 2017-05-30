@@ -25,9 +25,9 @@ namespace DFWin.Screens
         {
             if (!state.HasTiles) return;
 
-            for (var x = 0; x < state.Tiles.GetLength(0); x++)
+            for (var x = 0; x < state.Tiles.Width; x++)
             {
-                for (var y = 0; y < state.Tiles.GetLength(1); y++)
+                for (var y = 0; y < state.Tiles.Height; y++)
                 {
                     DrawBackupTile(screenTools, x, y, state.Tiles[x, y]);
                 }

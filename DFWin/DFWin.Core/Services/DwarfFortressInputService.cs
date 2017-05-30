@@ -4,24 +4,24 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DFWin.Core.Constants;
-using DFWin.Core.User32Extensions;
-using DFWin.Core.User32Extensions.Models;
-using DFWin.Core.User32Extensions.Services;
+using DFWin.Core.PInvoke;
+using DFWin.Core.PInvoke.Models;
+using DFWin.Core.PInvoke.Services;
 using Microsoft.Xna.Framework.Input;
 
 namespace DFWin.Core.Services
 {
-    public interface IDwarfFortressService : IDisposable
+    public interface IDwarfFortressInputService : IDisposable
     {
         void StartScreenScraping();
         void TrySendKeys(params Keys[] keys);
     }
 
-    public class DwarfFortressService : IDwarfFortressService
+    public class DwarfFortressInputService : IDwarfFortressInputService
     {
         private readonly IProcessService processService;
         private readonly IWindowService windowService;
-        private readonly IGameGridService gridGameGridService;
+        private readonly ITilesService tilesService;
         private readonly ITranslatorManager translatorManager;
 
         private bool hasStarted;
@@ -30,12 +30,12 @@ namespace DFWin.Core.Services
 
         private const int MinimumDelay = 10;
         
-        public DwarfFortressService(IProcessService processService, IWindowService windowService,
-            IGameGridService gridGameGridService, ITranslatorManager translatorManager)
+        public DwarfFortressInputService(IProcessService processService, IWindowService windowService,
+            ITilesService tilesService, ITranslatorManager translatorManager)
         {
             this.processService = processService;
             this.windowService = windowService;
-            this.gridGameGridService = gridGameGridService;
+            this.tilesService = tilesService;
             this.translatorManager = translatorManager;
 
             cancellationTokenSource = new CancellationTokenSource();
@@ -81,7 +81,7 @@ namespace DFWin.Core.Services
 
             var dwarfFortressWindow = new Window(process.MainWindowHandle);
             var bitmap = await windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize, true);
-            var tiles = gridGameGridService.ParseScreenshot(bitmap);
+            var tiles = tilesService.ParseScreenshot(bitmap);
 
             translatorManager.TranslateInBackgroundAndUpdateGameInput(tiles);
         }

@@ -7,8 +7,8 @@ namespace DFWin.Core.Translators
 {
     public interface ITranslator
     {
-        bool CanTranslate(Tile[,] tiles);
-        DwarfFortressInput Translate(Tile[,] tiles);
+        bool CanTranslate(Tiles tiles);
+        DwarfFortressInput Translate(Tiles tiles);
     }
 
     public abstract class Translator : ITranslator
@@ -16,7 +16,7 @@ namespace DFWin.Core.Translators
         protected int Width = Sizes.DwarfFortressPreferredGridSize.Width;
         protected int Height = Sizes.DwarfFortressPreferredGridSize.Height;
 
-        public abstract bool CanTranslate(Tile[,] tiles);
-        public abstract DwarfFortressInput Translate(Tile[,] tiles);
+        public abstract bool CanTranslate(Tiles tiles);
+        public abstract DwarfFortressInput Translate(Tiles tiles);
     }
 }

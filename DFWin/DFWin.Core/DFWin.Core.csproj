@@ -77,19 +77,20 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="Validation, Version=2.4.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
       <HintPath>..\packages\Validation.2.4.15\lib\net45\Validation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caches\TranslatorCache.cs" />
     <Compile Include="Constants\DwarfFortressColours.cs" />
     <Compile Include="Constants\LoadingPhase.cs" />
     <Compile Include="Constants\Names.cs" />
     <Compile Include="Constants\Sizes.cs" />
     <Compile Include="CoreModule.cs" />
     <Compile Include="DfWin.cs" />
+    <Compile Include="Helpers\ByteHelpers.cs" />
     <Compile Include="Helpers\ColourHelpers.cs" />
     <Compile Include="Helpers\ExceptionHelpers.cs" />
     <Compile Include="Helpers\ProcessHelpers.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Middleware\IUpdaterMiddleware.cs" />
     <Compile Include="Models\KeyRecording.cs" />
     <Compile Include="Models\Screen.cs" />
+    <Compile Include="Models\Tiles.cs" />
     <Compile Include="Resources\Models\WarmUpProgress.cs" />
     <Compile Include="Resources\Models\WarmUpTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -126,7 +128,7 @@
     <Compile Include="Translators\ITranslator.cs" />
     <Compile Include="UpdateManager.cs" />
     <Compile Include="ScreenManager.cs" />
-    <Compile Include="Services\GameGridService.cs" />
+    <Compile Include="Services\TilesService.cs" />
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\WarmUpService.cs" />
     <Compile Include="States\GameState.cs" />
@@ -135,16 +137,16 @@
     <Compile Include="Updaters\BackupUpdater.cs" />
     <Compile Include="Updaters\Updater.cs" />
     <Compile Include="Updaters\LoadingUpdater.cs" />
-    <Compile Include="User32Extensions\DllImports.cs" />
-    <Compile Include="User32Extensions\Enumerations\WindowState.cs" />
-    <Compile Include="User32Extensions\Exceptions\User32Exception.cs" />
-    <Compile Include="User32Extensions\Models\SystemInformation.cs" />
-    <Compile Include="User32Extensions\Models\Window.cs" />
-    <Compile Include="User32Extensions\Models\WindowDetails.cs" />
-    <Compile Include="User32Extensions\Services\WindowService.cs" />
-    <Compile Include="User32Extensions\Structs\ANIMATIONINFO.cs" />
-    <Compile Include="User32Extensions\User32Extensions.cs" />
-    <Compile Include="User32Extensions\VirtualKeyExtensions.cs" />
+    <Compile Include="PInvoke\DllImports.cs" />
+    <Compile Include="PInvoke\Enumerations\WindowState.cs" />
+    <Compile Include="PInvoke\Exceptions\PInvokeException.cs" />
+    <Compile Include="PInvoke\Models\SystemInformation.cs" />
+    <Compile Include="PInvoke\Models\Window.cs" />
+    <Compile Include="PInvoke\Models\WindowDetails.cs" />
+    <Compile Include="PInvoke\Services\WindowService.cs" />
+    <Compile Include="PInvoke\Structs\ANIMATIONINFO.cs" />
+    <Compile Include="PInvoke\PInvokeExtensions.cs" />
+    <Compile Include="PInvoke\VirtualKeyExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

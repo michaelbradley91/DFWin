@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using System.Threading.Tasks;
+using DFWin.Core.PInvoke.Enumerations;
+using DFWin.Core.PInvoke.Models;
 using DFWin.Core.Services;
-using DFWin.Core.User32Extensions.Enumerations;
-using DFWin.Core.User32Extensions.Models;
 
-namespace DFWin.Core.User32Extensions.Services
+namespace DFWin.Core.PInvoke.Services
 {
     public interface IWindowService
     {

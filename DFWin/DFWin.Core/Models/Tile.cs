@@ -1,4 +1,5 @@
-﻿using DFWin.Core.Constants;
+﻿using System;
+using DFWin.Core.Constants;
 
 namespace DFWin.Core.Models
 {
@@ -11,11 +12,40 @@ namespace DFWin.Core.Models
         public byte TileSetX => (byte)(Value % 16);
         public byte TileSetY => (byte)(Value / 16);
 
+        private readonly int identifier;
+
         public Tile(byte value, DwarfFortressColours foreground, DwarfFortressColours background)
         {
             Value = value;
             Foreground = foreground;
             Background = background;
+
+            identifier = Value + (256 * ((int)Foreground + (256 * (int)Background)));
+        }
+
+        public static readonly Tile BackgroundTile = new Tile(0, DwarfFortressColours.Black, DwarfFortressColours.Black);
+
+        public override int GetHashCode()
+        {
+            return identifier;
+        }
+
+        public Tuple<byte, byte> GetBytes()
+        {
+            return Tuple.Create(Value, (byte)((byte)Foreground + (16 * (byte)Background)));
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == this) return true;
+            var tile = obj as Tile;
+            if (tile == null) return false;
+            return Equals(tile);
+        }
+
+        public bool Equals(Tile tile)
+        {
+            return tile.identifier == identifier;
         }
     }
 }

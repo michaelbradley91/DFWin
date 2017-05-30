@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Autofac;
 using DFWin.Core.Constants;
+using DFWin.Core.PInvoke.Models;
+using DFWin.Core.PInvoke.Services;
 using DFWin.Core.Services;
-using DFWin.Core.User32Extensions.Models;
-using DFWin.Core.User32Extensions.Services;
 
 namespace DFWin.WarmUp
 {

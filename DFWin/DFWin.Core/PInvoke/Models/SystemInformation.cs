@@ -1,6 +1,6 @@
-﻿using DFWin.Core.User32Extensions.Structs;
+﻿using DFWin.Core.PInvoke.Structs;
 
-namespace DFWin.Core.User32Extensions.Models
+namespace DFWin.Core.PInvoke.Models
 {
     public class SystemInformation
     {
@@ -13,7 +13,7 @@ namespace DFWin.Core.User32Extensions.Models
         /// </summary>
         public bool AreWindowStateChangesAnimated()
         {
-            var animationInfo = User32Extensions.GetSystemAnimationInfo();
+            var animationInfo = PInvokeExtensions.GetSystemAnimationInfo();
             return animationInfo.IsWindowRestorationAndMinimisationAnimated;
         }
 
@@ -22,7 +22,7 @@ namespace DFWin.Core.User32Extensions.Models
         /// </summary>
         public void SetWindowStateChangeAnimation(bool enabled)
         {
-            User32Extensions.SetSystemAnimationInfo(new ANIMATIONINFO(enabled));
+            PInvokeExtensions.SetSystemAnimationInfo(new ANIMATIONINFO(enabled));
         }
     }
 }

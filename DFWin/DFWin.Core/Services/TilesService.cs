@@ -10,18 +10,18 @@ using DFWin.Core.Models;
 
 namespace DFWin.Core.Services
 {
-    public interface IGameGridService
+    public interface ITilesService
     {
         /// <summary>
         /// Convert a screenshot of the game to its semantic representation.
         /// Assumes the bitmap is RGB (24 bits per pixel RGB - no alpha)
         /// </summary>
-        Tile[,] ParseScreenshot(Bitmap screenshotOfTheGame);
+        Tiles ParseScreenshot(Bitmap screenshotOfTheGame);
     }
 
-    public class GameGridService : IGameGridService
+    public class TilesService : ITilesService
     {
-        public Tile[,] ParseScreenshot(Bitmap screenshotOfTheGame)
+        public Tiles ParseScreenshot(Bitmap screenshotOfTheGame)
         {
             var bytes = GetBitmapBytes(screenshotOfTheGame);
             var pixels = GetPixels(bytes);
@@ -33,7 +33,7 @@ namespace DFWin.Core.Services
         /// <summary>
         /// Initialises a dummy array of tiles. Note that this assumes the preferred grid size.
         /// </summary>
-        public static Tile[,] InitialTiles
+        public static Tiles InitialTiles
         {
             get
             {
@@ -45,16 +45,16 @@ namespace DFWin.Core.Services
                 {
                     for (var y = 0; y < Sizes.DwarfFortressPreferredGridSize.Height; y++)
                     {
-                        tiles[x, y] = new Tile(0, DwarfFortressColours.Black, DwarfFortressColours.Black);
+                        tiles[x, y] = Tile.BackgroundTile;
                     }
                 }
 
-                return tiles;
+                return new Tiles(tiles);
             }
 
         }
 
-        private static Tile[,] GetTiles(DwarfFortressColours[,] pixelMatrix)
+        private static Tiles GetTiles(DwarfFortressColours[,] pixelMatrix)
         {
             var tiles = new Tile[pixelMatrix.GetLength(0) / 3, pixelMatrix.GetLength(1) / 3];
 
@@ -87,7 +87,7 @@ namespace DFWin.Core.Services
                     tiles[x / 3, y / 3] = new Tile(value[0], foregroundColor, backgroundColor);
                 }
             }
-            return tiles;
+            return new Tiles(tiles);
         }
 
         private static DwarfFortressColours[] GetPixels(IReadOnlyList<byte> bytes)

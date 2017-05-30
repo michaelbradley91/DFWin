@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using PInvoke;
 
-namespace DFWin.Core.User32Extensions
+namespace DFWin.Core.PInvoke
 {
     public static class VirtualKeyExtensions
     {

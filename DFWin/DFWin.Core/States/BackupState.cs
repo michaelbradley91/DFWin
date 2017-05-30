@@ -1,14 +1,13 @@
 ﻿using DFWin.Core.Models;
-using DFWin.Core.Services;
 
 namespace DFWin.Core.States
 {
     public class BackupState : IScreenState
     {
         public bool HasTiles => Tiles != null;
-        public Tile[,] Tiles { get; }
+        public Tiles Tiles { get; }
 
-        public BackupState(Tile[,] tiles)
+        public BackupState(Tiles tiles)
         {
             Tiles = tiles;
         }

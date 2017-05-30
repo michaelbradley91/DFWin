@@ -8,12 +8,12 @@ namespace DFWin.Core.Translators
 
     public class BackupTranslator : Translator, IBackupTranslator
     {
-        public override bool CanTranslate(Tile[,] tiles)
+        public override bool CanTranslate(Tiles tiles)
         {
             return true;
         }
 
-        public override DwarfFortressInput Translate(Tile[,] tiles)
+        public override DwarfFortressInput Translate(Tiles tiles)
         {
             return new DwarfFortressInput(tiles);
         }

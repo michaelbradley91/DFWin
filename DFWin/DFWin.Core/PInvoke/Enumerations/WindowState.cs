@@ -1,7 +1,7 @@
 ﻿using System;
 using PInvoke;
 
-namespace DFWin.Core.User32Extensions.Enumerations
+namespace DFWin.Core.PInvoke.Enumerations
 {
     public enum WindowState
     {

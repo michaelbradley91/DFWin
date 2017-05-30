@@ -10,6 +10,7 @@ namespace DFWin.Core
             RegisterUpdaters(builder);
             RegisterMiddleware(builder);
             RegisterTranslators(builder);
+            RegisterCaches(builder);
 
             builder.RegisterType<ScreenManager>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<UpdateManager>().AsImplementedInterfaces().SingleInstance();
@@ -51,6 +52,15 @@ namespace DFWin.Core
         {
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .Where(t => t.Name.EndsWith("Translator"))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .SingleInstance();
+        }
+
+        private void RegisterCaches(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(t => t.Name.EndsWith("Cache"))
                 .AsSelf()
                 .AsImplementedInterfaces()
                 .SingleInstance();

@@ -1,8 +1,8 @@
 ﻿using System.Runtime.InteropServices;
-using DFWin.Core.User32Extensions.Exceptions;
+using DFWin.Core.PInvoke.Exceptions;
 using PInvoke;
 
-namespace DFWin.Core.User32Extensions.Models
+namespace DFWin.Core.PInvoke.Models
 {
     public class WindowDetails
     {
@@ -28,7 +28,7 @@ namespace DFWin.Core.User32Extensions.Models
         public void EnsureLayered()
         {
             var result = DllImports.SetWindowLong(window.WindowPointer, Style, (User32.SetWindowLongFlags)WindowDetailsAsInt | User32.SetWindowLongFlags.WS_EX_LAYERED);
-            if (result == 0) throw new User32Exception("Unable to ensure the window was layered.", Marshal.GetLastWin32Error());
+            if (result == 0) throw new PInvokeException("Unable to ensure the window was layered.", Marshal.GetLastWin32Error());
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace DFWin.Core.User32Extensions.Models
         public void SetDetails(int windowDetailsAsInt)
         {
             var result = DllImports.SetWindowLong(window.WindowPointer, Style, (User32.SetWindowLongFlags)windowDetailsAsInt);
-            if (result == 0) throw new User32Exception("Unable to set window long.", Marshal.GetLastWin32Error());
+            if (result == 0) throw new PInvokeException("Unable to set window long.", Marshal.GetLastWin32Error());
         }
     }
 }

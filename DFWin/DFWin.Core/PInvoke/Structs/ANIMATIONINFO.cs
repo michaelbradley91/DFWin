@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace DFWin.Core.User32Extensions.Structs
+namespace DFWin.Core.PInvoke.Structs
 {
     // ReSharper disable once InconsistentNaming
     /// <summary>

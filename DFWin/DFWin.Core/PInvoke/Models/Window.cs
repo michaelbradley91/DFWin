@@ -2,11 +2,11 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using DFWin.Core.User32Extensions.Enumerations;
-using DFWin.Core.User32Extensions.Exceptions;
+using DFWin.Core.PInvoke.Enumerations;
+using DFWin.Core.PInvoke.Exceptions;
 using PInvoke;
 
-namespace DFWin.Core.User32Extensions.Models
+namespace DFWin.Core.PInvoke.Models
 {
     /// <summary>
     /// An abstract representation of a window. Use this to more conveniently call down to User32 methods.
@@ -29,13 +29,13 @@ namespace DFWin.Core.User32Extensions.Models
         /// <summary>
         /// The rectangle of the window, including its title bars and scroll bars.
         /// </summary>
-        public Rectangle WindowRectangle => User32Extensions.GetWindowRectangle(WindowPointer);
+        public Rectangle WindowRectangle => PInvokeExtensions.GetWindowRectangle(WindowPointer);
 
         /// <summary>
         /// The rectangle of the client window, which is the area inside any immediate scroll / title bars.
         /// This is the area Dwarf Fortress is actually running in.
         /// </summary>
-        public Rectangle ClientRectangle => User32Extensions.GetClientRectangle(WindowPointer);
+        public Rectangle ClientRectangle => PInvokeExtensions.GetClientRectangle(WindowPointer);
 
         public WindowDetails Details { get; }
 
@@ -75,7 +75,7 @@ namespace DFWin.Core.User32Extensions.Models
             const int layeredWindowAlphaFlag = 0x2;
 
             var result = DllImports.SetLayeredWindowAttributes(WindowPointer, 0, isTransparent ? (byte)1 : (byte)0, layeredWindowAlphaFlag);
-            if (result == 0) throw new User32Exception("Unable to set window transparency.", Marshal.GetLastWin32Error());
+            if (result == 0) throw new PInvokeException("Unable to set window transparency.", Marshal.GetLastWin32Error());
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace DFWin.Core.User32Extensions.Models
                 windowRectangle.Y,
                 (windowRectangle.Width - clientRectangle.Width) + width,
                 (windowRectangle.Height - clientRectangle.Height) + height, redrawIfResized);
-            if (!succeeded) throw new User32Exception("Unable to resize client rectangle.", Marshal.GetLastWin32Error());
+            if (!succeeded) throw new PInvokeException("Unable to resize client rectangle.", Marshal.GetLastWin32Error());
 
             return true;
         }
@@ -121,7 +121,7 @@ namespace DFWin.Core.User32Extensions.Models
             try
             {
                 var succeeded = User32.PrintWindow(WindowPointer, deviceContext, User32.PrintWindowFlags.PW_CLIENTONLY);
-                if (!succeeded) throw new User32Exception("Unable to take a screenshot of the client area of the window.", Marshal.GetLastWin32Error());
+                if (!succeeded) throw new PInvokeException("Unable to take a screenshot of the client area of the window.", Marshal.GetLastWin32Error());
                 
                 return bitmap;
             }
@@ -158,7 +158,7 @@ namespace DFWin.Core.User32Extensions.Models
         public void GiveFocus()
         {
             var succeeded = User32.SetForegroundWindow(WindowPointer);
-            if (!succeeded) throw new User32Exception("Unable to bring the window to the foreground", Marshal.GetLastWin32Error());
+            if (!succeeded) throw new PInvokeException("Unable to bring the window to the foreground", Marshal.GetLastWin32Error());
         }
     }
 }

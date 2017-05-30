@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using DFWin.Core.User32Extensions.Structs;
+using DFWin.Core.PInvoke.Structs;
 using PInvoke;
 
-namespace DFWin.Core.User32Extensions
+namespace DFWin.Core.PInvoke
 {
     public static class DllImports
     {
         public const string User32 = "user32.dll";
+        public const string MsvCrt = "msvcrt.dll";
 
         [DllImport(User32, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -21,5 +22,8 @@ namespace DFWin.Core.User32Extensions
         /// </summary>
         [DllImport(User32, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int SetWindowLong(IntPtr hWnd, User32.WindowLongIndexFlags nIndex, User32.SetWindowLongFlags dwNewLong);
+
+        [DllImport(MsvCrt, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int MemoryCompare(byte[] bytes1, byte[] bytes2, long count);
     }
 }

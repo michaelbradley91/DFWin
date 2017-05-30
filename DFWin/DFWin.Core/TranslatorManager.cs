@@ -10,7 +10,7 @@ namespace DFWin.Core
 {
     public interface ITranslatorManager
     {
-        void TranslateInBackgroundAndUpdateGameInput(Tile[,] tiles);
+        void TranslateInBackgroundAndUpdateGameInput(Tiles tiles);
     }
 
     public class TranslatorManager : ITranslatorManager
@@ -30,7 +30,7 @@ namespace DFWin.Core
             this.inputService = inputService;
         }
 
-        public void TranslateInBackgroundAndUpdateGameInput(Tile[,] tiles)
+        public void TranslateInBackgroundAndUpdateGameInput(Tiles tiles)
         {
             lock (translatorLock)
             {
@@ -58,7 +58,7 @@ namespace DFWin.Core
             }
         }
 
-        private DwarfFortressInput Translate(Tile[,] tiles)
+        private DwarfFortressInput Translate(Tiles tiles)
         {
             try
             {

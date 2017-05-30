@@ -5,9 +5,9 @@ namespace DFWin.Core.Inputs
 {
     public class DwarfFortressInput
     {
-        public Tile[,] Tiles { get; }
+        public Tiles Tiles { get; }
 
-        public DwarfFortressInput(Tile[,] tiles)
+        public DwarfFortressInput(Tiles tiles)
         {
             Tiles = tiles;
         }
