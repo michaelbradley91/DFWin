@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using DFWin.Core.Caches;
 using DFWin.Core.Inputs;
 using DFWin.Core.Models;
 using DFWin.Core.Services;
@@ -18,16 +19,19 @@ namespace DFWin.Core
         private readonly IEnumerable<ITranslator> translators;
         private readonly IBackupTranslator backupTranslator;
         private readonly IInputService inputService;
+        private readonly ITranslatorCache translatorCache;
 
         private readonly object translatorLock = new object();
         private long translationNumber;
         private long lastSubmittedTranslationNumber;
 
-        public TranslatorManager(IEnumerable<ITranslator> translators, IBackupTranslator backupTranslator, IInputService inputService)
+        public TranslatorManager(IEnumerable<ITranslator> translators, IBackupTranslator backupTranslator, 
+            IInputService inputService, ITranslatorCache translatorCache)
         {
             this.translators = translators;
             this.backupTranslator = backupTranslator;
             this.inputService = inputService;
+            this.translatorCache = translatorCache;
         }
 
         public void TranslateInBackgroundAndUpdateGameInput(Tiles tiles)
@@ -35,6 +39,15 @@ namespace DFWin.Core
             lock (translatorLock)
             {
                 translationNumber++;
+                var inCache = translatorCache.TryGet(tiles, out DwarfFortressInput cachedDwarfFortressInput);
+                if (inCache)
+                {
+                    lastSubmittedTranslationNumber = translationNumber;
+                    inputService.SetDwarfFortressInput(cachedDwarfFortressInput);
+                    return;
+                }
+
+                // Take a copy so that when the task runs, it keeps the same translation number.
                 var myTranslationNumber = translationNumber;
 
                 ThreadPool.QueueUserWorkItem(t =>
@@ -42,6 +55,7 @@ namespace DFWin.Core
                     try
                     {
                         var dwarfFortressInput = Translate(tiles);
+                        translatorCache.Cache(tiles, dwarfFortressInput);
                         lock (translatorLock)
                         {
                             if (lastSubmittedTranslationNumber >= myTranslationNumber) return;
