@@ -1,6 +1,7 @@
 ﻿using System;
 using DFWin.Core;
 using DFWin.Core.Constants;
+using DFWin.Core.Helpers;
 using DFWin.Core.Models;
 using DFWin.Core.Services;
 using DFWin.Core.States;
@@ -25,8 +26,6 @@ namespace DFWin
 
         private GameState gameState;
 
-        private RenderTarget2D renderTarget;
-
         public DwarfFortress(ContentManager contentManager, IScreenManager screenManager,
             IUpdateManager updateManager, IDwarfFortressInputService dwarfFortressInputService)
         {
@@ -39,8 +38,8 @@ namespace DFWin
 
             graphics = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = Sizes.DwarfFortressDefaultScreenSize.Width,
-                PreferredBackBufferHeight = Sizes.DwarfFortressDefaultScreenSize.Height
+                PreferredBackBufferWidth = Sizes.DwarfFortressTargetScreenSize.Width,
+                PreferredBackBufferHeight = Sizes.DwarfFortressTargetScreenSize.Height
             };
 
             Content.RootDirectory = "Content";
@@ -60,12 +59,6 @@ namespace DFWin
 
             CentreWindow();
             dwarfFortressInputService.StartScreenScraping();
-
-            renderTarget = new RenderTarget2D(
-                graphics.GraphicsDevice, Sizes.DwarfFortressDefaultScreenSize.Width, Sizes.DwarfFortressDefaultScreenSize.Height,
-                false, SurfaceFormat.Color, DepthFormat.None,
-                GraphicsDevice.PresentationParameters.MultiSampleCount,
-                RenderTargetUsage.DiscardContents);
         }
 
         private void CentreWindow()
@@ -116,34 +109,33 @@ namespace DFWin
         
         protected override void Draw(GameTime gameTime)
         {
+            var renderTarget = GetRenderTarget();
+
             GraphicsDevice.Clear(Color.Black);
 
             GraphicsDevice.SetRenderTarget(renderTarget);
             spriteBatch.Begin();
 
-            var screenTools = new ScreenTools(GraphicsDevice, spriteBatch);
+            var screenTools = new ScreenTools(spriteBatch);
             screenManager.Draw(gameState, screenTools);
             spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);
 
+            var deviceRectangle = GraphicsDevice.PresentationParameters.Bounds;
+            var destinationRectangle = ScreenHelpers.GetRectangleToAspectFill(deviceRectangle, renderTarget.Bounds);
+
             spriteBatch.Begin();
-            spriteBatch.Draw(renderTarget, CalculateScreenRectangle(screenTools), Color.White);
+            spriteBatch.Draw(renderTarget, destinationRectangle, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
-        private static Rectangle CalculateScreenRectangle(ScreenTools screenTools)
+        private RenderTarget2D GetRenderTarget()
         {
-            var widthRatio = screenTools.ScreenBounds.Width / ((float)screenTools.Width);
-            var heightRatio = screenTools.ScreenBounds.Height / ((float)screenTools.Height);
-            var minRatio = Math.Min(widthRatio, heightRatio);
-            var targetWidth = minRatio * screenTools.Width;
-            var targetHeight = minRatio * screenTools.Height;
-            var topLeftX = (screenTools.ScreenBounds.Width - targetWidth) / 2;
-            var topLeftY = (screenTools.ScreenBounds.Height - targetHeight) / 2;
-            return new RectangleF(topLeftX, topLeftY, targetWidth, targetHeight).ToRectangle();
+            if (gameState.ScreenState is BackupState) return contentManager.BackupRenderTarget;
+            return contentManager.MainRenderTarget;
         }
 
         protected override void OnExiting(object sender, EventArgs args)

@@ -1,8 +1,11 @@
-﻿using DFWin.Core.Services;
-using Microsoft.Xna.Framework;
+﻿using System.Drawing;
+using DFWin.Core.Constants;
+using DFWin.Core.Helpers;
+using DFWin.Core.Services;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.TextureAtlases;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace DFWin
 {
@@ -13,6 +16,8 @@ namespace DFWin
         public SpriteFont MediumFont { get; private set; }
         public Song Song { get; private set; }
         public Texture2D BackupTileset { get; private set; }
+        public RenderTarget2D MainRenderTarget { get; private set; }
+        public RenderTarget2D BackupRenderTarget { get; private set; }
 
         public const int BackupTileDiameter = 16;
         public TextureRegion2D[,] BackupTiles { get; private set; }
@@ -23,6 +28,8 @@ namespace DFWin
             MediumFont = content.Load<SpriteFont>("Px437_IBM_BIOS_Font");
             Song = content.Load<Song>("Vindsvept - Heart of Ice");
             BackupTileset = content.Load<Texture2D>("BackupTileSet");
+            MainRenderTarget = ScreenHelpers.CreateRenderTarget(graphicsDevice, Sizes.DwarfFortressTargetScreenSize);
+            BackupRenderTarget = ScreenHelpers.CreateRenderTarget(graphicsDevice, Sizes.BackupScreenSize);
 
             WhiteRectangle = new Texture2D(graphicsDevice, 1, 1);
             WhiteRectangle.SetData(new[] { Color.White });

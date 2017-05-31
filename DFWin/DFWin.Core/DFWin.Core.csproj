@@ -94,6 +94,7 @@
     <Compile Include="Helpers\ColourHelpers.cs" />
     <Compile Include="Helpers\ExceptionHelpers.cs" />
     <Compile Include="Helpers\ProcessHelpers.cs" />
+    <Compile Include="Helpers\ScreenHelpers.cs" />
     <Compile Include="Helpers\TaskHelpers.cs" />
     <Compile Include="Inputs\DwarfFortressInput.cs" />
     <Compile Include="Inputs\GameInput.cs" />

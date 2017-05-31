@@ -13,8 +13,8 @@ namespace DFWin.Core.Translators
 
     public abstract class Translator : ITranslator
     {
-        protected int Width = Sizes.DwarfFortressPreferredGridSize.Width;
-        protected int Height = Sizes.DwarfFortressPreferredGridSize.Height;
+        protected int Width = Sizes.DwarfFortressGridSize.Width;
+        protected int Height = Sizes.DwarfFortressGridSize.Height;
 
         public abstract bool CanTranslate(Tiles tiles);
         public abstract DwarfFortressInput Translate(Tiles tiles);

@@ -38,15 +38,7 @@ namespace DFWin.Screens
         {
             var sourceRectangle = new Rectangle(TileDiameter * tile.TileSetX, TileDiameter * tile.TileSetY, TileDiameter, TileDiameter);
 
-            var tileWidth = (screenTools.Width - (WindowBorder * 2)) / Sizes.DwarfFortressPreferredGridSize.Width;
-            var tileHeight = (screenTools.Height - (WindowBorder * 2)) / Sizes.DwarfFortressPreferredGridSize.Height;
-
-            var destinationTileSize = Math.Min(tileWidth, tileHeight);
-
-            var destinationXOffset = (screenTools.Width - ((destinationTileSize * Sizes.DwarfFortressPreferredGridSize.Width) + (WindowBorder * 2))) / 2;
-            var destinationYOffset = (screenTools.Height - ((destinationTileSize * Sizes.DwarfFortressPreferredGridSize.Height) + (WindowBorder * 2))) / 2;
-
-            var destinationRectangle = new Rectangle(destinationXOffset + (x * destinationTileSize), destinationYOffset + (y * destinationTileSize), destinationTileSize, destinationTileSize);
+            var destinationRectangle = new Rectangle(WindowBorder + (x * 16), WindowBorder + (y * 16), 16, 16);
 
             screenTools.SpriteBatch.Draw(WhiteRectangle, destinationRectangle, tile.Background.ToColour());
             screenTools.SpriteBatch.Draw(contentManager.BackupTileset, destinationRectangle, sourceRectangle, tile.Foreground.ToColour());

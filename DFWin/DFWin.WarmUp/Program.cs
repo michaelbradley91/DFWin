@@ -30,7 +30,7 @@ namespace DFWin.WarmUp
 
             var dwarfFortressWindow = new Window(dwarfFortressProcess.MainWindowHandle);
 
-            await windowService.PrepareForCapture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize);
+            await windowService.PrepareForCapture(dwarfFortressWindow, Sizes.DwarfFortressClientSize);
 
             try
             {
@@ -40,7 +40,7 @@ namespace DFWin.WarmUp
                 while (totalStopWatch.Elapsed < TimeSpan.FromSeconds(15))
                 {
                     stopWatch.Start();
-                    await windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize);
+                    await windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressClientSize);
                     stopWatch.Stop();
 
                     Console.WriteLine($@"Capture took: {stopWatch.Elapsed.TotalMilliseconds}");

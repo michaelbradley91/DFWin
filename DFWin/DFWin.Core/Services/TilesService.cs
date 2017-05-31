@@ -38,12 +38,12 @@ namespace DFWin.Core.Services
             get
             {
                 var tiles = new Tile[
-                    Sizes.DwarfFortressPreferredGridSize.Width,
-                    Sizes.DwarfFortressPreferredGridSize.Height];
+                    Sizes.DwarfFortressGridSize.Width,
+                    Sizes.DwarfFortressGridSize.Height];
 
-                for (var x = 0; x < Sizes.DwarfFortressPreferredGridSize.Width; x++)
+                for (var x = 0; x < Sizes.DwarfFortressGridSize.Width; x++)
                 {
-                    for (var y = 0; y < Sizes.DwarfFortressPreferredGridSize.Height; y++)
+                    for (var y = 0; y < Sizes.DwarfFortressGridSize.Height; y++)
                     {
                         tiles[x, y] = Tile.BackgroundTile;
                     }

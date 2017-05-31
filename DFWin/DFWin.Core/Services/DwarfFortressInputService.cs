@@ -80,7 +80,7 @@ namespace DFWin.Core.Services
             if (!processService.TryGetDwarfFortressProcess(out Process process)) return;
 
             var dwarfFortressWindow = new Window(process.MainWindowHandle);
-            var bitmap = await windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressPreferredClientSize, true);
+            var bitmap = await windowService.Capture(dwarfFortressWindow, Sizes.DwarfFortressClientSize, true);
             var tiles = tilesService.ParseScreenshot(bitmap);
 
             translatorManager.TranslateInBackgroundAndUpdateGameInput(tiles);

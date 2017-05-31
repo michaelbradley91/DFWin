@@ -6,17 +6,15 @@ namespace DFWin.Core.Models
 {
     public class ScreenTools
     {
-        public GraphicsDevice GraphicsDevice { get; }
         public SpriteBatch SpriteBatch { get; }
 
-        public ScreenTools(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
+        public ScreenTools(SpriteBatch spriteBatch)
         {
-            GraphicsDevice = graphicsDevice;
             SpriteBatch = spriteBatch;
         }
 
-        public int Width => Sizes.DwarfFortressDefaultScreenSize.Width;
-        public int Height => Sizes.DwarfFortressDefaultScreenSize.Height;
-        public Rectangle ScreenBounds => GraphicsDevice.PresentationParameters.Bounds;
+        public int Width => Sizes.DwarfFortressTargetScreenSize.Width;
+        public int Height => Sizes.DwarfFortressTargetScreenSize.Height;
+        public Rectangle Bounds => new Rectangle(0, 0, Width, Height);
     }
 }
