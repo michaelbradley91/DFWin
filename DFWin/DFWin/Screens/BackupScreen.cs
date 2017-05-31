@@ -1,4 +1,4 @@
-﻿using System;
+﻿using DFWin.Attributes;
 using DFWin.Core.Constants;
 using DFWin.Core.Helpers;
 using DFWin.Core.Models;
@@ -8,13 +8,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DFWin.Screens
 {
+    [TargetScreenSize(Sizes.BackupTargetScreenWidth, Sizes.BackupTargetScreenHeight)]
     public class BackupScreen : Screen<BackupState>
     {
         private readonly ContentManager contentManager;
 
         private Texture2D WhiteRectangle => contentManager.WhiteRectangle;
-        private const int TileDiameter = ContentManager.BackupTileDiameter;
-        private const int WindowBorder = 20;
 
         public BackupScreen(ContentManager contentManager)
         {
@@ -36,9 +35,17 @@ namespace DFWin.Screens
 
         private void DrawBackupTile(ScreenTools screenTools, int x, int y, Tile tile)
         {
-            var sourceRectangle = new Rectangle(TileDiameter * tile.TileSetX, TileDiameter * tile.TileSetY, TileDiameter, TileDiameter);
+            var sourceRectangle = new Rectangle(
+                Sizes.BackupTileSize * tile.TileSetX, 
+                Sizes.BackupTileSize * tile.TileSetY, 
+                Sizes.BackupTileSize, 
+                Sizes.BackupTileSize);
 
-            var destinationRectangle = new Rectangle(WindowBorder + (x * 16), WindowBorder + (y * 16), 16, 16);
+            var destinationRectangle = new Rectangle(
+                Sizes.BackupScreenBorder.Width + (x * Sizes.BackupTileSize),
+                Sizes.BackupScreenBorder.Height + (y * Sizes.BackupTileSize),
+                Sizes.BackupTileSize,
+                Sizes.BackupTileSize);
 
             screenTools.SpriteBatch.Draw(WhiteRectangle, destinationRectangle, tile.Background.ToColour());
             screenTools.SpriteBatch.Draw(contentManager.BackupTileset, destinationRectangle, sourceRectangle, tile.Foreground.ToColour());

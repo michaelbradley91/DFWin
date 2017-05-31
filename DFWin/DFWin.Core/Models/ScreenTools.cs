@@ -13,8 +13,8 @@ namespace DFWin.Core.Models
             SpriteBatch = spriteBatch;
         }
 
-        public int Width => Sizes.DwarfFortressTargetScreenSize.Width;
-        public int Height => Sizes.DwarfFortressTargetScreenSize.Height;
+        public int Width => Sizes.DefaultTargetScreenSize.Width;
+        public int Height => Sizes.DefaultTargetScreenSize.Height;
         public Rectangle Bounds => new Rectangle(0, 0, Width, Height);
     }
 }

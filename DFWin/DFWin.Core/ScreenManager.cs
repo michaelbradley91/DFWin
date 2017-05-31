@@ -10,19 +10,21 @@ namespace DFWin.Core
     public interface IScreenManager
     {
         void Draw(GameState gameState, ScreenTools screenTools);
+        IScreen GetCurrentScreen(GameState gameState);
+        IReadOnlyCollection<IScreen> AllScreens { get; }
     }
 
     public class ScreenManager : IScreenManager
     {
-        private readonly IEnumerable<IScreenMiddleware> middleware;
-        private readonly ICollection<IScreen> screens;
+        public IReadOnlyCollection<IScreen> AllScreens { get; }
 
+        private readonly IEnumerable<IScreenMiddleware> middleware;
         private readonly Dictionary<Type, IScreen> screenByState = new Dictionary<Type, IScreen>();
 
         public ScreenManager(IEnumerable<IScreenMiddleware> middleware, IEnumerable<IScreen> screens)
         {
             this.middleware = middleware;
-            this.screens = screens.ToList();
+            AllScreens = screens.ToList();
         }
 
         public void Draw(GameState gameState, ScreenTools screenTools)
@@ -42,13 +44,13 @@ namespace DFWin.Core
             }
         }
 
-        private IScreen GetCurrentScreen(GameState gameState)
+        public IScreen GetCurrentScreen(GameState gameState)
         {
             var success = screenByState.TryGetValue(gameState.ScreenState.GetType(), out IScreen screen);
             if (success) return screen;
 
             var screenName = GetScreenName(gameState.ScreenState);
-            screen = screens.Single(s => s.GetType().Name == screenName);
+            screen = AllScreens.Single(s => s.GetType().Name == screenName);
 
             screenByState[gameState.ScreenState.GetType()] = screen;
 

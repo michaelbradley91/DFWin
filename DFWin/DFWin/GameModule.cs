@@ -10,6 +10,7 @@ namespace DFWin
             builder.RegisterType<DwarfFortress>().AsSelf().SingleInstance();
             builder.RegisterType<WarmUpConfiguration>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ContentManager>().AsSelf().SingleInstance();
+            builder.Register(c => ThisAssembly).AsSelf().SingleInstance();
 
             RegisterScreens(builder);
             RegisterMiddleware(builder);

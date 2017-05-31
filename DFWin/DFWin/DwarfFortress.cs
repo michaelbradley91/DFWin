@@ -38,8 +38,8 @@ namespace DFWin
 
             graphics = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = Sizes.DwarfFortressTargetScreenSize.Width,
-                PreferredBackBufferHeight = Sizes.DwarfFortressTargetScreenSize.Height
+                PreferredBackBufferWidth = Sizes.DefaultTargetScreenSize.Width,
+                PreferredBackBufferHeight = Sizes.DefaultTargetScreenSize.Height
             };
 
             Content.RootDirectory = "Content";
@@ -109,7 +109,7 @@ namespace DFWin
         
         protected override void Draw(GameTime gameTime)
         {
-            var renderTarget = GetRenderTarget();
+            var renderTarget = contentManager.GetRenderTarget(gameState);
 
             GraphicsDevice.Clear(Color.Black);
 
@@ -130,12 +130,6 @@ namespace DFWin
             spriteBatch.End();
 
             base.Draw(gameTime);
-        }
-
-        private RenderTarget2D GetRenderTarget()
-        {
-            if (gameState.ScreenState is BackupState) return contentManager.BackupRenderTarget;
-            return contentManager.MainRenderTarget;
         }
 
         protected override void OnExiting(object sender, EventArgs args)
