@@ -9,7 +9,7 @@ namespace DFWin.Core.Translators
     {
         public bool CanTranslate(Tiles tiles)
         {
-            var text = tiles.GetLines();
+            var text = tiles.GetText();
             Debug.WriteLine(string.Join(Environment.NewLine, text));
             return false;
         }

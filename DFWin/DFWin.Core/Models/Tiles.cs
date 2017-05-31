@@ -42,7 +42,7 @@ namespace DFWin.Core.Models
         /// <summary>
         /// Returns a string per line representing the text on that line.
         /// </summary>
-        public IReadOnlyList<string> GetLines()
+        public IReadOnlyList<string> GetText()
         {
             var strs = new string[Height];
             var chars = new char[Width];
