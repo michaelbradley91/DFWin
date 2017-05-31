@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using DFWin.Core.Helpers;
-using DFWin.Core.Inputs;
 
 namespace DFWin.Core.Models
 {

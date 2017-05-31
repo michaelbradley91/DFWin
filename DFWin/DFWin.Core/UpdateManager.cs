@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DFWin.Core.Inputs;
 using DFWin.Core.Middleware;
 using DFWin.Core.Services;
 using DFWin.Core.States;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using DFWin.Core.Constants;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;

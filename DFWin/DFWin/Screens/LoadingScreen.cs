@@ -1,7 +1,6 @@
 ﻿using System;
 using DFWin.Core.Constants;
 using DFWin.Core.Models;
-using DFWin.Core.Services;
 using DFWin.Core.States;
 using DFWin.Styles;
 using Microsoft.Xna.Framework;
