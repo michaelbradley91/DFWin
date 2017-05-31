@@ -1,5 +1,6 @@
 ﻿using System;
 using DFWin.Core.Constants;
+using DFWin.Core.Helpers;
 
 namespace DFWin.Core.Models
 {
@@ -24,6 +25,15 @@ namespace DFWin.Core.Models
         }
 
         public static readonly Tile BackgroundTile = new Tile(0, DwarfFortressColours.Black, DwarfFortressColours.Black);
+
+        /// <summary>
+        /// Returns the character represented by this tile. If the tile is not a character, this
+        /// returns a space.
+        /// </summary>
+        public char GetCharacter()
+        {
+            return TileHelpers.CharacterMap[Value];
+        }
 
         public override int GetHashCode()
         {

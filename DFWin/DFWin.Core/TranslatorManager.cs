@@ -78,6 +78,7 @@ namespace DFWin.Core
             {
                 foreach (var translator in translators)
                 {
+                    if (translator == backupTranslator) continue;
                     if (translator.CanTranslate(tiles))
                     {
                         return translator.Translate(tiles);

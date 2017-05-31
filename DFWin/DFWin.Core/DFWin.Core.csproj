@@ -96,6 +96,7 @@
     <Compile Include="Helpers\ProcessHelpers.cs" />
     <Compile Include="Helpers\ScreenHelpers.cs" />
     <Compile Include="Helpers\TaskHelpers.cs" />
+    <Compile Include="Helpers\TileHelpers.cs" />
     <Compile Include="Inputs\DwarfFortressInput.cs" />
     <Compile Include="Inputs\GameInput.cs" />
     <Compile Include="Inputs\KeyboardInput.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="TranslatorManager.cs" />
     <Compile Include="Translators\BackupTranslator.cs" />
     <Compile Include="Translators\ITranslator.cs" />
+    <Compile Include="Translators\StartTranslator.cs" />
     <Compile Include="UpdateManager.cs" />
     <Compile Include="ScreenManager.cs" />
     <Compile Include="Services\TilesService.cs" />

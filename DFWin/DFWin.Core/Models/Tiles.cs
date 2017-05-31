@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using DFWin.Core.Helpers;
 using DFWin.Core.Inputs;
 
@@ -36,6 +37,24 @@ namespace DFWin.Core.Models
                     return Tile.BackgroundTile;
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns a string per line representing the text on that line.
+        /// </summary>
+        public IReadOnlyList<string> GetLines()
+        {
+            var strs = new string[Height];
+            var chars = new char[Width];
+            for (var y = 0; y < Height; y++)
+            {
+                for (var x = 0; x < Width; x++)
+                {
+                    chars[x] = this[x, y].GetCharacter();
+                }
+                strs[y] = new string(chars);
+            }
+            return strs;
         }
         
         private static int ComputeHashCode(Tile[,] tiles)
