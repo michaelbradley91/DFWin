@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DFWin.Core.Constants;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace DFWin.Core.Models
@@ -14,8 +15,8 @@ namespace DFWin.Core.Models
             SpriteBatch = spriteBatch;
         }
 
-        public int Width => ScreenBounds.Width;
-        public int Height => ScreenBounds.Height;
+        public int Width => Sizes.DwarfFortressDefaultScreenSize.Width;
+        public int Height => Sizes.DwarfFortressDefaultScreenSize.Height;
         public Rectangle ScreenBounds => GraphicsDevice.PresentationParameters.Bounds;
     }
 }

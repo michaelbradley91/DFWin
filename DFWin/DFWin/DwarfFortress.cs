@@ -7,6 +7,7 @@ using DFWin.Core.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using MonoGame.Extended;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
 
@@ -23,6 +24,8 @@ namespace DFWin
         private SpriteBatch spriteBatch;
 
         private GameState gameState;
+
+        private RenderTarget2D renderTarget;
 
         public DwarfFortress(ContentManager contentManager, IScreenManager screenManager,
             IUpdateManager updateManager, IDwarfFortressInputService dwarfFortressInputService)
@@ -57,6 +60,12 @@ namespace DFWin
 
             CentreWindow();
             dwarfFortressInputService.StartScreenScraping();
+
+            renderTarget = new RenderTarget2D(
+                graphics.GraphicsDevice, Sizes.DwarfFortressDefaultScreenSize.Width, Sizes.DwarfFortressDefaultScreenSize.Height,
+                false, SurfaceFormat.Color, DepthFormat.None,
+                GraphicsDevice.PresentationParameters.MultiSampleCount,
+                RenderTargetUsage.DiscardContents);
         }
 
         private void CentreWindow()
@@ -109,14 +118,32 @@ namespace DFWin
         {
             GraphicsDevice.Clear(Color.Black);
 
+            GraphicsDevice.SetRenderTarget(renderTarget);
             spriteBatch.Begin();
 
             var screenTools = new ScreenTools(GraphicsDevice, spriteBatch);
             screenManager.Draw(gameState, screenTools);
+            spriteBatch.End();
 
+            GraphicsDevice.SetRenderTarget(null);
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(renderTarget, CalculateScreenRectangle(screenTools), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private static Rectangle CalculateScreenRectangle(ScreenTools screenTools)
+        {
+            var widthRatio = screenTools.ScreenBounds.Width / ((float)screenTools.Width);
+            var heightRatio = screenTools.ScreenBounds.Height / ((float)screenTools.Height);
+            var minRatio = Math.Min(widthRatio, heightRatio);
+            var targetWidth = minRatio * screenTools.Width;
+            var targetHeight = minRatio * screenTools.Height;
+            var topLeftX = (screenTools.ScreenBounds.Width - targetWidth) / 2;
+            var topLeftY = (screenTools.ScreenBounds.Height - targetHeight) / 2;
+            return new RectangleF(topLeftX, topLeftY, targetWidth, targetHeight).ToRectangle();
         }
 
         protected override void OnExiting(object sender, EventArgs args)

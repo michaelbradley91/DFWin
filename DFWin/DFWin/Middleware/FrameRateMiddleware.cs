@@ -18,7 +18,9 @@ namespace DFWin.Middleware
         public void Draw(GameState gameState, ScreenTools screenTools, Action<GameState, ScreenTools> next)
         {
             next(gameState, screenTools);
+#if DEBUG
             screenTools.SpriteBatch.DrawString(contentManager.MediumFont, "FPS: " + gameState.FrameRate, new Vector2(0, 0), Color.White);
+#endif
         }
     }
 }

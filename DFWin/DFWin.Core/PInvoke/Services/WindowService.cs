@@ -42,9 +42,6 @@ namespace DFWin.Core.PInvoke.Services
                 }
 
                 window.EnsureLayered();
-#if !DEBUG
-                window.SetTransparency(true);
-#endif
                 window.SetState(WindowState.Restored);
                 window.Redraw();
 
