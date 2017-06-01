@@ -1,4 +1,5 @@
 ﻿using DFWin.Core.Inputs;
+using DFWin.Core.Inputs.DwarfFortress;
 using DFWin.Core.Models;
 
 namespace DFWin.Core.Translators
@@ -7,9 +8,9 @@ namespace DFWin.Core.Translators
 
     public class BackupTranslator : Translator, IBackupTranslator
     {
-        public override DwarfFortressInput TranslateOrNull(Tiles tiles)
+        public override IDwarfFortressInput TranslateOrNull(Tiles tiles)
         {
-            return new DwarfFortressInput(tiles);
+            return new BackupInput(tiles);
         }
     }
 }

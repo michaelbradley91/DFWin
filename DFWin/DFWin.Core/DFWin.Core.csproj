@@ -97,7 +97,8 @@
     <Compile Include="Helpers\ScreenHelpers.cs" />
     <Compile Include="Helpers\TaskHelpers.cs" />
     <Compile Include="Helpers\TileHelpers.cs" />
-    <Compile Include="Inputs\DwarfFortressInput.cs" />
+    <Compile Include="Inputs\DwarfFortress\BackupInput.cs" />
+    <Compile Include="Inputs\DwarfFortress\DwarfFortressInput.cs" />
     <Compile Include="Inputs\GameInput.cs" />
     <Compile Include="Inputs\KeyboardInput.cs" />
     <Compile Include="Inputs\UserInput.cs" />

@@ -1,8 +1,13 @@
 ﻿using DFWin.Core.Models;
 
-namespace DFWin.Core.Inputs
+namespace DFWin.Core.Inputs.DwarfFortress
 {
-    public class DwarfFortressInput
+    public interface IDwarfFortressInput
+    {
+        Tiles Tiles { get; }
+    }
+
+    public class DwarfFortressInput : IDwarfFortressInput
     {
         public Tiles Tiles { get; }
 

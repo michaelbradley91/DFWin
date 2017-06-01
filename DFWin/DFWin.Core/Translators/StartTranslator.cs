@@ -1,16 +1,21 @@
-﻿using System;
-using System.Diagnostics;
-using DFWin.Core.Inputs;
+﻿using System.Linq;
+using DFWin.Core.Inputs.DwarfFortress;
 using DFWin.Core.Models;
 
 namespace DFWin.Core.Translators
 {
     public class StartTranslator : Translator
     {
-        public override DwarfFortressInput TranslateOrNull(Tiles tiles)
+        public override IDwarfFortressInput TranslateOrNull(Tiles tiles)
         {
-            Debug.WriteLine(string.Join(Environment.NewLine, tiles.Text));
+            if (!IsStartScreen(tiles)) return null;            
+            
             return null;
+        }
+
+        private bool IsStartScreen(Tiles tiles)
+        {
+            return tiles.Text.Any(t => t.Contains("Start Playing"));
         }
     }
 }

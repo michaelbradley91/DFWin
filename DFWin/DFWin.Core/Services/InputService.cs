@@ -2,6 +2,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 using DFWin.Core.Inputs;
+using DFWin.Core.Inputs.DwarfFortress;
 using DFWin.Core.Models;
 using DFWin.Core.States;
 using Microsoft.Xna.Framework.Input;
@@ -13,13 +14,13 @@ namespace DFWin.Core.Services
         GameState UpdateInput(GameState previousState);
 
         void SetWarmUpInput(WarmUpInput warmUpInput);
-        void SetDwarfFortressInput(DwarfFortressInput dwarfFortressInput);
+        void SetDwarfFortressInput(IDwarfFortressInput dwarfFortressInput);
     }
 
     public class InputService : IInputService
     {
         private WarmUpInput warmUpInput = WarmUpInput.None;
-        private DwarfFortressInput dwarfFortressInput = DwarfFortressInput.None;
+        private IDwarfFortressInput dwarfFortressInput = DwarfFortressInput.None;
 
         private readonly object inputLock = new object();
 
@@ -59,7 +60,7 @@ namespace DFWin.Core.Services
             }
         }
 
-        public void SetDwarfFortressInput(DwarfFortressInput updatedInput)
+        public void SetDwarfFortressInput(IDwarfFortressInput updatedInput)
         {
             lock (inputLock)
             {

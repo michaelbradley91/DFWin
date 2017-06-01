@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using DFWin.Core.Caches;
-using DFWin.Core.Inputs;
+using DFWin.Core.Inputs.DwarfFortress;
 using DFWin.Core.Models;
 using DFWin.Core.Services;
 using DFWin.Core.Translators;
@@ -39,7 +39,7 @@ namespace DFWin.Core
             lock (translatorLock)
             {
                 translationNumber++;
-                var inCache = translatorCache.TryGet(tiles, out DwarfFortressInput cachedDwarfFortressInput);
+                var inCache = translatorCache.TryGet(tiles, out IDwarfFortressInput cachedDwarfFortressInput);
                 if (inCache)
                 {
                     lastSubmittedTranslationNumber = translationNumber;
@@ -72,23 +72,23 @@ namespace DFWin.Core
             }
         }
 
-        private DwarfFortressInput Translate(Tiles tiles)
+        private IDwarfFortressInput Translate(Tiles tiles)
         {
             try
             {
                 foreach (var translator in translators)
                 {
                     if (translator == backupTranslator) continue;
-                    var success = translator.TryTranslate(tiles, out DwarfFortressInput dwarfFortressInput);
+                    var success = translator.TryTranslate(tiles, out IDwarfFortressInput dwarfFortressInput);
                     if (success) return dwarfFortressInput;
                 }
-                backupTranslator.TryTranslate(tiles, out DwarfFortressInput backupInput);
+                backupTranslator.TryTranslate(tiles, out IDwarfFortressInput backupInput);
                 return backupInput;
             }
             catch (Exception e)
             {
                 DfWin.Error("Failed to translate input initially: " + e);
-                backupTranslator.TryTranslate(tiles, out DwarfFortressInput backupInput);
+                backupTranslator.TryTranslate(tiles, out IDwarfFortressInput backupInput);
                 return backupInput;
             }
         }
