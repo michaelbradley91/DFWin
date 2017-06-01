@@ -79,17 +79,17 @@ namespace DFWin.Core
                 foreach (var translator in translators)
                 {
                     if (translator == backupTranslator) continue;
-                    if (translator.CanTranslate(tiles))
-                    {
-                        return translator.Translate(tiles);
-                    }
+                    var success = translator.TryTranslate(tiles, out DwarfFortressInput dwarfFortressInput);
+                    if (success) return dwarfFortressInput;
                 }
-                return backupTranslator.Translate(tiles);
+                backupTranslator.TryTranslate(tiles, out DwarfFortressInput backupInput);
+                return backupInput;
             }
             catch (Exception e)
             {
                 DfWin.Error("Failed to translate input initially: " + e);
-                return backupTranslator.Translate(tiles);
+                backupTranslator.TryTranslate(tiles, out DwarfFortressInput backupInput);
+                return backupInput;
             }
         }
     }

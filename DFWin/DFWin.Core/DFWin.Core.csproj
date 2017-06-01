@@ -127,7 +127,7 @@
     <Compile Include="States\BackupState.cs" />
     <Compile Include="TranslatorManager.cs" />
     <Compile Include="Translators\BackupTranslator.cs" />
-    <Compile Include="Translators\ITranslator.cs" />
+    <Compile Include="Translators\Translator.cs" />
     <Compile Include="Translators\StartTranslator.cs" />
     <Compile Include="UpdateManager.cs" />
     <Compile Include="ScreenManager.cs" />

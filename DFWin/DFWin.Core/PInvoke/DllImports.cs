@@ -23,7 +23,7 @@ namespace DFWin.Core.PInvoke
         [DllImport(User32, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int SetWindowLong(IntPtr hWnd, User32.WindowLongIndexFlags nIndex, User32.SetWindowLongFlags dwNewLong);
 
-        [DllImport(MsvCrt, EntryPoint = "memcmp", CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
+        [DllImport(MsvCrt, EntryPoint = "memcmp", SetLastError = true)]
         public static extern int MemoryCompare(byte[] bytes1, byte[] bytes2, long count);
     }
 }

@@ -115,7 +115,7 @@ namespace DFWin
             GraphicsDevice.SetRenderTarget(renderTarget);
             spriteBatch.Begin();
 
-            var screenTools = new ScreenTools(spriteBatch);
+            var screenTools = new ScreenTools(spriteBatch, renderTarget);
             screenManager.Draw(gameState, screenTools);
             spriteBatch.End();
 

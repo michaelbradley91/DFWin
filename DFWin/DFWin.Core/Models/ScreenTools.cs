@@ -1,5 +1,4 @@
-﻿using DFWin.Core.Constants;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace DFWin.Core.Models
@@ -8,13 +7,17 @@ namespace DFWin.Core.Models
     {
         public SpriteBatch SpriteBatch { get; }
 
-        public ScreenTools(SpriteBatch spriteBatch)
+        private readonly RenderTarget2D renderTarget;
+
+        public ScreenTools(SpriteBatch spriteBatch, RenderTarget2D renderTarget)
         {
             SpriteBatch = spriteBatch;
+
+            this.renderTarget = renderTarget;
         }
 
-        public int Width => Sizes.DefaultTargetScreenSize.Width;
-        public int Height => Sizes.DefaultTargetScreenSize.Height;
+        public int Width => renderTarget.Bounds.Width;
+        public int Height => renderTarget.Bounds.Height;
         public Rectangle Bounds => new Rectangle(0, 0, Width, Height);
     }
 }

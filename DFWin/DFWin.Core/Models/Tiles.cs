@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DFWin.Core.Helpers;
 
 namespace DFWin.Core.Models
@@ -7,8 +8,10 @@ namespace DFWin.Core.Models
     {
         public int Width => tiles.GetLength(0);
         public int Height => tiles.GetLength(1);
+        public IReadOnlyList<string> Text => text.Value;
 
         private readonly Tile[,] tiles;
+        private readonly Lazy<IReadOnlyList<string>> text;
 
         private readonly int hashCode;
         private readonly byte[] bytes;
@@ -18,6 +21,7 @@ namespace DFWin.Core.Models
             this.tiles = tiles;
             hashCode = ComputeHashCode(tiles);
             bytes = ComputeBytes(tiles);
+            text = new Lazy<IReadOnlyList<string>>(GetText);
         }
 
         public Tile this[int x, int y]
@@ -39,7 +43,7 @@ namespace DFWin.Core.Models
         /// <summary>
         /// Returns a string per line representing the text on that line.
         /// </summary>
-        public IReadOnlyList<string> GetText()
+        private IReadOnlyList<string> GetText()
         {
             var strs = new string[Height];
             var chars = new char[Width];

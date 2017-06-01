@@ -5,18 +5,12 @@ using DFWin.Core.Models;
 
 namespace DFWin.Core.Translators
 {
-    public class StartTranslator : ITranslator
+    public class StartTranslator : Translator
     {
-        public bool CanTranslate(Tiles tiles)
+        public override DwarfFortressInput TranslateOrNull(Tiles tiles)
         {
-            var text = tiles.GetText();
-            Debug.WriteLine(string.Join(Environment.NewLine, text));
-            return false;
-        }
-
-        public DwarfFortressInput Translate(Tiles tiles)
-        {
-            throw new System.NotImplementedException();
+            Debug.WriteLine(string.Join(Environment.NewLine, tiles.Text));
+            return null;
         }
     }
 }
