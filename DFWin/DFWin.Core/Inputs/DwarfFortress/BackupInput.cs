@@ -1,9 +1,6 @@
-﻿using DFWin.Core.Models;
-
-namespace DFWin.Core.Inputs.DwarfFortress
+﻿namespace DFWin.Core.Inputs.DwarfFortress
 {
-    public class BackupInput : DwarfFortressInput
-    {
-        public BackupInput(Tiles tiles) : base(tiles) { }
-    }
+    public interface IBackupInput : IDwarfFortressInput { }
+
+    public class BackupInput : DwarfFortressInput, IBackupInput  { }
 }

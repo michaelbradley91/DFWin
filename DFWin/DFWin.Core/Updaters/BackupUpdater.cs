@@ -62,9 +62,7 @@ namespace DFWin.Core.Updaters
         {
             keyThrottler.Update(input.UserInput.KeyboardInput);
 
-            // Take a copy
             var keysToSend = keyThrottler.PressedKeysToProcess.ToArray();
-
             Task.Run(() =>
             {
                 dwarfFortressInputService.TrySendKeys(keysToSend);

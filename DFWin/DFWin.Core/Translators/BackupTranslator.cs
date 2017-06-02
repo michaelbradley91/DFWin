@@ -10,7 +10,7 @@ namespace DFWin.Core.Translators
     {
         public override IDwarfFortressInput TranslateOrNull(Tiles tiles)
         {
-            return new BackupInput(tiles);
+            return new BackupInput {Tiles = tiles};
         }
     }
 }

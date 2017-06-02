@@ -1,4 +1,6 @@
 ﻿using DFWin.Core.Inputs;
+using DFWin.Core.Inputs.DwarfFortress;
+using DFWin.Core.Services;
 using DFWin.Core.States;
 
 namespace DFWin.Core.Updaters
@@ -21,6 +23,6 @@ namespace DFWin.Core.Updaters
             return new GameState(nextScreenState, previousState.GameInput, previousState.FrameRate, previousState.ShouldExit);
         }
 
-        protected abstract IScreenState Update(TScreenState previousState, GameInput input);
+        protected abstract IScreenState Update(TScreenState previousState, GameInput gameInput);
     }
 }
