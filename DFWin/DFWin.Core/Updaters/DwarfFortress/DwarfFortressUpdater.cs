@@ -3,7 +3,7 @@ using DFWin.Core.Inputs;
 using DFWin.Core.Inputs.DwarfFortress;
 using DFWin.Core.States;
 
-namespace DFWin.Core.Updaters
+namespace DFWin.Core.Updaters.DwarfFortress
 {
     /// <summary>
     /// Any updater reliant on the Dwarf Fortress screen should extend this updater.

@@ -6,6 +6,7 @@ using Bogus;
 using DFWin.Core.Helpers;
 using DFWin.Core.Inputs.DwarfFortress;
 using DFWin.Core.States;
+using DFWin.Core.States.DwarfFortress;
 using DFWin.Core.Tests.TestSetup;
 using DFWin.Core.Updaters;
 using FluentAssertions;

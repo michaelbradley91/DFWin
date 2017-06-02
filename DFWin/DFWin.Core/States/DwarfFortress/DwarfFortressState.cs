@@ -1,6 +1,6 @@
 ﻿using DFWin.Core.Inputs.DwarfFortress;
 
-namespace DFWin.Core.States
+namespace DFWin.Core.States.DwarfFortress
 {
     /// <summary>
     /// All states dependent on the Dwarf Fortress screen should extend this class.

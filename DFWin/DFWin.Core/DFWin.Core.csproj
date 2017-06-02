@@ -127,7 +127,7 @@
     <Compile Include="Services\ProcessService.cs" />
     <Compile Include="Models\Tile.cs" />
     <Compile Include="States\BackupState.cs" />
-    <Compile Include="States\DwarfFortressState.cs" />
+    <Compile Include="States\DwarfFortress\DwarfFortressState.cs" />
     <Compile Include="TranslatorManager.cs" />
     <Compile Include="Translators\BackupTranslator.cs" />
     <Compile Include="Translators\Translator.cs" />
@@ -141,7 +141,7 @@
     <Compile Include="States\LoadingState.cs" />
     <Compile Include="States\IScreenState.cs" />
     <Compile Include="Updaters\BackupUpdater.cs" />
-    <Compile Include="Updaters\DwarfFortressUpdater.cs" />
+    <Compile Include="Updaters\DwarfFortress\DwarfFortressUpdater.cs" />
     <Compile Include="Models\KeyboardRecorder.cs" />
     <Compile Include="Updaters\Updater.cs" />
     <Compile Include="Updaters\LoadingUpdater.cs" />
