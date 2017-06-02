@@ -95,6 +95,7 @@
     <Compile Include="Helpers\ExceptionHelpers.cs" />
     <Compile Include="Helpers\ProcessHelpers.cs" />
     <Compile Include="Helpers\ScreenHelpers.cs" />
+    <Compile Include="Helpers\StateHelpers.cs" />
     <Compile Include="Helpers\TaskHelpers.cs" />
     <Compile Include="Helpers\TileHelpers.cs" />
     <Compile Include="Inputs\DwarfFortress\BackupInput.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Services\ProcessService.cs" />
     <Compile Include="Models\Tile.cs" />
     <Compile Include="States\BackupState.cs" />
+    <Compile Include="States\DwarfFortressState.cs" />
     <Compile Include="TranslatorManager.cs" />
     <Compile Include="Translators\BackupTranslator.cs" />
     <Compile Include="Translators\Translator.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DFWin.Core.Inputs;
+using DFWin.Core.Inputs.DwarfFortress;
 using DFWin.Core.Services;
 using DFWin.Core.States;
 using Microsoft.Xna.Framework.Input;
@@ -46,7 +47,7 @@ namespace DFWin.Core.Updaters
         }
     }
 
-    public class BackupUpdater : Updater<BackupState>
+    public class BackupUpdater : DwarfFortressUpdater<BackupState, IBackupInput>
     {
         private readonly IDwarfFortressInputService dwarfFortressInputService;
         private readonly KeyThrottler keyThrottler;
@@ -56,11 +57,11 @@ namespace DFWin.Core.Updaters
             this.dwarfFortressInputService = dwarfFortressInputService;
 
             keyThrottler = new KeyThrottler();
-        }
+        }    
 
-        protected override IScreenState Update(BackupState previousState, GameInput input)
+        protected override IScreenState Update(BackupState previousState, IBackupInput dwarfFortressInput, UserInput userInput)
         {
-            keyThrottler.Update(input.UserInput.KeyboardInput);
+            keyThrottler.Update(userInput.KeyboardInput);
 
             var keysToSend = keyThrottler.PressedKeysToProcess.ToArray();
             Task.Run(() =>
@@ -68,7 +69,7 @@ namespace DFWin.Core.Updaters
                 dwarfFortressInputService.TrySendKeys(keysToSend);
             });
 
-            return new BackupState(input.DwarfFortressInput.Tiles);
+            return new BackupState(dwarfFortressInput);
         }
     }
 }

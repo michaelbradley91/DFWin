@@ -1,5 +1,6 @@
 ﻿using System;
 using DFWin.Core.Constants;
+using DFWin.Core.Helpers;
 using DFWin.Core.Inputs;
 using DFWin.Core.Services;
 using DFWin.Core.States;
@@ -41,7 +42,9 @@ namespace DFWin.Core.Updaters
                     }
                 case LoadingPhase.WarmUpSuccessful:
                 case LoadingPhase.WarmUpUnsuccessful:
-                    return new BackupState(input.DwarfFortressInput.Tiles);
+                    return input.DwarfFortressInput.IsInitialised
+                        ? StateHelpers.CreateInitialScreenState(input.DwarfFortressInput) 
+                        : previousState;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

@@ -1,15 +1,9 @@
-﻿using DFWin.Core.Models;
+﻿using DFWin.Core.Inputs.DwarfFortress;
 
 namespace DFWin.Core.States
 {
-    public class BackupState : IScreenState
+    public class BackupState : DwarfFortressState<IBackupInput>, IScreenState
     {
-        public bool HasTiles => Tiles != null;
-        public Tiles Tiles { get; }
-
-        public BackupState(Tiles tiles)
-        {
-            Tiles = tiles;
-        }
+        public BackupState(IBackupInput backupInput) : base(backupInput) { }
     }
 }
