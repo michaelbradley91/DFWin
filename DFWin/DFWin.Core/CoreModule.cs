@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using DFWin.Core.Models;
 
 namespace DFWin.Core
 {
@@ -15,6 +16,7 @@ namespace DFWin.Core
             builder.RegisterType<ScreenManager>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<UpdateManager>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<TranslatorManager>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<KeyboardRecorder>().AsImplementedInterfaces().InstancePerDependency();
         }
 
         private void RegisterServices(ContainerBuilder builder)

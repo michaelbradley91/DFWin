@@ -142,6 +142,7 @@
     <Compile Include="States\IScreenState.cs" />
     <Compile Include="Updaters\BackupUpdater.cs" />
     <Compile Include="Updaters\DwarfFortressUpdater.cs" />
+    <Compile Include="Models\KeyboardRecorder.cs" />
     <Compile Include="Updaters\Updater.cs" />
     <Compile Include="Updaters\LoadingUpdater.cs" />
     <Compile Include="PInvoke\DllImports.cs" />
