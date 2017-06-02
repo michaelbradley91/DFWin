@@ -3,6 +3,7 @@
     <AdditionalFilesToIncludeForProject>
       <Value>Content\**.*</Value>
     </AdditionalFilesToIncludeForProject>
+    <BuildProcessArchitecture>x64</BuildProcessArchitecture>
     <PreviouslyBuiltSuccessfully>True</PreviouslyBuiltSuccessfully>
   </Settings>
 </ProjectConfiguration>
