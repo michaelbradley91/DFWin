@@ -2,12 +2,11 @@
 using System.Threading.Tasks;
 using DFWin.Core.Inputs;
 using DFWin.Core.Inputs.DwarfFortress;
-using DFWin.Core.Models;
 using DFWin.Core.Services;
 using DFWin.Core.States;
-using DFWin.Core.Updaters.DwarfFortress;
+using DFWin.Core.States.DwarfFortress;
 
-namespace DFWin.Core.Updaters
+namespace DFWin.Core.Updaters.DwarfFortress
 {
     public class BackupUpdater : DwarfFortressUpdater<BackupState, IBackupInput>
     {

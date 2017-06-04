@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Bogus;
 using DFWin.Core.Helpers;
 using DFWin.Core.Inputs.DwarfFortress;
 using DFWin.Core.States;
@@ -28,22 +27,22 @@ namespace DFWin.Core.Tests
         [Test]
         public void AllScreenStates_HaveCorrespondingUpdaters()
         {
-            var screens = GetUpdaters().ToList();
+            var updaters = GetUpdaters().ToList();
             foreach (var state in GetStates())
             {
                 var nameOfUpdater = state.Name.Substring(0, state.Name.Length - "State".Length) + "Updater";
-                screens.Should().Contain(s => s.Name == nameOfUpdater, $"The state {state.Name} should have a corresponding updater.");
+                updaters.Should().Contain(s => s.Name == nameOfUpdater, $"The state {state.Name} should have a corresponding updater.");
             }
         }
 
         [Test]
-        public void AllDwarfFortressStates_HaveCorrespondingDwarfFortressInputs()
+        public void AllDwarfFortressInputs_HaveCorrespondingDwarfFortressStates()
         {
-            var inputs = GetDwarfFortressInputs().ToList();
-            foreach (var state in GetDwarfFortressStates())
+            var states = GetDwarfFortressStates().ToList();
+            foreach (var input in GetDwarfFortressInputs())
             {
-                var nameOfInput = state.Name.Substring(0, state.Name.Length - "State".Length) + "Input";
-                inputs.Should().Contain(s => s.Name == nameOfInput, $"The DF state {state.Name} should have a corresponding DF input.");
+                var nameOfState = input.Name.Substring(0, input.Name.Length - "Input".Length) + "State";
+                states.Should().Contain(s => s.Name == nameOfState, $"The DF input {input.Name} should have a corresponding DF state.");
             }
         }
 

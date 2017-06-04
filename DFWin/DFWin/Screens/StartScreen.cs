@@ -2,26 +2,26 @@
 using DFWin.Core.Constants;
 using DFWin.Core.Helpers;
 using DFWin.Core.Models;
-using DFWin.Core.States;
 using DFWin.Core.States.DwarfFortress;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace DFWin.Screens
 {
+    // TODO draw the start screen properly
     [TargetScreenSize(Sizes.BackupTargetScreenWidth, Sizes.BackupTargetScreenHeight)]
-    public class BackupScreen : Screen<BackupState>
+    public class StartScreen : Screen<StartState>
     {
         private readonly ContentManager contentManager;
 
         private Texture2D WhiteRectangle => contentManager.WhiteRectangle;
 
-        public BackupScreen(ContentManager contentManager)
+        public StartScreen(ContentManager contentManager)
         {
             this.contentManager = contentManager;
         }
 
-        public override void Draw(BackupState state, ScreenTools screenTools)
+        public override void Draw(StartState state, ScreenTools screenTools)
         {
             for (var x = 0; x < state.Input.Tiles.Width; x++)
             {
@@ -35,9 +35,9 @@ namespace DFWin.Screens
         private void DrawBackupTile(ScreenTools screenTools, int x, int y, Tile tile)
         {
             var sourceRectangle = new Rectangle(
-                Sizes.BackupTileSize * tile.TileSetX, 
-                Sizes.BackupTileSize * tile.TileSetY, 
-                Sizes.BackupTileSize, 
+                Sizes.BackupTileSize * tile.TileSetX,
+                Sizes.BackupTileSize * tile.TileSetY,
+                Sizes.BackupTileSize,
                 Sizes.BackupTileSize);
 
             var destinationRectangle = new Rectangle(

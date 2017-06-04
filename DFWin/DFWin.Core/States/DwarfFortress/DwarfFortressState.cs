@@ -6,12 +6,12 @@ namespace DFWin.Core.States.DwarfFortress
     /// All states dependent on the Dwarf Fortress screen should extend this class.
     /// In particular, all states must support a constructor taking just the input so the screen can initialise from any point.
     /// </summary>
-    public class DwarfFortressState<TDwarfFortressInput>
+    public abstract class DwarfFortressState<TDwarfFortressInput> : IScreenState
         where TDwarfFortressInput : IDwarfFortressInput
     {
         public TDwarfFortressInput Input;
 
-        public DwarfFortressState(TDwarfFortressInput input)
+        protected DwarfFortressState(TDwarfFortressInput input)
         {
             Input = input;
         }

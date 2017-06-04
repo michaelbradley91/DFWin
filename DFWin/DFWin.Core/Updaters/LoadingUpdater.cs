@@ -2,6 +2,7 @@
 using DFWin.Core.Constants;
 using DFWin.Core.Helpers;
 using DFWin.Core.Inputs;
+using DFWin.Core.Inputs.DwarfFortress;
 using DFWin.Core.Services;
 using DFWin.Core.States;
 
@@ -42,7 +43,7 @@ namespace DFWin.Core.Updaters
                     }
                 case LoadingPhase.WarmUpSuccessful:
                 case LoadingPhase.WarmUpUnsuccessful:
-                    return input.DwarfFortressInput.IsInitialised
+                    return input.DwarfFortressInput != DwarfFortressInput.None
                         ? StateHelpers.CreateInitialScreenState(input.DwarfFortressInput) 
                         : previousState;
                 default:

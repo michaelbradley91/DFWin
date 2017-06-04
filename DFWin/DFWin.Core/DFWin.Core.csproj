@@ -3,7 +3,7 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
     <ProjectGuid>{7AC12348-6643-4BAB-A422-DE2DE9F0C11A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -100,6 +100,7 @@
     <Compile Include="Helpers\TileHelpers.cs" />
     <Compile Include="Inputs\DwarfFortress\BackupInput.cs" />
     <Compile Include="Inputs\DwarfFortress\DwarfFortressInput.cs" />
+    <Compile Include="Inputs\DwarfFortress\StartInput.cs" />
     <Compile Include="Inputs\GameInput.cs" />
     <Compile Include="Inputs\KeyboardInput.cs" />
     <Compile Include="Inputs\UserInput.cs" />
@@ -126,8 +127,9 @@
     <Compile Include="Services\InputService.cs" />
     <Compile Include="Services\ProcessService.cs" />
     <Compile Include="Models\Tile.cs" />
-    <Compile Include="States\BackupState.cs" />
+    <Compile Include="States\DwarfFortress\BackupState.cs" />
     <Compile Include="States\DwarfFortress\DwarfFortressState.cs" />
+    <Compile Include="States\DwarfFortress\StartState.cs" />
     <Compile Include="TranslatorManager.cs" />
     <Compile Include="Translators\BackupTranslator.cs" />
     <Compile Include="Translators\Translator.cs" />
@@ -140,9 +142,10 @@
     <Compile Include="States\GameState.cs" />
     <Compile Include="States\LoadingState.cs" />
     <Compile Include="States\IScreenState.cs" />
-    <Compile Include="Updaters\BackupUpdater.cs" />
+    <Compile Include="Updaters\DwarfFortress\BackupUpdater.cs" />
     <Compile Include="Updaters\DwarfFortress\DwarfFortressUpdater.cs" />
     <Compile Include="Models\KeyboardRecorder.cs" />
+    <Compile Include="Updaters\DwarfFortress\StartUpdater.cs" />
     <Compile Include="Updaters\Updater.cs" />
     <Compile Include="Updaters\LoadingUpdater.cs" />
     <Compile Include="PInvoke\DllImports.cs" />
