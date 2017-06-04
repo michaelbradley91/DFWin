@@ -14,7 +14,8 @@ namespace DFWin.Core.Services
     public interface IDwarfFortressInputService : IDisposable
     {
         void StartScreenScraping();
-        void TrySendKeys(params Keys[] keys);
+        
+        Task TrySendKeysAsync(params Keys[] keys);
     }
 
     public class DwarfFortressInputService : IDwarfFortressInputService
@@ -86,13 +87,16 @@ namespace DFWin.Core.Services
             translatorManager.TranslateInBackgroundAndUpdateGameInput(tiles);
         }
 
-        public void TrySendKeys(params Keys[] keys)
+        public async Task TrySendKeysAsync(params Keys[] keys)
         {
             try
             {
-                if (!processService.TryGetDwarfFortressProcess(out Process process)) return;
-                var window = new Window(process.MainWindowHandle);
-                window.SendKeys(keys.Select(k => k.ToVirtualKey()).ToArray());
+                await Task.Run(() =>
+                {
+                    if (!processService.TryGetDwarfFortressProcess(out Process process)) return;
+                    var window = new Window(process.MainWindowHandle);
+                    window.SendKeys(keys.Select(k => k.ToVirtualKey()).ToArray());
+                });
             }
             catch (Exception e)
             {

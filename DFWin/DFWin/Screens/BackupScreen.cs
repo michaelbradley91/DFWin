@@ -2,7 +2,6 @@
 using DFWin.Core.Constants;
 using DFWin.Core.Helpers;
 using DFWin.Core.Models;
-using DFWin.Core.States;
 using DFWin.Core.States.DwarfFortress;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,14 +11,8 @@ namespace DFWin.Screens
     [TargetScreenSize(Sizes.BackupTargetScreenWidth, Sizes.BackupTargetScreenHeight)]
     public class BackupScreen : Screen<BackupState>
     {
-        private readonly ContentManager contentManager;
-
-        private Texture2D WhiteRectangle => contentManager.WhiteRectangle;
-
-        public BackupScreen(ContentManager contentManager)
-        {
-            this.contentManager = contentManager;
-        }
+        private Texture2D WhiteRectangle => ContentManager.WhiteRectangle;
+        private Texture2D BackupTileSet => ContentManager.BackupTileSet;
 
         public override void Draw(BackupState state, ScreenTools screenTools)
         {
@@ -47,7 +40,7 @@ namespace DFWin.Screens
                 Sizes.BackupTileSize);
 
             screenTools.SpriteBatch.Draw(WhiteRectangle, destinationRectangle, tile.Background.ToColour());
-            screenTools.SpriteBatch.Draw(contentManager.BackupTileset, destinationRectangle, sourceRectangle, tile.Foreground.ToColour());
+            screenTools.SpriteBatch.Draw(BackupTileSet, destinationRectangle, sourceRectangle, tile.Foreground.ToColour());
         }
     }
 }

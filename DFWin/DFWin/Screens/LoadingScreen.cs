@@ -11,15 +11,9 @@ namespace DFWin.Screens
 {
     public class LoadingScreen : Screen<LoadingState>
     {
-        private readonly ContentManager contentManager;
-
-        private Texture2D Background => contentManager.LoadingBackground;
-        private Texture2D WhiteRectangle => contentManager.WhiteRectangle;
-
-        public LoadingScreen(ContentManager contentManager)
-        {
-            this.contentManager = contentManager;
-        }
+        private Texture2D Background => ContentManager.LoadingBackground;
+        private Texture2D WhiteRectangle => ContentManager.WhiteRectangle;
+        private SpriteFont MediumFont => ContentManager.MediumFont;
 
         public override void Draw(LoadingState state, ScreenTools screenTools)
         {
@@ -39,7 +33,7 @@ namespace DFWin.Screens
             CentreString(screenTools, GetMessage(state), new Vector2(screenTools.Width / 2f, screenTools.Height * 0.4f), Color.Red);
         }
 
-        private string GetMessage(LoadingState loadingState)
+        private static string GetMessage(LoadingState loadingState)
         {
             switch (loadingState.Phase)
             {
@@ -58,9 +52,9 @@ namespace DFWin.Screens
 
         private void CentreString(ScreenTools tools, string text, Vector2 position, Color colour)
         {
-            var size = contentManager.MediumFont.MeasureString(text);
+            var size = MediumFont.MeasureString(text);
 
-            tools.SpriteBatch.DrawString(contentManager.MediumFont, text, new Vector2(position.X - (size.X / 2f), position.Y - (size.Y / 2f)), colour);
+            tools.SpriteBatch.DrawString(MediumFont, text, new Vector2(position.X - (size.X / 2f), position.Y - (size.Y / 2f)), colour);
         }
     }
 }

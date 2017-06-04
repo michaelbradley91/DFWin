@@ -73,6 +73,9 @@
     <Reference Include="System.Drawing.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Drawing.Primitives.4.3.0\lib\net45\System.Drawing.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -92,10 +95,12 @@
     <Compile Include="DfWin.cs" />
     <Compile Include="Helpers\ByteHelpers.cs" />
     <Compile Include="Helpers\ColourHelpers.cs" />
+    <Compile Include="Helpers\EnumerableHelpers.cs" />
     <Compile Include="Helpers\ExceptionHelpers.cs" />
     <Compile Include="Helpers\ProcessHelpers.cs" />
     <Compile Include="Helpers\ScreenHelpers.cs" />
     <Compile Include="Helpers\StateHelpers.cs" />
+    <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Helpers\TaskHelpers.cs" />
     <Compile Include="Helpers\TileHelpers.cs" />
     <Compile Include="Inputs\DwarfFortress\BackupInput.cs" />
@@ -112,7 +117,7 @@
     <Compile Include="Models\IWarmUpConfiguration.cs" />
     <Compile Include="Middleware\IUpdaterMiddleware.cs" />
     <Compile Include="Models\KeyRecording.cs" />
-    <Compile Include="Models\Screen.cs" />
+    <Compile Include="Models\ScreenBase.cs" />
     <Compile Include="Models\Tiles.cs" />
     <Compile Include="Resources\Models\WarmUpProgress.cs" />
     <Compile Include="Resources\Models\WarmUpTask.cs" />

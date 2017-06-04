@@ -20,7 +20,7 @@ namespace DFWin
         public Texture2D WhiteRectangle { get; private set; }
         public SpriteFont MediumFont { get; private set; }
         public Song Song { get; private set; }
-        public Texture2D BackupTileset { get; private set; }
+        public Texture2D BackupTileSet { get; private set; }
 
         private readonly IDictionary<Size, RenderTarget2D> renderTargets = new Dictionary<Size, RenderTarget2D>();
 
@@ -39,7 +39,7 @@ namespace DFWin
             LoadingBackground = content.Load<Texture2D>("LoadingBackground");
             MediumFont = content.Load<SpriteFont>("Px437_IBM_BIOS_Font");
             Song = content.Load<Song>("Vindsvept - Heart of Ice");
-            BackupTileset = content.Load<Texture2D>("BackupTileSet");
+            BackupTileSet = content.Load<Texture2D>("BackupTileSet");
             MainRenderTarget = ScreenHelpers.CreateRenderTarget(graphicsDevice, Sizes.DefaultTargetScreenSize);
             BackupRenderTarget = ScreenHelpers.CreateRenderTarget(graphicsDevice, Sizes.BackupScreenSize);
 

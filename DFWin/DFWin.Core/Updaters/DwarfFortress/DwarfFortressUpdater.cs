@@ -1,6 +1,7 @@
 ﻿using DFWin.Core.Helpers;
 using DFWin.Core.Inputs;
 using DFWin.Core.Inputs.DwarfFortress;
+using DFWin.Core.Services;
 using DFWin.Core.States;
 
 namespace DFWin.Core.Updaters.DwarfFortress
@@ -15,6 +16,8 @@ namespace DFWin.Core.Updaters.DwarfFortress
     {
         private readonly string name;
 
+        protected IDwarfFortressInputService DwarfFortressInputService { get; } = DfWin.Resolve<IDwarfFortressInputService>();
+
         protected DwarfFortressUpdater()
         {
             name = GetType().Name;
@@ -25,19 +28,16 @@ namespace DFWin.Core.Updaters.DwarfFortress
             var inputName = gameInput.DwarfFortressInput.GetType().Name;
             var targetUpdaterName = GetNameOfDwarfFortressUpdater(inputName);
 
-            if (targetUpdaterName == name)
-            {
-                return Update(previousState, (TDwarfFortressInput)gameInput.DwarfFortressInput, gameInput.UserInput);
-            }
-
-            return StateHelpers.CreateInitialScreenState(gameInput.DwarfFortressInput);
+            return targetUpdaterName == name
+                ? Update(previousState, (TDwarfFortressInput)gameInput.DwarfFortressInput, gameInput.UserInput) 
+                : StateHelpers.CreateInitialScreenState(gameInput.DwarfFortressInput);
         }
 
-        protected abstract IScreenState Update(TScreenState previousState, TDwarfFortressInput dwarfFortressInput, UserInput userInput);
-
-        private string GetNameOfDwarfFortressUpdater(string inputName)
+        private static string GetNameOfDwarfFortressUpdater(string inputName)
         {
             return inputName.Substring(0, inputName.Length - "Input".Length) + "Updater";
         }
+
+        protected abstract IScreenState Update(TScreenState previousState, TDwarfFortressInput dwarfFortressInput, UserInput userInput);
     }
 }

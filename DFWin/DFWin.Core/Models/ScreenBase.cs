@@ -11,7 +11,7 @@ namespace DFWin.Core.Models
         void Draw(GameState gameState, ScreenTools screenTools);
     }
 
-    public abstract class Screen<TScreenState> : IScreen
+    public abstract class ScreenBase<TScreenState> : IScreen
         where TScreenState : IScreenState
     {
         public void Draw(GameState gameState, ScreenTools screenTools)

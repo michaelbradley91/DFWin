@@ -68,6 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens\BackupScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
+    <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\StartScreen.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="Styles\Colours.cs" />

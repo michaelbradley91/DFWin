@@ -12,14 +12,8 @@ namespace DFWin.Screens
     [TargetScreenSize(Sizes.BackupTargetScreenWidth, Sizes.BackupTargetScreenHeight)]
     public class StartScreen : Screen<StartState>
     {
-        private readonly ContentManager contentManager;
-
-        private Texture2D WhiteRectangle => contentManager.WhiteRectangle;
-
-        public StartScreen(ContentManager contentManager)
-        {
-            this.contentManager = contentManager;
-        }
+        private Texture2D WhiteRectangle => ContentManager.WhiteRectangle;
+        private Texture2D BackupTileSet => ContentManager.BackupTileSet;
 
         public override void Draw(StartState state, ScreenTools screenTools)
         {
@@ -47,7 +41,7 @@ namespace DFWin.Screens
                 Sizes.BackupTileSize);
 
             screenTools.SpriteBatch.Draw(WhiteRectangle, destinationRectangle, tile.Background.ToColour());
-            screenTools.SpriteBatch.Draw(contentManager.BackupTileset, destinationRectangle, sourceRectangle, tile.Foreground.ToColour());
+            screenTools.SpriteBatch.Draw(BackupTileSet, destinationRectangle, sourceRectangle, tile.Foreground.ToColour());
         }
     }
 }
