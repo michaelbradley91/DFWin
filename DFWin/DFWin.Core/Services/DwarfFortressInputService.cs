@@ -14,8 +14,14 @@ namespace DFWin.Core.Services
     public interface IDwarfFortressInputService : IDisposable
     {
         void StartScreenScraping();
-        
+
+        /// <summary>
+        /// Keys can fail to be sent due to the DF Window not responding or due to
+        /// the backlog of keys exceeding its permitted limit. Therefore, do not assume this will succeed.
+        /// </summary>
         Task TrySendKeysAsync(params Keys[] keys);
+
+        bool IsSendingKeys { get; }
     }
 
     public class DwarfFortressInputService : IDwarfFortressInputService
@@ -30,6 +36,11 @@ namespace DFWin.Core.Services
         private readonly CancellationTokenSource cancellationTokenSource;
 
         private const int MinimumDelay = 10;
+
+        private readonly object sendKeysLock = new object();
+        private int numberOfWaitingSendKeys;
+        private const int MaximumNumberOfWaitingSendKeys = 10;
+        private Task sendKeysTask = Task.CompletedTask;
         
         public DwarfFortressInputService(IProcessService processService, IWindowService windowService,
             ITilesService tilesService, ITranslatorManager translatorManager)
@@ -89,18 +100,63 @@ namespace DFWin.Core.Services
 
         public async Task TrySendKeysAsync(params Keys[] keys)
         {
+            if (keys.Length == 0) return;
+
+            Task newTask;
+            lock (sendKeysLock)
+            {
+                numberOfWaitingSendKeys++;
+
+                // Exit early to protect against large numbers of backlogged key presses.
+                if (numberOfWaitingSendKeys > MaximumNumberOfWaitingSendKeys)
+                {
+                    numberOfWaitingSendKeys--;
+                    DfWin.Warn("Dropped keys due to backlog: " + string.Join(",", keys));
+                    return;
+                }
+                try
+                {
+                    var copyOfSendKeysTask = sendKeysTask;
+                    newTask = Task.Run(async () =>
+                    {
+                        await copyOfSendKeysTask;
+                        if (!processService.TryGetDwarfFortressProcess(out Process process)) return;
+                        var window = new Window(process.MainWindowHandle);
+                        window.SendKeys(keys.Select(k => k.ToVirtualKey()).ToArray());
+                    });
+                    sendKeysTask = newTask;
+                }
+                catch
+                {
+                    numberOfWaitingSendKeys--;
+                    throw;
+                }
+            }
             try
             {
-                await Task.Run(() =>
-                {
-                    if (!processService.TryGetDwarfFortressProcess(out Process process)) return;
-                    var window = new Window(process.MainWindowHandle);
-                    window.SendKeys(keys.Select(k => k.ToVirtualKey()).ToArray());
-                });
+                await newTask;
             }
             catch (Exception e)
             {
                 DfWin.Error("Encountered error sending keys: " + e);
+            }
+            finally
+            {
+                lock (sendKeysLock)
+                {
+                    numberOfWaitingSendKeys--;
+                }
+            }
+        }
+
+        public bool IsSendingKeys
+        {
+            get
+            {
+                lock (sendKeysLock)
+                {
+                    return !sendKeysTask.IsCompleted;
+                }
             }
         }
 
