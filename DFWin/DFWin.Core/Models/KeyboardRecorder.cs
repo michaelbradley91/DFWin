@@ -74,7 +74,7 @@ namespace DFWin.Core.Models
                 }
             }
 
-            RecentlyPressedKeys = ImmutableHashSet.Create(recentlyPressedKeys.ToArray());
+            RecentlyPressedKeys = recentlyPressedKeys.ToImmutableHashSet();
         }
     }
 }

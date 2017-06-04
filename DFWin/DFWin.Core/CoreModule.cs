@@ -17,6 +17,7 @@ namespace DFWin.Core
             builder.RegisterType<UpdateManager>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<TranslatorManager>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<KeyboardRecorder>().AsImplementedInterfaces().InstancePerDependency();
+            builder.RegisterType<MouseRecorder>().AsImplementedInterfaces().InstancePerDependency();
         }
 
         private void RegisterServices(ContainerBuilder builder)

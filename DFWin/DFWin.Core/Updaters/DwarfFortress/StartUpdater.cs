@@ -15,6 +15,11 @@ namespace DFWin.Core.Updaters.DwarfFortress
 
             DwarfFortressInputService.TrySendKeysAsync(keysToSend);
 
+            if (userInput.MouseInput.RecentlyPressedButtons.Any())
+            {
+                DfWin.Trace("Saw pressed buttons: " + string.Join(",", userInput.MouseInput.RecentlyPressedButtons));
+            }
+
             return new StartState(dwarfFortressInput);
         }
     }

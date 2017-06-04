@@ -5,6 +5,7 @@ using DFWin.Core.Models;
 using DFWin.Core.States.DwarfFortress;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace DFWin.Screens
 {

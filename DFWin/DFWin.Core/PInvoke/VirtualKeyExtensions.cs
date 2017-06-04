@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using System;
+using Microsoft.Xna.Framework.Input;
 using PInvoke;
 
 namespace DFWin.Core.PInvoke
@@ -203,6 +204,24 @@ namespace DFWin.Core.PInvoke
                 default:
                     DfWin.Warn("Could not translate key: " + key);
                     return User32.VirtualKey.VK_NO_KEY;
+            }
+        }
+
+        private const int KeyPressed = 0x8000;
+
+        /// <summary>
+        /// Returns false if PInvoke cannot determine if the key is pressed.
+        /// </summary>
+        public static bool IsPressed(this User32.VirtualKey virtualKey)
+        {
+            try
+            {
+                return Convert.ToBoolean(User32.GetKeyState((int) virtualKey) & KeyPressed);
+            }
+            catch (Exception e)
+            {
+                DfWin.Error("Unable to retrieve key state with PInvoke due to exception: " + e);
+                return false;
             }
         }
     }

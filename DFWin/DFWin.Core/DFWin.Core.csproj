@@ -89,6 +89,8 @@
     <Compile Include="Caches\TranslatorCache.cs" />
     <Compile Include="Constants\DwarfFortressColours.cs" />
     <Compile Include="Constants\LoadingPhase.cs" />
+    <Compile Include="Helpers\MouseButtonHelpers.cs" />
+    <Compile Include="Constants\MouseButtons.cs" />
     <Compile Include="Constants\Names.cs" />
     <Compile Include="Constants\Sizes.cs" />
     <Compile Include="CoreModule.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="Inputs\DwarfFortress\StartInput.cs" />
     <Compile Include="Inputs\GameInput.cs" />
     <Compile Include="Inputs\KeyboardInput.cs" />
+    <Compile Include="Inputs\MouseInput.cs" />
     <Compile Include="Inputs\UserInput.cs" />
     <Compile Include="Inputs\WarmUpInput.cs" />
     <Compile Include="Middleware\DwarfFortressProcessMiddleWare.cs" />
@@ -117,6 +120,7 @@
     <Compile Include="Models\IWarmUpConfiguration.cs" />
     <Compile Include="Middleware\IUpdaterMiddleware.cs" />
     <Compile Include="Models\KeyRecording.cs" />
+    <Compile Include="Models\MouseRecorder.cs" />
     <Compile Include="Models\ScreenBase.cs" />
     <Compile Include="Models\Tiles.cs" />
     <Compile Include="Resources\Models\WarmUpProgress.cs" />

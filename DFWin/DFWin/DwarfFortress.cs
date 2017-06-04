@@ -48,6 +48,7 @@ namespace DFWin
             Window.AllowAltF4 = false;
             Window.OrientationChanged += Window_ClientSizeChanged;
             Window.ClientSizeChanged += Window_ClientSizeChanged;
+            IsMouseVisible = true;
 
             gameState = GameState.InitialState;
         }

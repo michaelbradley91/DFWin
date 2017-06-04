@@ -7,8 +7,6 @@ namespace DFWin.Core.Inputs
 {
     public class KeyboardInput
     {
-        public KeyboardState RawKeyboardState { get; }
-
         /// <summary>
         /// Represents keys that are being pressed right now. Note that this will remain true every frame of the game
         /// the key is pressed, so if the user is trying to perform a precise action with a specific number of presses,
@@ -22,13 +20,12 @@ namespace DFWin.Core.Inputs
         /// </summary>
         public ImmutableHashSet<Keys> RecentlyPressedKeys { get; }
 
-        public KeyboardInput(KeyboardState rawKeyboardState, ImmutableHashSet<Keys> currentlyPressedKeys, ImmutableHashSet<Keys> recentlyPressedKeys)
+        public KeyboardInput(ImmutableHashSet<Keys> currentlyPressedKeys, ImmutableHashSet<Keys> recentlyPressedKeys)
         {
-            RawKeyboardState = rawKeyboardState;
             CurrentlyPressedKeys = currentlyPressedKeys;
             RecentlyPressedKeys = recentlyPressedKeys;
         }
 
-        public static KeyboardInput InitialInput => new KeyboardInput(Keyboard.GetState(), ImmutableHashSet<Keys>.Empty, ImmutableHashSet<Keys>.Empty);
+        public static KeyboardInput InitialInput => new KeyboardInput(ImmutableHashSet<Keys>.Empty, ImmutableHashSet<Keys>.Empty);
     }
 }
