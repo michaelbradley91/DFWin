@@ -2,16 +2,16 @@
 using DFWin.Core.Constants;
 using DFWin.Core.Helpers;
 using DFWin.Core.Models;
+using DFWin.Core.Screens;
 using DFWin.Core.States.DwarfFortress;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace DFWin.Screens
 {
     // TODO draw the start screen properly
     [TargetScreenSize(Sizes.BackupTargetScreenWidth, Sizes.BackupTargetScreenHeight)]
-    public class StartScreen : Screen<StartState>
+    public class StartScreen : Screen<StartState>, IStartScreen
     {
         private Texture2D WhiteRectangle => ContentManager.WhiteRectangle;
         private Texture2D BackupTileSet => ContentManager.BackupTileSet;

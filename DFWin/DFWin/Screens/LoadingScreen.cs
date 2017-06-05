@@ -1,6 +1,7 @@
 ﻿using System;
 using DFWin.Core.Constants;
 using DFWin.Core.Models;
+using DFWin.Core.Screens;
 using DFWin.Core.States;
 using DFWin.Styles;
 using Microsoft.Xna.Framework;
@@ -11,9 +12,10 @@ namespace DFWin.Screens
 {
     public class LoadingScreen : Screen<LoadingState>
     {
-        private Texture2D Background => ContentManager.LoadingBackground;
+        private Texture2D Title => ContentManager.Title;
+        private Texture2D Background => ContentManager.TitleBackground;
         private Texture2D WhiteRectangle => ContentManager.WhiteRectangle;
-        private SpriteFont MediumFont => ContentManager.MediumFont;
+        private SpriteFont MediumFont => ContentManager.LargeFont;
 
         public override void Draw(LoadingState state, ScreenTools screenTools)
         {
@@ -29,6 +31,8 @@ namespace DFWin.Screens
 
             screenTools.SpriteBatch.Draw(WhiteRectangle, new RectangleF(screenTools.Width * 0.1f, screenTools.Height * 0.9f, screenTools.Width * 0.8f, screenTools.Height * 0.06f).ToRectangle(), Colours.LoadingBarBackground);
             screenTools.SpriteBatch.Draw(WhiteRectangle, new RectangleF(screenTools.Width * 0.1f, screenTools.Height * 0.9f, screenTools.Width * 0.8f * (state.LoadingPercent / 100f), screenTools.Height * 0.06f).ToRectangle(), Colours.LoadingBar);
+
+            screenTools.SpriteBatch.Draw(Title, new Vector2((screenTools.Width - Title.Bounds.Width) / 2f, 20f), Color.White);
 
             CentreString(screenTools, GetMessage(state), new Vector2(screenTools.Width / 2f, screenTools.Height * 0.4f), Color.Red);
         }

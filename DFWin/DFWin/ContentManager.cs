@@ -16,9 +16,10 @@ namespace DFWin
 {
     public class ContentManager
     {
-        public Texture2D LoadingBackground { get; private set; }
+        public Texture2D Title { get; private set; }
+        public Texture2D TitleBackground { get; private set; }
         public Texture2D WhiteRectangle { get; private set; }
-        public SpriteFont MediumFont { get; private set; }
+        public SpriteFont LargeFont { get; private set; }
         public Song Song { get; private set; }
         public Texture2D BackupTileSet { get; private set; }
 
@@ -36,8 +37,9 @@ namespace DFWin
 
         public void Load(GraphicsDevice graphicsDevice, Microsoft.Xna.Framework.Content.ContentManager content)
         {
-            LoadingBackground = content.Load<Texture2D>("LoadingBackground");
-            MediumFont = content.Load<SpriteFont>("Px437_IBM_BIOS_Font");
+            Title = content.Load<Texture2D>("DFTitle");
+            TitleBackground = content.Load<Texture2D>("StartBackground");
+            LargeFont = content.Load<SpriteFont>("copyfonts.com_microsoft_yahei_bold_1__Font");
             Song = content.Load<Song>("Vindsvept - Heart of Ice");
             BackupTileSet = content.Load<Texture2D>("BackupTileSet");
             MainRenderTarget = ScreenHelpers.CreateRenderTarget(graphicsDevice, Sizes.DefaultTargetScreenSize);

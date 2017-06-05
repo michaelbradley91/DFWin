@@ -121,7 +121,8 @@
     <Compile Include="Middleware\IUpdaterMiddleware.cs" />
     <Compile Include="Models\KeyRecording.cs" />
     <Compile Include="Models\MouseRecorder.cs" />
-    <Compile Include="Models\ScreenBase.cs" />
+    <Compile Include="Screens\IStartScreen.cs" />
+    <Compile Include="Screens\ScreenBase.cs" />
     <Compile Include="Models\Tiles.cs" />
     <Compile Include="Resources\Models\WarmUpProgress.cs" />
     <Compile Include="Resources\Models\WarmUpTask.cs" />
@@ -131,7 +132,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Models\ScreenTools.cs" />
+    <Compile Include="Screens\ScreenTools.cs" />
     <Compile Include="Services\DwarfFortressInputService.cs" />
     <Compile Include="Services\InputService.cs" />
     <Compile Include="Services\ProcessService.cs" />

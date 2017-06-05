@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using DFWin.Core.Inputs.DwarfFortress;
 using DFWin.Core.Models;
+using DFWin.Core.Screens;
 using DFWin.Core.States;
 
 namespace DFWin.Core.Helpers
