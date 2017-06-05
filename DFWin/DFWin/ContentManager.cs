@@ -20,6 +20,7 @@ namespace DFWin
         public Texture2D TitleBackground { get; private set; }
         public Texture2D WhiteRectangle { get; private set; }
         public SpriteFont LargeFont { get; private set; }
+        public SpriteFont LargeBoldFont { get; private set; }
         public Song Song { get; private set; }
         public Texture2D BackupTileSet { get; private set; }
 
@@ -37,11 +38,12 @@ namespace DFWin
 
         public void Load(GraphicsDevice graphicsDevice, Microsoft.Xna.Framework.Content.ContentManager content)
         {
-            Title = content.Load<Texture2D>("DFTitle");
-            TitleBackground = content.Load<Texture2D>("StartBackground");
-            LargeFont = content.Load<SpriteFont>("copyfonts.com_microsoft_yahei_bold_1__Font");
-            Song = content.Load<Song>("Vindsvept - Heart of Ice");
-            BackupTileSet = content.Load<Texture2D>("BackupTileSet");
+            Title = content.Load<Texture2D>("Sprites/DFTitle");
+            TitleBackground = content.Load<Texture2D>("Backgrounds/StartBackground");
+            LargeFont = content.Load<SpriteFont>("Fonts/Microsoft YaHei");
+            LargeBoldFont = content.Load<SpriteFont>("Fonts/Microsoft YaHei Bold");
+            Song = content.Load<Song>("Music/Vindsvept - Heart of Ice");
+            BackupTileSet = content.Load<Texture2D>("TileSets/BackupTileSet");
             MainRenderTarget = ScreenHelpers.CreateRenderTarget(graphicsDevice, Sizes.DefaultTargetScreenSize);
             BackupRenderTarget = ScreenHelpers.CreateRenderTarget(graphicsDevice, Sizes.BackupScreenSize);
 
